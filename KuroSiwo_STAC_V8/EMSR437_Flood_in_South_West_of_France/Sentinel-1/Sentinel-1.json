@@ -1,0 +1,131 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "Sentinel-1",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          1.324880296783676,
+          42.5976882
+        ],
+        [
+          1.324880296783676,
+          44.421701002132856
+        ],
+        [
+          -2.116026568,
+          44.421701002132856
+        ],
+        [
+          -2.116026568,
+          42.5976882
+        ],
+        [
+          1.324880296783676,
+          42.5976882
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    -2.116026568,
+    42.5976882,
+    1.324880296783676,
+    44.421701002132856
+  ],
+  "properties": {
+    "start_datetime": "2020-05-13T00:00:00Z",
+    "end_datetime": "2020-05-13T00:00:00Z",
+    "category": "Sentinel-1",
+    "sci:doi": "10.5270/S1-d363604",
+    "sci:citation": "Copernicus Sentinel-1 data processed by ESA.Merged from Kuro Siwo dataset.",
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      2912,
+      2912
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      -28025.0,
+      0.0,
+      -10.0,
+      5473095.0
+    ],
+    "eo:bands": [
+      {
+        "name": "VV",
+        "common_name": "vv",
+        "description": "Vertical Transmit, Vertical Receive"
+      },
+      {
+        "name": "VH",
+        "common_name": "vh",
+        "description": "Vertical Transmit, Horizontal Receive"
+      }
+    ],
+    "datetime": "2020-05-13T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR437_Flood_in_South_West_of_France"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR437_Flood_in_South_West_of_France"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5270/S1-d363604"
+    }
+  ],
+  "assets": {
+    "s1_437_07_MS1_IVH_20200513": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/437/437_07_MS1_IVH_20200513.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_437_07_SL1_IVH_20200407": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/437/437_07_SL1_IVH_20200407.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_437_07_SL2_IVH_20200314": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/437/437_07_SL2_IVH_20200314.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_437_07_SL1_IVV_20200407": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/437/437_07_SL1_IVV_20200407.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_437_07_MK0_SLOPE_20200513": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/437/437_07_MK0_SLOPE_20200513.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_437_07_SL2_IVV_20200314": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/437/437_07_SL2_IVV_20200314.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_437_07_MS1_IVV_20200513": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/437/437_07_MS1_IVV_20200513.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR437_Flood_in_South_West_of_France"
+}

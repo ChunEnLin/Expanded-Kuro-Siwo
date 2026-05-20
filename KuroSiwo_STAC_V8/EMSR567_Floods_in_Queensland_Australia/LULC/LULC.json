@@ -1,0 +1,156 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "LULC",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          153.3752524228369,
+          -33.81146956
+        ],
+        [
+          153.3752524228369,
+          -29.11079243
+        ],
+        [
+          149.1696995887029,
+          -29.11079243
+        ],
+        [
+          149.1696995887029,
+          -33.81146956
+        ],
+        [
+          153.3752524228369,
+          -33.81146956
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    149.1696995887029,
+    -33.81146956,
+    153.3752524228369,
+    -29.11079243
+  ],
+  "properties": {
+    "start_datetime": "2022-03-07T00:00:00Z",
+    "end_datetime": "2022-03-07T00:00:00Z",
+    "category": "LULC",
+    "sci:doi": "10.1038/s41597-022-01307-4",
+    "sci:citation": "Brown, C.F., et al. (2022). Dynamic World, Near real-time global 10 m land use land cover mapping. Scientific Data. Data (2021-2023) retrieved from Google Earth Engine.",
+    "proj:code": "EPSG:4326",
+    "proj:shape": [
+      1351,
+      1208
+    ],
+    "proj:transform": [
+      0.00348141790905131,
+      0.0,
+      149.1696995887029,
+      0.0,
+      -0.003479405723406181,
+      -29.110792427805563
+    ],
+    "eo:bands": [
+      {
+        "name": "LULC",
+        "common_name": "class",
+        "description": "Dynamic World Land Use / Land Cover class"
+      }
+    ],
+    "classification:classes": [
+      {
+        "value": 0,
+        "name": "water",
+        "color_hint": "419BDF"
+      },
+      {
+        "value": 1,
+        "name": "trees",
+        "color_hint": "397D49"
+      },
+      {
+        "value": 2,
+        "name": "grass",
+        "color_hint": "88B053"
+      },
+      {
+        "value": 3,
+        "name": "flooded_vegetation",
+        "color_hint": "7A87C6"
+      },
+      {
+        "value": 4,
+        "name": "crops",
+        "color_hint": "E49635"
+      },
+      {
+        "value": 5,
+        "name": "shrub_and_scrub",
+        "color_hint": "DFC35A"
+      },
+      {
+        "value": 6,
+        "name": "built",
+        "color_hint": "C4281B"
+      },
+      {
+        "value": 7,
+        "name": "bare",
+        "color_hint": "A59B8F"
+      },
+      {
+        "value": 8,
+        "name": "snow_and_ice",
+        "color_hint": "B39FE1"
+      }
+    ],
+    "datetime": "2022-03-07T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR567_Floods_in_Queensland_Australia"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR567_Floods_in_Queensland_Australia"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1038/s41597-022-01307-4"
+    }
+  ],
+  "assets": {
+    "dw_label_567_20210308-20220307": {
+      "href": "/home/chunen/nas/bigdata/final/DW/dw_kurosiwo_567_annual-20210308-20220307_label_vis.tif",
+      "type": "image/tiff; application=geotiff",
+      "title": "Dynamic World Label (567_20210308-20220307)"
+    },
+    "dw_probs_567_20210308-20220307": {
+      "href": "/home/chunen/nas/bigdata/final/DW/dw_kurosiwo_567_annual-20210308-20220307_probs.tif",
+      "type": "image/tiff; application=geotiff",
+      "title": "Dynamic World Probs (567_20210308-20220307)",
+      "description": "9-band probability map. Bands correspond to: water, trees, grass, flooded_vegetation, crops, shrub_and_scrub, built, bare, snow_and_ice"
+    }
+  },
+  "collection": "EMSR567_Floods_in_Queensland_Australia"
+}

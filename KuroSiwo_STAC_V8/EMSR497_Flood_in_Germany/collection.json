@@ -1,0 +1,78 @@
+{
+  "type": "Collection",
+  "id": "EMSR497_Flood_in_Germany",
+  "stac_version": "1.1.0",
+  "description": "Flood event EMSR497_Flood_in_Germany",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./Precipitation/Precipitation.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./LULC/LULC.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-2/Sentinel-2.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-1/Sentinel-1.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./SRTM/SRTM.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./MLU/MLU.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./flood_event_label/flood_event_label.json",
+      "type": "application/geo+json"
+    }
+  ],
+  "title": "EMSR497_Flood_in_Germany",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          3.602648531197134,
+          49.72818692925299,
+          8.029546251338138,
+          53.07787123
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2021-02-03T00:00:00Z",
+          "2021-02-03T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "other",
+  "keywords": [
+    "Europe"
+  ]
+}

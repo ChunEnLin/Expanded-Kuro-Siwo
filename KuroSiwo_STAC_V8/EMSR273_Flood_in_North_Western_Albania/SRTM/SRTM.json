@@ -1,0 +1,124 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "SRTM",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          20.45710938643284,
+          40.14602513816288
+        ],
+        [
+          20.45710938643284,
+          43.47442343930681
+        ],
+        [
+          16.77473537377009,
+          43.47442343930681
+        ],
+        [
+          16.77473537377009,
+          40.14602513816288
+        ],
+        [
+          20.45710938643284,
+          40.14602513816288
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    16.77473537377009,
+    40.14602513816288,
+    20.45710938643284,
+    43.47442343930681
+  ],
+  "properties": {
+    "start_datetime": "2018-03-11T00:00:00Z",
+    "end_datetime": "2018-03-11T00:00:00Z",
+    "category": "SRTM",
+    "sci:doi": "10.5067/MEaSUREs/SRTM/SRTMGL1.003",
+    "sci:citation": "Farr, T. G., et al. (2007). The Shuttle Radar Topography Mission. ",
+    "sci:publications": [
+      {
+        "doi": "10.1029/2005RG000183",
+        "citation": "Farr, T. G., et al. (2007), The Shuttle Radar Topography Mission, Rev. Geophys., 45, RG2004, doi:10.1029/2005RG000183."
+      }
+    ],
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      2016,
+      1792
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      2147535.0,
+      0.0,
+      -10.0,
+      5175765.0
+    ],
+    "eo:bands": [
+      {
+        "name": "elevation",
+        "common_name": "elevation",
+        "description": "Digital Elevation Model"
+      }
+    ],
+    "datetime": "2018-03-11T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR273_Flood_in_North_Western_Albania"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR273_Flood_in_North_Western_Albania"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5067/MEaSUREs/SRTM/SRTMGL1.003"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1029/2005RG000183"
+    }
+  ],
+  "assets": {
+    "srtm_273_02_MK0_DEM_20180311": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/273/273_02_MK0_DEM_20180311.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "srtm_273_03_MK0_DEM_20180311": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/273/273_03_MK0_DEM_20180311.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "srtm_273_04_MK0_DEM_20180311": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/273/273_04_MK0_DEM_20180311.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "srtm_273_05_MK0_DEM_20180311": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/273/273_05_MK0_DEM_20180311.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR273_Flood_in_North_Western_Albania"
+}

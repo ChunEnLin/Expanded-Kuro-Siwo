@@ -1,0 +1,156 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "LULC",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          48.79518367621044,
+          -18.06241154
+        ],
+        [
+          48.79518367621044,
+          -17.1597171
+        ],
+        [
+          47.95004865691078,
+          -17.1597171
+        ],
+        [
+          47.95004865691078,
+          -18.06241154
+        ],
+        [
+          48.79518367621044,
+          -18.06241154
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    47.95004865691078,
+    -18.06241154,
+    48.79518367621044,
+    -17.1597171
+  ],
+  "properties": {
+    "start_datetime": "2020-01-26T00:00:00Z",
+    "end_datetime": "2020-01-26T00:00:00Z",
+    "category": "LULC",
+    "sci:doi": "10.1038/s41597-022-01307-4",
+    "sci:citation": "Brown, C.F., et al. (2022). Dynamic World, Near real-time global 10 m land use land cover mapping. Scientific Data. Data (2021-2023) retrieved from Google Earth Engine.",
+    "proj:code": "EPSG:4326",
+    "proj:shape": [
+      1003,
+      939
+    ],
+    "proj:transform": [
+      0.0009000372942488407,
+      0.0,
+      47.95004865691078,
+      0.0,
+      -0.0008999944564628996,
+      -17.159717099004332
+    ],
+    "eo:bands": [
+      {
+        "name": "LULC",
+        "common_name": "class",
+        "description": "Dynamic World Land Use / Land Cover class"
+      }
+    ],
+    "classification:classes": [
+      {
+        "value": 0,
+        "name": "water",
+        "color_hint": "419BDF"
+      },
+      {
+        "value": 1,
+        "name": "trees",
+        "color_hint": "397D49"
+      },
+      {
+        "value": 2,
+        "name": "grass",
+        "color_hint": "88B053"
+      },
+      {
+        "value": 3,
+        "name": "flooded_vegetation",
+        "color_hint": "7A87C6"
+      },
+      {
+        "value": 4,
+        "name": "crops",
+        "color_hint": "E49635"
+      },
+      {
+        "value": 5,
+        "name": "shrub_and_scrub",
+        "color_hint": "DFC35A"
+      },
+      {
+        "value": 6,
+        "name": "built",
+        "color_hint": "C4281B"
+      },
+      {
+        "value": 7,
+        "name": "bare",
+        "color_hint": "A59B8F"
+      },
+      {
+        "value": 8,
+        "name": "snow_and_ice",
+        "color_hint": "B39FE1"
+      }
+    ],
+    "datetime": "2020-01-26T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "event_1111005_20200126_nan"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "event_1111005_20200126_nan"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1038/s41597-022-01307-4"
+    }
+  ],
+  "assets": {
+    "dw_label_1111005_20190127-20200126": {
+      "href": "/home/chunen/nas/bigdata/final/DW/dw_kurosiwo_1111005_annual-20190127-20200126_label_vis.tif",
+      "type": "image/tiff; application=geotiff",
+      "title": "Dynamic World Label (1111005_20190127-20200126)"
+    },
+    "dw_probs_1111005_20190127-20200126": {
+      "href": "/home/chunen/nas/bigdata/final/DW/dw_kurosiwo_1111005_annual-20190127-20200126_probs.tif",
+      "type": "image/tiff; application=geotiff",
+      "title": "Dynamic World Probs (1111005_20190127-20200126)",
+      "description": "9-band probability map. Bands correspond to: water, trees, grass, flooded_vegetation, crops, shrub_and_scrub, built, bare, snow_and_ice"
+    }
+  },
+  "collection": "event_1111005_20200126_nan"
+}

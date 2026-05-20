@@ -1,0 +1,78 @@
+{
+  "type": "Collection",
+  "id": "EMSR277_Flood_in_Thrace_Greece",
+  "stac_version": "1.1.0",
+  "description": "Flood event EMSR277_Flood_in_Thrace_Greece",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./Precipitation/Precipitation.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./LULC/LULC.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-2/Sentinel-2.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-1/Sentinel-1.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./SRTM/SRTM.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./MLU/MLU.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./flood_event_label/flood_event_label.json",
+      "type": "application/geo+json"
+    }
+  ],
+  "title": "EMSR277_Flood_in_Thrace_Greece",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          25.06986853885816,
+          39.81610476698007,
+          28.73212028915663,
+          43.17584064
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2018-03-27T00:00:00Z",
+          "2018-03-27T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "other",
+  "keywords": [
+    "Asia"
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "SRTM",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          10.007726338497733,
+          49.50311681686003
+        ],
+        [
+          10.007726338497733,
+          52.88082975493395
+        ],
+        [
+          5.600950881,
+          52.88082975493395
+        ],
+        [
+          5.600950881,
+          49.50311681686003
+        ],
+        [
+          10.007726338497733,
+          49.50311681686003
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    5.600950881,
+    49.50311681686003,
+    10.007726338497733,
+    52.88082975493395
+  ],
+  "properties": {
+    "start_datetime": "2021-07-16T00:00:00Z",
+    "end_datetime": "2021-07-16T00:00:00Z",
+    "category": "SRTM",
+    "sci:doi": "10.5067/MEaSUREs/SRTM/SRTMGL1.003",
+    "sci:citation": "Farr, T. G., et al. (2007). The Shuttle Radar Topography Mission. ",
+    "sci:publications": [
+      {
+        "doi": "10.1029/2005RG000183",
+        "citation": "Farr, T. G., et al. (2007), The Shuttle Radar Topography Mission, Rev. Geophys., 45, RG2004, doi:10.1029/2005RG000183."
+      }
+    ],
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      6048,
+      3360
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      656075.0,
+      0.0,
+      -10.0,
+      6702675.0
+    ],
+    "eo:bands": [
+      {
+        "name": "elevation",
+        "common_name": "elevation",
+        "description": "Digital Elevation Model"
+      }
+    ],
+    "datetime": "2021-07-16T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR520_Flood_in_Netherlands"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR520_Flood_in_Netherlands"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5067/MEaSUREs/SRTM/SRTMGL1.003"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1029/2005RG000183"
+    }
+  ],
+  "assets": {
+    "srtm_520_01_MK0_DEM_20210716": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/520/520_01_MK0_DEM_20210716.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR520_Flood_in_Netherlands"
+}

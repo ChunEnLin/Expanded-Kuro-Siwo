@@ -1,0 +1,102 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "Precipitation",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -7.795804614,
+          39.236499940912914
+        ],
+        [
+          -7.795804614,
+          40.86904515077094
+        ],
+        [
+          -9.284852029,
+          40.86904515077094
+        ],
+        [
+          -9.284852029,
+          39.236499940912914
+        ],
+        [
+          -7.795804614,
+          39.236499940912914
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    -9.284852029,
+    39.236499940912914,
+    -7.795804614,
+    40.86904515077094
+  ],
+  "properties": {
+    "start_datetime": "2019-12-23T00:00:00Z",
+    "end_datetime": "2019-12-23T00:00:00Z",
+    "category": "Precipitation",
+    "sci:doi": "10.5067/GPM/IMERG/3B-HH/07",
+    "sci:citation": "Huffman, G.J., et al. (2023). GPM IMERG Final Run L3 Hourly 0.1 degree x 0.1 degree V07. NASA GES DISC. Data (2014-2022) retrieved from Google Earth Engine (NASA/GPM_L3/IMERG_V07).",
+    "proj:code": "EPSG:4326",
+    "proj:shape": [
+      17,
+      16
+    ],
+    "proj:transform": [
+      0.10000045742818513,
+      0.0,
+      -9.300042540821217,
+      0.0,
+      -0.10000045742818513,
+      40.900187088127716
+    ],
+    "eo:bands": [
+      {
+        "name": "precipitation",
+        "common_name": "precipitation",
+        "description": "Accumulated Precipitation"
+      }
+    ],
+    "datetime": "2019-12-23T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR417_Flood_in_Portugal"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR417_Flood_in_Portugal"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5067/GPM/IMERG/3B-HH/07"
+    }
+  ],
+  "assets": {
+    "imerg_acc_event_417_20191223_13": {
+      "href": "/home/NAS/homes/gisele-10036/02.Course/26S_BigData/Imerg/7days_sum/Acc_Flood_in_Portugal.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR417_Flood_in_Portugal"
+}

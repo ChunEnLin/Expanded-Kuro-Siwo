@@ -1,0 +1,112 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "SRTM",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          27.127369865605512,
+          47.167974408168455
+        ],
+        [
+          27.127369865605512,
+          49.04873645312326
+        ],
+        [
+          23.424873590578493,
+          49.04873645312326
+        ],
+        [
+          23.424873590578493,
+          47.167974408168455
+        ],
+        [
+          27.127369865605512,
+          47.167974408168455
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    23.424873590578493,
+    47.167974408168455,
+    27.127369865605512,
+    49.04873645312326
+  ],
+  "properties": {
+    "start_datetime": "2020-06-26T00:00:00Z",
+    "end_datetime": "2020-06-26T00:00:00Z",
+    "category": "SRTM",
+    "sci:doi": "10.5067/MEaSUREs/SRTM/SRTMGL1.003",
+    "sci:citation": "Farr, T. G., et al. (2007). The Shuttle Radar Topography Mission. ",
+    "sci:publications": [
+      {
+        "doi": "10.1029/2005RG000183",
+        "citation": "Farr, T. G., et al. (2007), The Shuttle Radar Topography Mission, Rev. Geophys., 45, RG2004, doi:10.1029/2005RG000183."
+      }
+    ],
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      4256,
+      10080
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      2906905.0,
+      0.0,
+      -10.0,
+      6155925.0
+    ],
+    "eo:bands": [
+      {
+        "name": "elevation",
+        "common_name": "elevation",
+        "description": "Digital Elevation Model"
+      }
+    ],
+    "datetime": "2020-06-26T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR445_Flood_in_Romania"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR445_Flood_in_Romania"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5067/MEaSUREs/SRTM/SRTMGL1.003"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1029/2005RG000183"
+    }
+  ],
+  "assets": {
+    "srtm_445_01_MK0_DEM_20200626": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/445/445_01_MK0_DEM_20200626.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR445_Flood_in_Romania"
+}

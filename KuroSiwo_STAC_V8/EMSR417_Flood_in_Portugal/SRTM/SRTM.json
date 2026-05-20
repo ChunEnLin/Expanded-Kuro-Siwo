@@ -1,0 +1,112 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "SRTM",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -7.795804614,
+          39.236499940912914
+        ],
+        [
+          -7.795804614,
+          40.86904515077094
+        ],
+        [
+          -9.284852029,
+          40.86904515077094
+        ],
+        [
+          -9.284852029,
+          39.236499940912914
+        ],
+        [
+          -7.795804614,
+          39.236499940912914
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    -9.284852029,
+    39.236499940912914,
+    -7.795804614,
+    40.86904515077094
+  ],
+  "properties": {
+    "start_datetime": "2019-12-23T00:00:00Z",
+    "end_datetime": "2019-12-23T00:00:00Z",
+    "category": "SRTM",
+    "sci:doi": "10.5067/MEaSUREs/SRTM/SRTMGL1.003",
+    "sci:citation": "Farr, T. G., et al. (2007). The Shuttle Radar Topography Mission. ",
+    "sci:publications": [
+      {
+        "doi": "10.1029/2005RG000183",
+        "citation": "Farr, T. G., et al. (2007), The Shuttle Radar Topography Mission, Rev. Geophys., 45, RG2004, doi:10.1029/2005RG000183."
+      }
+    ],
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      3808,
+      6944
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      -989035.0,
+      0.0,
+      -10.0,
+      4907665.0
+    ],
+    "eo:bands": [
+      {
+        "name": "elevation",
+        "common_name": "elevation",
+        "description": "Digital Elevation Model"
+      }
+    ],
+    "datetime": "2019-12-23T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR417_Flood_in_Portugal"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR417_Flood_in_Portugal"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5067/MEaSUREs/SRTM/SRTMGL1.003"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1029/2005RG000183"
+    }
+  ],
+  "assets": {
+    "srtm_417_01_MK0_DEM_20191223": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/417/417_01_MK0_DEM_20191223.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR417_Flood_in_Portugal"
+}

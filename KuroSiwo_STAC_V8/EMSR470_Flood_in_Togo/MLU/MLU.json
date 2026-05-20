@@ -1,0 +1,124 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "MLU",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          1.9946641726231915,
+          8.263861043400002
+        ],
+        [
+          1.9946641726231915,
+          11.731223138009367
+        ],
+        [
+          -0.862697083,
+          11.731223138009367
+        ],
+        [
+          -0.862697083,
+          8.263861043400002
+        ],
+        [
+          1.9946641726231915,
+          8.263861043400002
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    -0.862697083,
+    8.263861043400002,
+    1.9946641726231915,
+    11.731223138009367
+  ],
+  "properties": {
+    "start_datetime": "2020-10-14T00:00:00Z",
+    "end_datetime": "2020-10-14T00:00:00Z",
+    "category": "MLU",
+    "sci:doi": "10.52202/079017-1204",
+    "sci:citation": "@inproceedings{NEURIPS2024_43612b06,author = {Bountos, Nikolaos Ioannis and Sdraka, Maria and Zavras, Angelos and Karavias, Andreas and Karasante, Ilektra and Herekakis, Themistocles and Thanasou, Angeliki and Michail, Dimitrios and Papoutsis, Ioannis},booktitle = {Advances in Neural Information Processing Systems},editor = {A. Globerson and L. Mackey and D. Belgrave and A. Fan and U. Paquet and J. Tomczak and C. Zhang},pages = {38105--38121},publisher = {Curran Associates, Inc.},title = {Kuro Siwo: 33 billion m\\^{}2 under the water. A global multi-temporal satellite dataset for rapid flood mapping},url = {https://proceedings.neurips.cc/paper_files/paper/2024/file/43612b0662cb6a4986edf859fd6ebafe-Paper-Datasets_and_Benchmarks_Track.pdf},volume = {37},year = {2024}}",
+    "classification:classes": [
+      {
+        "value": 0,
+        "name": "permanent water",
+        "color_hint": "#00FFFF"
+      },
+      {
+        "value": 1,
+        "name": "no water",
+        "color_hint": "#000000"
+      },
+      {
+        "value": 2,
+        "name": "water",
+        "color_hint": "#005757"
+      },
+      {
+        "value": 3,
+        "name": "flood",
+        "color_hint": "#F00078"
+      }
+    ],
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      16128,
+      8736
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      23455.0,
+      0.0,
+      -10.0,
+      1237785.0
+    ],
+    "eo:bands": [
+      {
+        "name": "label",
+        "common_name": "class",
+        "description": "Manual Labeling Update"
+      }
+    ],
+    "datetime": "2020-10-14T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR470_Flood_in_Togo"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR470_Flood_in_Togo"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.52202/079017-1204"
+    }
+  ],
+  "assets": {
+    "mlu_470_01_MK0_MLU_20201014": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/470/470_01_MK0_MLU_20201014.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR470_Flood_in_Togo"
+}

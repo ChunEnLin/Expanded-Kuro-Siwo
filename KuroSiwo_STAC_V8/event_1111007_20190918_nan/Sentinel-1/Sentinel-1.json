@@ -1,0 +1,131 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "Sentinel-1",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          86.49352356,
+          24.92181980779728
+        ],
+        [
+          86.49352356,
+          26.156402552678447
+        ],
+        [
+          84.84017428303464,
+          26.156402552678447
+        ],
+        [
+          84.84017428303464,
+          24.92181980779728
+        ],
+        [
+          86.49352356,
+          24.92181980779728
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    84.84017428303464,
+    24.92181980779728,
+    86.49352356,
+    26.156402552678447
+  ],
+  "properties": {
+    "start_datetime": "2019-09-18T00:00:00Z",
+    "end_datetime": "2019-09-18T00:00:00Z",
+    "category": "Sentinel-1",
+    "sci:doi": "10.5270/S1-d363604",
+    "sci:citation": "Copernicus Sentinel-1 data processed by ESA.Merged from Kuro Siwo dataset.",
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      15232,
+      18368
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      9444735.0,
+      0.0,
+      -10.0,
+      3018465.0
+    ],
+    "eo:bands": [
+      {
+        "name": "VV",
+        "common_name": "vv",
+        "description": "Vertical Transmit, Vertical Receive"
+      },
+      {
+        "name": "VH",
+        "common_name": "vh",
+        "description": "Vertical Transmit, Horizontal Receive"
+      }
+    ],
+    "datetime": "2019-09-18T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "event_1111007_20190918_nan"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "event_1111007_20190918_nan"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5270/S1-d363604"
+    }
+  ],
+  "assets": {
+    "s1_1111007_01_SL2_IVV_20190720": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/1111007/1111007_01_SL2_IVV_20190720.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_1111007_01_MS1_IVH_20190918": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/1111007/1111007_01_MS1_IVH_20190918.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_1111007_01_SL2_IVH_20190720": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/1111007/1111007_01_SL2_IVH_20190720.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_1111007_01_MS1_IVV_20190918": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/1111007/1111007_01_MS1_IVV_20190918.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_1111007_01_SL1_IVV_20190801": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/1111007/1111007_01_SL1_IVV_20190801.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_1111007_01_SL1_IVH_20190801": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/1111007/1111007_01_SL1_IVH_20190801.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_1111007_01_MK0_SLOPE_20190918": {
+      "href": "/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/1111007/1111007_01_MK0_SLOPE_20190918.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "event_1111007_20190918_nan"
+}

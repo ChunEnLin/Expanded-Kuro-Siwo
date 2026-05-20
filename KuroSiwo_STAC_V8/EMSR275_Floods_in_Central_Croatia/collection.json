@@ -1,0 +1,78 @@
+{
+  "type": "Collection",
+  "id": "EMSR275_Floods_in_Central_Croatia",
+  "stac_version": "1.1.0",
+  "description": "Flood event EMSR275_Floods_in_Central_Croatia",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./Precipitation/Precipitation.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./LULC/LULC.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-2/Sentinel-2.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-1/Sentinel-1.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./SRTM/SRTM.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./MLU/MLU.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./flood_event_label/flood_event_label.json",
+      "type": "application/geo+json"
+    }
+  ],
+  "title": "EMSR275_Floods_in_Central_Croatia",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          14.036490724716964,
+          44.09383585677363,
+          17.557886638465487,
+          45.914729021763975
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2018-03-22T00:00:00Z",
+          "2018-03-22T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "other",
+  "keywords": [
+    "Europe"
+  ]
+}
