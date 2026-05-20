@@ -1,46 +1,234 @@
-# Backgroud
-這個專案是基於國立臺灣大學的課程「Practical Applications of Environmental Big Data」的小組期末專案報告。專案發想來源為：Bountos, Nikolaos Ioannis, Maria Sdraka, Angelos Zavras, et al. “Kuro Siwo: 33 Billion $m^2$ under the Water. A Global Multi-Temporal Satellite Dataset for Rapid Flood Mapping.” Advances in Neural Information Processing Systems 37, 2024, 38105–21. https://doi.org/10.52202/079017-1204.
+# Expanded Kuro Siwo — A STAC-Compliant Multi-Source Flood Dataset
 
-# Objective
-以Kuro Siwo 資料集為基礎，加入同樣與淹水有關之地理資料，
-並將原始資料轉化為高效、可搜索且具備機器可讀性的擴充資料
-集，以支援下游的淹水環境分析與淹水辨識模型
+> Final project for *Practical Applications of Environmental Big Data*  
+> National Taiwan University, Spring 2026
 
-# End-to-End Workflow
-1. Event-based Filtering
-    1. 下載 Kuro Siwo 43個淹水事件資料集
-    2. 使用 datetime 從檔名取得時間，使用 geopandas 從檔案取得四邊界座標 [kurosiwo_data.ipynb]
-2. Web crawlers & Basic Data CSV
-    1. 使用網路爬蟲在EMSR網站抓取各淹水事件ID所對應的事件名稱、國家
-    2. 將當前資料彙整為一完整的CSV檔案，作為後續 STAC 建置之基礎
-3. Preprocessing & Download
-    1. 從 GEE 下載目標空間範圍及目標時間的資料 [S2_data.ipynb] [IMERG_catch.ipynb]
-    2. 進行累加與合成等運算
-    3. 利用GEE平台已有之Lazy evaluation, 平行運算, chunking之機制來輸出
-4. Extract Kuro Siwo files
-    1. 對 Kuro Siwo 碎塊資料進行合併，並整理至各事件資料夾 [extract_kurosiwo.ipynb]
-5. Data Engineering – COG strategy [strategy.ipynb]
-    1. 輸出 Cloud-Optimized GeoTIFF 格式
-    2. 選定某幾個事件以不同 tiling 策略進行效能比較
-    3. 分析結果並決定最合適的策略
-6. STAC Catalog
-    1. 抽取檔案、名稱轉換，建構 STAC 及其所需 metadata [Final_Stac.py]
-7. WebGIS
-    1. 讀取 STAC ，以 Leaflet 建構網頁前端畫面與功能
+---
 
-# Project Environment Using
-CPU: AMD Ryzen 9 5950X 16-Core Processor (Threads per core: 2).
-RAM: 78GB
-Disk: NAS storage - 84 TB
-OS: Linux (Ubuntu)
-Dependency Management: uv
+## Overview
 
-# Dataset
-| | Sentinel-1 SAR GRD | Sentinel-2 MSI L2A | IMERG | Dynamic World V1 | SRTM | Flood event labeled data | Manual labeled data |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Characteristic** | Synthetic Aperture Radar | Multi-spectral imaging for land monitoring | Global Precipitation Measurement | Near real-time global land cover / land use classification | Digital Elevation Models (DEMs) | Labeled data | Labeled data |
-| **Spatial Resolution** | 10 m | 10 m | 11132 m | 10 m | 10 m | (.shp) | 10 m |
-| **Time Resolution** | 6 Days | 5 Days | 30 Minutes | 5 Days | -- | -- | -- |
-| **Selected Variables** | VV, VH | B4 (Red), B3 (Green), B2 (Blue), B8 (NIR) | precipitation | water, trees, grass, flooded_vegetation, crops, shrub_and_scrub, built, bare, snow_and_ice | elevation | flooded area | 0 (permanent water)<br>1 (no water)<br>2 (water)<br>3 (flood) |
-| **Source** | Kuro Siwo dataset | GEE | GEE | GEE | Kuro Siwo dataset | Kuro Siwo dataset | Kuro Siwo dataset |
-| **Preprocess work we did** | Merge the files to one file | Mosaic stitching images from three days prior and later | Sum the results of the previous 7 days | Year-scale composite time window;<br>Generate both probabilistic and categorical products | Merge the files to one file | -- | Merge the files to one file |
+This project extends the [Kuro Siwo](https://doi.org/10.52202/079017-1204) dataset — a NeurIPS 2024 benchmark covering 33 billion m² of globally distributed flood events — by integrating complementary geospatial data sources and restructuring the entire corpus into a **STAC (SpatioTemporal Asset Catalog)**-compliant format.
+
+---
+
+
+
+**Source paper:**  
+Bountos, N. I., Sdraka, M., Zavras, A., et al. "Kuro Siwo: 33 Billion m² under the Water. A Global Multi-Temporal Satellite Dataset for Rapid Flood Mapping." *Advances in Neural Information Processing Systems* 37 (2024), pp. 38105–38121. https://doi.org/10.52202/079017-1204
+
+---
+
+## Dataset Coverage
+
+| Attribute | Value |
+| :--- | :--- |
+| Number of flood events | 43 |
+| Event time range | 2015 – 2022 |
+| Geographic coverage | Africa, Asia, Europe, North America, Oceania, South America |
+| Event source | Copernicus EMS activations (EMSR codes) + field-labeled events |
+| STAC layers per event | 7 |
+
+---
+
+## Data Layers
+
+| Layer | Instrument / Source | Spatial Resolution | Temporal Resolution | Selected Variables | Preprocessing |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Sentinel-1** | Sentinel-1 SAR GRD (Kuro Siwo) | 10 m | 6 days | VV, VH | Tile-level files merged into single event-level GeoTIFF |
+| **Sentinel-2** | Sentinel-2 MSI L2A (GEE) | 10 m | 5 days | B2, B3, B4, B8 | ±3-day mosaic composited around the reference date |
+| **Precipitation** | NASA GPM IMERG Final Run L3 (GEE) | ~11 km | 30 min | Accumulated precipitation | 7-day accumulation up to event date |
+| **LULC** | Dynamic World V1 (GEE) | 10 m | 5 days | 9-class label map + per-class probability maps | Year-scale composite; both categorical and probabilistic products generated |
+| **DEM** | SRTM 1 Arc-Second Global (Kuro Siwo) | 10 m | Static | Elevation | Tile-level files merged into single event-level GeoTIFF |
+| **MLU** | Manual Labeled Update (Kuro Siwo) | 10 m | Per-event | 0 (permanent water)<br>1 (no water)<br>2 (water)<br>3 (flood) | Tile-level files merged into single event-level GeoTIFF |
+| **Flood Event Label** | Copernicus EMS delineation (Kuro Siwo) | Vector (.shp) | Per-event | Flooded area polygons | Passed through as-is |
+
+---
+
+## STAC Catalog Structure
+
+```
+catalog.json                          ← Root catalog
+└── {EVENT_ID} collection.json/       ← One Collection per flood
+    ├── Sentinel-1/
+    │   └── Sentinel-1.tif
+    ├── Sentinel-2/
+    │   └── Sentinel-2.tif
+    ├── Precipitation/
+    │   └── IMERG_acc.tif
+    ├── LULC/
+    │   └── Dynamic_World.tif
+    ├── DEM/
+    │   └── SRTM.tif
+    ├── Manual_Labeled_Data/
+    │   └── MLU.tif
+    └── Flood_Event_Labeled_Data/
+        └── event_label.shp
+```
+
+Each Item carries:
+- **EO Extension** — band definitions (name, common_name)
+- **Projection Extension** — EPSG, shape, and affine transform extracted at build time
+- **Scientific Extension** — DOI and citation for the originating dataset
+- **Classification Extension** — class definitions for categorical layers (LULC, MLU)
+
+---
+
+## End-to-End Workflow
+
+```
+Raw Kuro Siwo tiles   GEE (S2, IMERG, DW)   Copernicus EMS metadata
+        │                     │                        │
+        ▼                     ▼                        ▼
+┌─────────────────────────────────────────────────────────────┐
+│  1. Event-based Filtering & Web crawlers & Basic Data CSV   │
+│     kurosiwo_data.ipynb                                     │
+│     · Download Kuro Siwo dataset                            │
+│     · Parse filenames for timestamps                        │
+│     · Extract AOI bounding boxes via geopandas              │
+│     · Web-scrape EMSR portal for event name & country       │
+│     · Output as csv file                                    │
+└─────────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌─────────────────────────────────────────────────────────────┐
+│  2. Data Download and Preprocessing                         │
+│     S2_data.ipynb · IMERG_catch.ipynb                       │
+│     · Download target spatial range and target time data    |
+|       from GEE                                              │
+│     · Perform accumulation and synthesis operations         │
+│     · Utilize the existing lazy evaluation, parallel        |
+|       computation, and chunking mechanisms of the GEE       |
+|       platform to output the data                           │
+└─────────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌─────────────────────────────────────────────────────────────┐
+│  3. Extract Kuro Siwo files                                 │
+│     extract_kurosiwo.ipynb                                  │
+│     · Merge fragmented S1, DEM, MLU tiles per event         │
+└─────────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌─────────────────────────────────────────────────────────────┐
+│  4. Data Engineering – COG strategy                         │
+│     strategy.ipynb                                          │
+│     · Convert GeoTIFFs to Cloud-Optimized GeoTIFF (COG)     │
+│     · Benchmark tile sizes (256 / 512) with Dask            │
+│     · Select optimal tiling strategy from I/O profiling     │
+└─────────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌─────────────────────────────────────────────────────────────┐
+│  5. STAC Catalog Construction                               │
+│     Final_Stac.py                                           │
+│     · Build Catalog → Collections → Items → Assets          │
+│     · Attach EO, Projection, Scientific, Classification     │
+│       metadata extracted dynamically from each file         │
+│     · Validate all JSON against the STAC specification      │
+└─────────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌─────────────────────────────────────────────────────────────┐
+│  6. WebGIS Visualization                                    │
+│     · Load STAC catalog via Leaflet front-end               │
+│     · Spatial search, layer toggling, event browsing        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+
+
+---
+
+## Getting Started
+
+### Requirements
+
+- Python ≥ 3.12
+- [uv](https://docs.astral.sh/uv/) for dependency management
+
+### Installation
+
+```bash
+git clone <repository-url>
+cd expanded_kuro_siwo
+
+uv add \
+  cartopy \
+  cmocean \
+  dask \
+  earthengine-api \
+  geemap \
+  geopandas \
+  hvplot \
+  matplotlib \
+  numpy \
+  pandas \
+  pyproj \
+  pystac \
+  rasterio \
+  rich \
+  rio-cogeo \
+  rioxarray \
+  shapely \
+  stac-validator \
+  tqdm \
+  xarray \
+  zarr
+```
+
+### Building the STAC Catalog
+
+Update the path constants at the top of [src/stac_build/Final_Stac.py](src/stac_build/Final_Stac.py) to match your local data layout, then run:
+
+```bash
+uv run python src/stac_build/Final_Stac.py
+```
+
+The script will build the catalog and print a STAC validation report to the terminal.
+
+---
+
+## Environment
+
+The following hardware specifications are those used in our laboratory for data processing. You are not required to meet these standards.
+
+| Component | Specification |
+| :--- | :--- |
+| CPU | AMD Ryzen 9 5950X (16 cores / 32 threads) |
+| RAM | 78 GB |
+| Storage | NAS — 84 TB |
+| OS | Ubuntu (Linux) |
+| Dependency manager | uv |
+
+---
+
+## Citation
+
+If you use this dataset, please also cite the original Kuro Siwo paper:
+
+```bibtex
+@inproceedings{NEURIPS2024_43612b06,
+  author    = {Bountos, Nikolaos Ioannis and Sdraka, Maria and Zavras, Angelos and
+               Karavias, Andreas and Karasante, Ilektra and Herekakis, Themistocles and
+               Thanasou, Angeliki and Michail, Dimitrios and Papoutsis, Ioannis},
+  booktitle = {Advances in Neural Information Processing Systems},
+  title     = {Kuro Siwo: 33 billion $m^2$ under the water. A global multi-temporal
+               satellite dataset for rapid flood mapping},
+  volume    = {37},
+  pages     = {38105--38121},
+  year      = {2024},
+  url       = {https://proceedings.neurips.cc/paper_files/paper/2024/file/43612b0662cb6a4986edf859fd6ebafe-Paper-Datasets_and_Benchmarks_Track.pdf}
+}
+```
+
+Additional dataset citations are embedded in the Scientific STAC extension of each item (see `src/stac_build/Final_Stac.py`).
+
+---
+
+## Acknowledgements
+
+- Copernicus Emergency Management Service (EMSR activations)
+- NASA GPM / IMERG
+- ESA Copernicus Sentinel-1 & Sentinel-2
+- Google Earth Engine — Dynamic World V1, SRTM
+- Course: *Practical Applications of Environmental Big Data*, National Taiwan University
