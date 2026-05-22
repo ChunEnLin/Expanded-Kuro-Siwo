@@ -1,0 +1,68 @@
+{
+  "type": "Collection",
+  "id": "EMSR118_Flood_in_Spain",
+  "stac_version": "1.1.0",
+  "description": "Flood event EMSR118_Flood_in_Spain",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./Precipitation/Precipitation.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-1/Sentinel-1.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./SRTM/SRTM.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./MLU/MLU.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./flood_event_label/flood_event_label.json",
+      "type": "application/geo+json"
+    }
+  ],
+  "title": "EMSR118_Flood_in_Spain",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          -5.899550881,
+          40.80386704970545,
+          0.8212847485062724,
+          43.48869816260177
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2015-02-03T00:00:00Z",
+          "2015-02-03T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "other",
+  "keywords": [
+    "Europe"
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "SRTM",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          151.67716704126573,
+          -28.76228584
+        ],
+        [
+          151.67716704126573,
+          -26.92980864
+        ],
+        [
+          148.79968352317408,
+          -26.92980864
+        ],
+        [
+          148.79968352317408,
+          -28.76228584
+        ],
+        [
+          151.67716704126573,
+          -28.76228584
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    148.79968352317408,
+    -28.76228584,
+    151.67716704126573,
+    -26.92980864
+  ],
+  "properties": {
+    "start_datetime": "2021-11-30T00:00:00Z",
+    "end_datetime": "2021-11-30T00:00:00Z",
+    "category": "SRTM",
+    "sci:doi": "10.5067/MEaSUREs/SRTM/SRTMGL1.003",
+    "sci:citation": "Farr, T. G., et al. (2007). The Shuttle Radar Topography Mission. ",
+    "sci:publications": [
+      {
+        "doi": "10.1029/2005RG000183",
+        "citation": "Farr, T. G., et al. (2007), The Shuttle Radar Topography Mission, Rev. Geophys., 45, RG2004, doi:10.1029/2005RG000183."
+      }
+    ],
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      1568,
+      3808
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      16806435.0,
+      0.0,
+      -10.0,
+      -3296155.0
+    ],
+    "eo:bands": [
+      {
+        "name": "elevation",
+        "common_name": "elevation",
+        "description": "Digital Elevation Model"
+      }
+    ],
+    "datetime": "2021-11-30T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR554_Floods_in_Queensland_Australia"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR554_Floods_in_Queensland_Australia"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5067/MEaSUREs/SRTM/SRTMGL1.003"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1029/2005RG000183"
+    }
+  ],
+  "assets": {
+    "srtm_554_01_MK0_DEM_20211130": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/554/dem/554_01_MK0_DEM_20211130_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR554_Floods_in_Queensland_Australia"
+}

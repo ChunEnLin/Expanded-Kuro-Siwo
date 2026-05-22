@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "aoi",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "act_id": null, "name": "EMSR118 01Saragossa DLT01", "obj_type": null }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -1.098896384238811, 41.751544520258882 ], [ -1.378992676734791, 41.754622742533677 ], [ -1.379165410995343, 41.925573915243156 ], [ -1.099946528672772, 41.923662796616533 ], [ -1.098896384238811, 41.751544520258882 ] ] ] } }
+]
+}

@@ -1,0 +1,78 @@
+{
+  "type": "Collection",
+  "id": "event_1111013_20170504_nan",
+  "stac_version": "1.1.0",
+  "description": "Flood event event_1111013_20170504_nan",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./Precipitation/Precipitation.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./LULC/LULC.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-2/Sentinel-2.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-1/Sentinel-1.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./SRTM/SRTM.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./MLU/MLU.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./flood_event_label/flood_event_label.json",
+      "type": "application/geo+json"
+    }
+  ],
+  "title": "event_1111013_20170504_nan",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          -91.23042989,
+          37.45304524756951,
+          -89.09747008,
+          39.220634303126886
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2017-05-04T00:00:00Z",
+          "2017-05-04T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "other",
+  "keywords": [
+    "North America"
+  ]
+}

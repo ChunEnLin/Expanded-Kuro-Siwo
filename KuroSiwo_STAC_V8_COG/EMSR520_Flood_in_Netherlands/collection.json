@@ -1,0 +1,78 @@
+{
+  "type": "Collection",
+  "id": "EMSR520_Flood_in_Netherlands",
+  "stac_version": "1.1.0",
+  "description": "Flood event EMSR520_Flood_in_Netherlands",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./Precipitation/Precipitation.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./LULC/LULC.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-2/Sentinel-2.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-1/Sentinel-1.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./SRTM/SRTM.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./MLU/MLU.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./flood_event_label/flood_event_label.json",
+      "type": "application/geo+json"
+    }
+  ],
+  "title": "EMSR520_Flood_in_Netherlands",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          5.600950881,
+          49.50311681686003,
+          10.007726338497733,
+          52.88082975493395
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2021-07-16T00:00:00Z",
+          "2021-07-16T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "other",
+  "keywords": [
+    "Europe"
+  ]
+}

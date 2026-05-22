@@ -1,0 +1,135 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "Sentinel-2",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          15.15695937859924,
+          41.57558745632485
+        ],
+        [
+          15.15695937859924,
+          43.45897165118734
+        ],
+        [
+          12.07825323686482,
+          43.45897165118734
+        ],
+        [
+          12.07825323686482,
+          41.57558745632485
+        ],
+        [
+          15.15695937859924,
+          41.57558745632485
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    12.07825323686482,
+    41.57558745632485,
+    15.15695937859924,
+    43.45897165118734
+  ],
+  "properties": {
+    "start_datetime": "2021-01-27T00:00:00Z",
+    "end_datetime": "2021-01-27T00:00:00Z",
+    "category": "Sentinel-2",
+    "sci:doi": "10.5270/S2_-26n7jr4",
+    "sci:citation": "Copernicus Sentinel data (2015-2022) processed by ESA. Retrieved from Google Earth Engine (COPERNICUS/S2_SR_HARMONIZED).",
+    "sci:publications": [
+      {
+        "doi": "10.1016/j.rse.2018.04.031",
+        "citation": "Claverie, M., et al. (2018). The Harmonized Landsat and Sentinel-2 (HLS) product: Algorithms and methods. Remote Sensing of Environment."
+      }
+    ],
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      1678,
+      1395
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      1420440.0,
+      0.0,
+      -10.0,
+      5235530.0
+    ],
+    "eo:bands": [
+      {
+        "name": "B4",
+        "common_name": "red",
+        "description": "Red"
+      },
+      {
+        "name": "B3",
+        "common_name": "green",
+        "description": "Green"
+      },
+      {
+        "name": "B2",
+        "common_name": "blue",
+        "description": "Blue"
+      },
+      {
+        "name": "B8",
+        "common_name": "nir",
+        "description": "NIR"
+      }
+    ],
+    "datetime": "2021-01-27T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR496_Flood_in_Lazio_Region_Italy"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR496_Flood_in_Lazio_Region_Italy"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5270/S2_-26n7jr4"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1016/j.rse.2018.04.031"
+    }
+  ],
+  "assets": {
+    "s2_496_20210125T100911": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/496/s2/496_20210125T100911_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s2_496_20210115T100853": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/496/s2/496_20210115T100853_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s2_496_20200624T100917": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/496/s2/496_20200624T100917_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR496_Flood_in_Lazio_Region_Italy"
+}

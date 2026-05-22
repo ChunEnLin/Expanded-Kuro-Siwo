@@ -1,0 +1,215 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "Sentinel-1",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -85.30199817,
+          12.851705372353967
+        ],
+        [
+          -85.30199817,
+          14.80550124
+        ],
+        [
+          -87.87764775,
+          14.80550124
+        ],
+        [
+          -87.87764775,
+          12.851705372353967
+        ],
+        [
+          -85.30199817,
+          12.851705372353967
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    -87.87764775,
+    12.851705372353967,
+    -85.30199817,
+    14.80550124
+  ],
+  "properties": {
+    "start_datetime": "2018-10-07T00:00:00Z",
+    "end_datetime": "2018-10-07T00:00:00Z",
+    "category": "Sentinel-1",
+    "sci:doi": "10.5270/S1-d363604",
+    "sci:citation": "Copernicus Sentinel-1 data processed by ESA.Merged from Kuro Siwo dataset.",
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      2240,
+      2688
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      -9749365.0,
+      0.0,
+      -10.0,
+      1529585.0
+    ],
+    "eo:bands": [
+      {
+        "name": "VV",
+        "common_name": "vv",
+        "description": "Vertical Transmit, Vertical Receive"
+      },
+      {
+        "name": "VH",
+        "common_name": "vh",
+        "description": "Vertical Transmit, Horizontal Receive"
+      }
+    ],
+    "datetime": "2018-10-07T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR321_Flood_in_Honduras_and_Nicaragua"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR321_Flood_in_Honduras_and_Nicaragua"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5270/S1-d363604"
+    }
+  ],
+  "assets": {
+    "s1_321_01_MS1_IVH_20181007": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_01_MS1_IVH_20181007_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_01_SL1_IVH_20171223": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_01_SL1_IVH_20171223_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_01_SL2_IVH_20171211": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_01_SL2_IVH_20171211_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_01_MK0_SLOPE_20181007": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_01_MK0_SLOPE_20181007_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_01_SL1_IVV_20171223": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_01_SL1_IVV_20171223_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_01_SL2_IVV_20171211": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_01_SL2_IVV_20171211_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_01_MS1_IVV_20181007": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_01_MS1_IVV_20181007_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_02_SL2_IVV_20171211": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_02_SL2_IVV_20171211_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_02_MS1_IVH_20181007": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_02_MS1_IVH_20181007_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_02_MK0_SLOPE_20181007": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_02_MK0_SLOPE_20181007_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_02_SL1_IVV_20171223": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_02_SL1_IVV_20171223_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_02_SL2_IVH_20171211": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_02_SL2_IVH_20171211_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_02_SL1_IVH_20171223": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_02_SL1_IVH_20171223_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_02_MS1_IVV_20181007": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_02_MS1_IVV_20181007_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_03_SL2_IVV_20171211": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_03_SL2_IVV_20171211_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_03_MS1_IVV_20181007": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_03_MS1_IVV_20181007_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_03_MK0_SLOPE_20181007": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_03_MK0_SLOPE_20181007_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_03_SL2_IVH_20171211": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_03_SL2_IVH_20171211_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_03_SL1_IVH_20171223": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_03_SL1_IVH_20171223_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_03_MS1_IVH_20181007": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_03_MS1_IVH_20181007_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_03_SL1_IVV_20171223": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_03_SL1_IVV_20171223_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_04_MS1_IVV_20181007": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_04_MS1_IVV_20181007_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_04_MS1_IVH_20181007": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_04_MS1_IVH_20181007_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_04_SL2_IVH_20171211": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_04_SL2_IVH_20171211_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_04_SL2_IVV_20171211": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_04_SL2_IVV_20171211_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_04_MK0_SLOPE_20181007": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_04_MK0_SLOPE_20181007_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_04_SL1_IVH_20171223": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_04_SL1_IVH_20171223_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_321_04_SL1_IVV_20171223": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/321/s1_dem/321_04_SL1_IVV_20171223_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR321_Flood_in_Honduras_and_Nicaragua"
+}

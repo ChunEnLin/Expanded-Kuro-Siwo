@@ -1,0 +1,271 @@
+{
+  "type": "Catalog",
+  "id": "Expanded-KuroSiwo",
+  "stac_version": "1.1.0",
+  "description": "A comprehensive, STAC-compliant, multi-temporal dataset curated for global rapid flood mapping. \nThis catalog expands upon the original Kuro Siwo dataset by structuring diverse spatiotemporal data sources around individual flood events (Collections).\n\n# Available Asset Types\nEach event collection integrates multiple distinct items aligned precisely to the event's geographical and temporal footprint:\n- **Sentinel-1 (S1)**: Synthetic Aperture Radar (SAR) imagery with dual-polarization (VV/VH).\n- **Sentinel-2 (S2)**: High-resolution multispectral optical imagery with B2, B3, B4, B8 bands.\n- **Precipitation**: Accumulated rainfall metrics retrieved from NASA GPM IMERG Final Run L3.\n- **LULC (Dynamic World)**: Near real-time 10m Land Use / Land Cover label map and 9 classes probability map.\n- **DEM (SRTM)**: Downscaling using Shuttle Radar Topography Mission 1-arc second Global data.\n- **MLU**: Maual labeled updated data of flood, water body, permanent water body and no water area of Kuro Siwo dataset.\n- **Flood Event Labels**: Delineated ground truth annotations of flooded surface areas of Kuro Siwo dataset.\n\n# Specifications\nThis dataset ensures robust standardization by incorporating multiple [STAC Extensions](https://stac-extensions.github.io/):\n- **Projection**: Real-time EPSG, Shape, and Transform metrics extracted dynamically.\n- **Electro-Optical (EO)**: Band mappings for optical imagery.\n- **Classification**: Standardized Dynamic World terrestrial properties mapping.\n- **Scientific**: Citations and DOI links to primary research literature.",
+  "links": [
+    {
+      "rel": "root",
+      "href": "./catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR118_Flood_in_Spain/collection.json",
+      "type": "application/json",
+      "title": "EMSR118_Flood_in_Spain"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR130_Flood_in_Myanmar/collection.json",
+      "type": "application/json",
+      "title": "EMSR130_Flood_in_Myanmar"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR147_Flood_in_Cumbria/collection.json",
+      "type": "application/json",
+      "title": "EMSR147_Flood_in_Cumbria"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR174_Flood_in_Skopje/collection.json",
+      "type": "application/json",
+      "title": "EMSR174_Flood_in_Skopje"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR205_Floods_in_Sabaragamuwa_West_Sri_Lanka/collection.json",
+      "type": "application/json",
+      "title": "EMSR205_Floods_in_Sabaragamuwa_West_Sri_Lanka"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR267_Flood_in_Silute_Lithuania/collection.json",
+      "type": "application/json",
+      "title": "EMSR267_Flood_in_Silute_Lithuania"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR273_Flood_in_North_Western_Albania/collection.json",
+      "type": "application/json",
+      "title": "EMSR273_Flood_in_North_Western_Albania"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR275_Floods_in_Central_Croatia/collection.json",
+      "type": "application/json",
+      "title": "EMSR275_Floods_in_Central_Croatia"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR277_Flood_in_Thrace_Greece/collection.json",
+      "type": "application/json",
+      "title": "EMSR277_Flood_in_Thrace_Greece"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR279_Flood_in_the_Ebro_river_basin_Spain/collection.json",
+      "type": "application/json",
+      "title": "EMSR279_Flood_in_the_Ebro_river_basin_Spain"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR321_Flood_in_Honduras_and_Nicaragua/collection.json",
+      "type": "application/json",
+      "title": "EMSR321_Flood_in_Honduras_and_Nicaragua"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR324_Floods_in_Aude_France/collection.json",
+      "type": "application/json",
+      "title": "EMSR324_Floods_in_Aude_France"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR411_Flood_in_South_East_France/collection.json",
+      "type": "application/json",
+      "title": "EMSR411_Flood_in_South_East_France"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR417_Flood_in_Portugal/collection.json",
+      "type": "application/json",
+      "title": "EMSR417_Flood_in_Portugal"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR421_Flood_in_Occitanie_France/collection.json",
+      "type": "application/json",
+      "title": "EMSR421_Flood_in_Occitanie_France"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR427_Flood_in_Vastra_Gotaland_Sweden/collection.json",
+      "type": "application/json",
+      "title": "EMSR427_Flood_in_Vastra_Gotaland_Sweden"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR437_Flood_in_South_West_of_France/collection.json",
+      "type": "application/json",
+      "title": "EMSR437_Flood_in_South_West_of_France"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR445_Flood_in_Romania/collection.json",
+      "type": "application/json",
+      "title": "EMSR445_Flood_in_Romania"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR470_Flood_in_Togo/collection.json",
+      "type": "application/json",
+      "title": "EMSR470_Flood_in_Togo"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR492_Flood_in_Landes_France/collection.json",
+      "type": "application/json",
+      "title": "EMSR492_Flood_in_Landes_France"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR496_Flood_in_Lazio_Region_Italy/collection.json",
+      "type": "application/json",
+      "title": "EMSR496_Flood_in_Lazio_Region_Italy"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR497_Flood_in_Germany/collection.json",
+      "type": "application/json",
+      "title": "EMSR497_Flood_in_Germany"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR498_Flood_in_Correze_department_France/collection.json",
+      "type": "application/json",
+      "title": "EMSR498_Flood_in_Correze_department_France"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR502_Flood_in_Southern_Ireland/collection.json",
+      "type": "application/json",
+      "title": "EMSR502_Flood_in_Southern_Ireland"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR518_Flood_in_Belgium/collection.json",
+      "type": "application/json",
+      "title": "EMSR518_Flood_in_Belgium"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR520_Flood_in_Netherlands/collection.json",
+      "type": "application/json",
+      "title": "EMSR520_Flood_in_Netherlands"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR554_Floods_in_Queensland_Australia/collection.json",
+      "type": "application/json",
+      "title": "EMSR554_Floods_in_Queensland_Australia"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR555_Flood_in_the_Ebro_river_basin_Spain/collection.json",
+      "type": "application/json",
+      "title": "EMSR555_Flood_in_the_Ebro_river_basin_Spain"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR559_Flood_in_Madagascar/collection.json",
+      "type": "application/json",
+      "title": "EMSR559_Flood_in_Madagascar"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR561_Floods_in_Malawi/collection.json",
+      "type": "application/json",
+      "title": "EMSR561_Floods_in_Malawi"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR562_Floods_in_Australia/collection.json",
+      "type": "application/json",
+      "title": "EMSR562_Floods_in_Australia"
+    },
+    {
+      "rel": "child",
+      "href": "./EMSR567_Floods_in_Queensland_Australia/collection.json",
+      "type": "application/json",
+      "title": "EMSR567_Floods_in_Queensland_Australia"
+    },
+    {
+      "rel": "child",
+      "href": "./event_1111002_20200915_nan/collection.json",
+      "type": "application/json",
+      "title": "event_1111002_20200915_nan"
+    },
+    {
+      "rel": "child",
+      "href": "./event_1111003_20191127_nan/collection.json",
+      "type": "application/json",
+      "title": "event_1111003_20191127_nan"
+    },
+    {
+      "rel": "child",
+      "href": "./event_1111004_20170829_nan/collection.json",
+      "type": "application/json",
+      "title": "event_1111004_20170829_nan"
+    },
+    {
+      "rel": "child",
+      "href": "./event_1111005_20200126_nan/collection.json",
+      "type": "application/json",
+      "title": "event_1111005_20200126_nan"
+    },
+    {
+      "rel": "child",
+      "href": "./event_1111006_20200131_nan/collection.json",
+      "type": "application/json",
+      "title": "event_1111006_20200131_nan"
+    },
+    {
+      "rel": "child",
+      "href": "./event_1111007_20190918_nan/collection.json",
+      "type": "application/json",
+      "title": "event_1111007_20190918_nan"
+    },
+    {
+      "rel": "child",
+      "href": "./event_1111008_20200816_nan/collection.json",
+      "type": "application/json",
+      "title": "event_1111008_20200816_nan"
+    },
+    {
+      "rel": "child",
+      "href": "./event_1111009_20220911_nan/collection.json",
+      "type": "application/json",
+      "title": "event_1111009_20220911_nan"
+    },
+    {
+      "rel": "child",
+      "href": "./event_1111010_20170311_nan/collection.json",
+      "type": "application/json",
+      "title": "event_1111010_20170311_nan"
+    },
+    {
+      "rel": "child",
+      "href": "./event_1111011_20201113_nan/collection.json",
+      "type": "application/json",
+      "title": "event_1111011_20201113_nan"
+    },
+    {
+      "rel": "child",
+      "href": "./event_1111013_20170504_nan/collection.json",
+      "type": "application/json",
+      "title": "event_1111013_20170504_nan"
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "Sentinel-1",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          2.831983848950997,
+          39.08946653233718
+        ],
+        [
+          2.831983848950997,
+          42.60430057086752
+        ],
+        [
+          -1.534547084,
+          42.60430057086752
+        ],
+        [
+          -1.534547084,
+          39.08946653233718
+        ],
+        [
+          2.831983848950997,
+          39.08946653233718
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    -1.534547084,
+    39.08946653233718,
+    2.831983848950997,
+    42.60430057086752
+  ],
+  "properties": {
+    "start_datetime": "2018-04-19T00:00:00Z",
+    "end_datetime": "2018-04-19T00:00:00Z",
+    "category": "Sentinel-1",
+    "sci:doi": "10.5270/S1-d363604",
+    "sci:citation": "Copernicus Sentinel-1 data processed by ESA.Merged from Kuro Siwo dataset.",
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      6048,
+      7392
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      -128645.0,
+      0.0,
+      -10.0,
+      5129875.0
+    ],
+    "eo:bands": [
+      {
+        "name": "VV",
+        "common_name": "vv",
+        "description": "Vertical Transmit, Vertical Receive"
+      },
+      {
+        "name": "VH",
+        "common_name": "vh",
+        "description": "Vertical Transmit, Horizontal Receive"
+      }
+    ],
+    "datetime": "2018-04-19T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR279_Flood_in_the_Ebro_river_basin_Spain"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR279_Flood_in_the_Ebro_river_basin_Spain"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5270/S1-d363604"
+    }
+  ],
+  "assets": {
+    "s1_279_05_SL2_IVV_20170822": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_05_SL2_IVV_20170822_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_05_MS1_IVV_20180413": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_05_MS1_IVV_20180413_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_05_MS1_IVH_20180413": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_05_MS1_IVH_20180413_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_05_SL1_IVH_20170915": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_05_SL1_IVH_20170915_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_05_MK0_SLOPE_20180413": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_05_MK0_SLOPE_20180413_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_05_SL2_IVH_20170822": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_05_SL2_IVH_20170822_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_05_SL1_IVV_20170915": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_05_SL1_IVV_20170915_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_06_SL1_IVH_20170915": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_06_SL1_IVH_20170915_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_06_SL2_IVV_20170822": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_06_SL2_IVV_20170822_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_06_SL1_IVV_20170915": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_06_SL1_IVV_20170915_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_06_MS1_IVH_20180413": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_06_MS1_IVH_20180413_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_06_MK0_SLOPE_20180413": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_06_MK0_SLOPE_20180413_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_06_MS1_IVV_20180413": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_06_MS1_IVV_20180413_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_06_SL2_IVH_20170822": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_06_SL2_IVH_20170822_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_11_MK0_SLOPE_20180419": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_11_MK0_SLOPE_20180419_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_11_MS1_IVV_20180419": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_11_MS1_IVV_20180419_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_11_SL1_IVH_20170915": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_11_SL1_IVH_20170915_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_11_MS1_IVH_20180419": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_11_MS1_IVH_20180419_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_11_SL2_IVV_20170828": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_11_SL2_IVV_20170828_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_11_SL1_IVV_20170915": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_11_SL1_IVV_20170915_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_279_11_SL2_IVH_20170828": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_11_SL2_IVH_20170828_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR279_Flood_in_the_Ebro_river_basin_Spain"
+}

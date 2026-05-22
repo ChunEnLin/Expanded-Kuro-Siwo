@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "aoi",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "emsr_id": "EMSR411", "glide_no": "NA", "area_id": "01", "locality": "Puget-sur-Argens", "map_type": "Delineation" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 6.75358268800005, 43.370362425000053 ], [ 6.505703660000051, 43.370362425000053 ], [ 6.505703660000051, 43.54879242800007 ], [ 6.75358268800005, 43.54879242800007 ], [ 6.75358268800005, 43.370362425000053 ] ] ] } }
+]
+}

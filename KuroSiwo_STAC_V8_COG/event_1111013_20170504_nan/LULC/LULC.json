@@ -1,0 +1,156 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "LULC",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -89.09747008,
+          37.45304524756951
+        ],
+        [
+          -89.09747008,
+          39.220634303126886
+        ],
+        [
+          -91.23042989,
+          39.220634303126886
+        ],
+        [
+          -91.23042989,
+          37.45304524756951
+        ],
+        [
+          -89.09747008,
+          37.45304524756951
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    -91.23042989,
+    37.45304524756951,
+    -89.09747008,
+    39.220634303126886
+  ],
+  "properties": {
+    "start_datetime": "2017-05-04T00:00:00Z",
+    "end_datetime": "2017-05-04T00:00:00Z",
+    "category": "LULC",
+    "sci:doi": "10.1038/s41597-022-01307-4",
+    "sci:citation": "Brown, C.F., et al. (2022). Dynamic World, Near real-time global 10 m land use land cover mapping. Scientific Data. Data (2021-2023) retrieved from Google Earth Engine.",
+    "proj:code": "EPSG:4326",
+    "proj:shape": [
+      982,
+      1185
+    ],
+    "proj:transform": [
+      0.0017999660849058107,
+      0.0,
+      -91.23042988814728,
+      0.0,
+      -0.0017999888549464084,
+      39.220634303126886
+    ],
+    "eo:bands": [
+      {
+        "name": "LULC",
+        "common_name": "class",
+        "description": "Dynamic World Land Use / Land Cover class"
+      }
+    ],
+    "classification:classes": [
+      {
+        "value": 0,
+        "name": "water",
+        "color_hint": "419BDF"
+      },
+      {
+        "value": 1,
+        "name": "trees",
+        "color_hint": "397D49"
+      },
+      {
+        "value": 2,
+        "name": "grass",
+        "color_hint": "88B053"
+      },
+      {
+        "value": 3,
+        "name": "flooded_vegetation",
+        "color_hint": "7A87C6"
+      },
+      {
+        "value": 4,
+        "name": "crops",
+        "color_hint": "E49635"
+      },
+      {
+        "value": 5,
+        "name": "shrub_and_scrub",
+        "color_hint": "DFC35A"
+      },
+      {
+        "value": 6,
+        "name": "built",
+        "color_hint": "C4281B"
+      },
+      {
+        "value": 7,
+        "name": "bare",
+        "color_hint": "A59B8F"
+      },
+      {
+        "value": 8,
+        "name": "snow_and_ice",
+        "color_hint": "B39FE1"
+      }
+    ],
+    "datetime": "2017-05-04T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "event_1111013_20170504_nan"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "event_1111013_20170504_nan"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1038/s41597-022-01307-4"
+    }
+  ],
+  "assets": {
+    "dw_label_1111013_20160505-20170504": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/flood_label/dw_kurosiwo_1111013_annual-20160505-20170504_label_cog.tif",
+      "type": "image/tiff; application=geotiff",
+      "title": "Dynamic World Label (1111013_20160505-20170504)"
+    },
+    "dw_probs_1111013_20160505-20170504": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/lulc/dw_kurosiwo_1111013_annual-20160505-20170504_probs_cog.tif",
+      "type": "image/tiff; application=geotiff",
+      "title": "Dynamic World Probs (1111013_20160505-20170504)",
+      "description": "9-band probability map. Bands correspond to: water, trees, grass, flooded_vegetation, crops, shrub_and_scrub, built, bare, snow_and_ice"
+    }
+  },
+  "collection": "event_1111013_20170504_nan"
+}

@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "aoi",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "emsr_id": "EMSR267", "glide_no": "NA", "area_id": "01", "locality": "RUSNE", "map_type": "Delineation" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 21.704858780000055, 55.175824719000047 ], [ 21.183159256000067, 55.175824719000047 ], [ 21.183159256000067, 55.419554117000082 ], [ 21.704858780000055, 55.419554117000082 ], [ 21.704858780000055, 55.175824719000047 ] ] ] } }
+]
+}

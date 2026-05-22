@@ -1,0 +1,131 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "Sentinel-1",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          5.466473082688318,
+          41.63322039
+        ],
+        [
+          5.466473082688318,
+          43.45649378187195
+        ],
+        [
+          2.347522416225339,
+          43.45649378187195
+        ],
+        [
+          2.347522416225339,
+          41.63322039
+        ],
+        [
+          5.466473082688318,
+          41.63322039
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    2.347522416225339,
+    41.63322039,
+    5.466473082688318,
+    43.45649378187195
+  ],
+  "properties": {
+    "start_datetime": "2020-01-23T00:00:00Z",
+    "end_datetime": "2020-01-23T00:00:00Z",
+    "category": "Sentinel-1",
+    "sci:doi": "10.5270/S1-d363604",
+    "sci:citation": "Copernicus Sentinel-1 data processed by ESA.Merged from Kuro Siwo dataset.",
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      2912,
+      2464
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      311425.0,
+      0.0,
+      -10.0,
+      5285855.0
+    ],
+    "eo:bands": [
+      {
+        "name": "VV",
+        "common_name": "vv",
+        "description": "Vertical Transmit, Vertical Receive"
+      },
+      {
+        "name": "VH",
+        "common_name": "vh",
+        "description": "Vertical Transmit, Horizontal Receive"
+      }
+    ],
+    "datetime": "2020-01-23T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR421_Flood_in_Occitanie_France"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR421_Flood_in_Occitanie_France"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5270/S1-d363604"
+    }
+  ],
+  "assets": {
+    "s1_421_05_MS1_IVV_20200123": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/421/s1_dem/421_05_MS1_IVV_20200123_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_421_05_SL2_IVH_20190603": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/421/s1_dem/421_05_SL2_IVH_20190603_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_421_05_MK0_SLOPE_20200123": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/421/s1_dem/421_05_MK0_SLOPE_20200123_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_421_05_MS1_IVH_20200123": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/421/s1_dem/421_05_MS1_IVH_20200123_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_421_05_SL1_IVH_20190620": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/421/s1_dem/421_05_SL1_IVH_20190620_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_421_05_SL2_IVV_20190603": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/421/s1_dem/421_05_SL2_IVV_20190603_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_421_05_SL1_IVV_20190620": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/421/s1_dem/421_05_SL1_IVV_20190620_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR421_Flood_in_Occitanie_France"
+}

@@ -1,0 +1,78 @@
+{
+  "type": "Collection",
+  "id": "EMSR554_Floods_in_Queensland_Australia",
+  "stac_version": "1.1.0",
+  "description": "Flood event EMSR554_Floods_in_Queensland_Australia",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./Precipitation/Precipitation.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./LULC/LULC.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-2/Sentinel-2.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-1/Sentinel-1.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./SRTM/SRTM.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./MLU/MLU.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./flood_event_label/flood_event_label.json",
+      "type": "application/geo+json"
+    }
+  ],
+  "title": "EMSR554_Floods_in_Queensland_Australia",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          148.79968352317408,
+          -28.76228584,
+          151.67716704126573,
+          -26.92980864
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2021-11-30T00:00:00Z",
+          "2021-11-30T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "other",
+  "keywords": [
+    "Oceania"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "aoi",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "emsr_id": "EMSR554", "glide_no": "Not Applicable", "area_id": "01", "locality": "Inglewood", "map_type": "Delineation" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 151.303644, -28.497458 ], [ 150.974741, -28.497458 ], [ 150.974741, -28.374886 ], [ 151.303644, -28.374886 ], [ 151.303644, -28.497458 ] ] ] } }
+]
+}

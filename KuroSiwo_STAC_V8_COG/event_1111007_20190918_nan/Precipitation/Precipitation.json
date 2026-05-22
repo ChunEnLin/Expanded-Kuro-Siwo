@@ -1,0 +1,102 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "Precipitation",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          86.49352356,
+          24.92181980779728
+        ],
+        [
+          86.49352356,
+          26.156402552678447
+        ],
+        [
+          84.84017428303464,
+          26.156402552678447
+        ],
+        [
+          84.84017428303464,
+          24.92181980779728
+        ],
+        [
+          86.49352356,
+          24.92181980779728
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    84.84017428303464,
+    24.92181980779728,
+    86.49352356,
+    26.156402552678447
+  ],
+  "properties": {
+    "start_datetime": "2019-09-18T00:00:00Z",
+    "end_datetime": "2019-09-18T00:00:00Z",
+    "category": "Precipitation",
+    "sci:doi": "10.5067/GPM/IMERG/3B-HH/07",
+    "sci:citation": "Huffman, G.J., et al. (2023). GPM IMERG Final Run L3 Hourly 0.1 degree x 0.1 degree V07. NASA GES DISC. Data (2014-2022) retrieved from Google Earth Engine (NASA/GPM_L3/IMERG_V07).",
+    "proj:code": "EPSG:4326",
+    "proj:shape": [
+      13,
+      17
+    ],
+    "proj:transform": [
+      0.10000045742818513,
+      0.0,
+      84.80038789910098,
+      0.0,
+      -0.10000045742818513,
+      26.200119846184503
+    ],
+    "eo:bands": [
+      {
+        "name": "precipitation",
+        "common_name": "precipitation",
+        "description": "Accumulated Precipitation"
+      }
+    ],
+    "datetime": "2019-09-18T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "event_1111007_20190918_nan"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "event_1111007_20190918_nan"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5067/GPM/IMERG/3B-HH/07"
+    }
+  ],
+  "assets": {
+    "imerg_acc_event_1111007_20190918_37": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/precipitation/Acc_event_1111007_20190918_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "event_1111007_20190918_nan"
+}

@@ -1,0 +1,75 @@
+{
+  "type": "Collection",
+  "id": "EMSR273_Flood_in_North_Western_Albania",
+  "stac_version": "1.1.0",
+  "description": "Flood event EMSR273_Flood_in_North_Western_Albania",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./Precipitation/Precipitation.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./LULC/LULC.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-2/Sentinel-2.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-1/Sentinel-1.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./SRTM/SRTM.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./MLU/MLU.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./flood_event_label/flood_event_label.json",
+      "type": "application/geo+json"
+    }
+  ],
+  "title": "EMSR273_Flood_in_North_Western_Albania",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          16.77473537377009,
+          40.14602513816288,
+          20.45710938643284,
+          43.47442343930681
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2018-03-11T00:00:00Z",
+          "2018-03-11T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "other"
+}

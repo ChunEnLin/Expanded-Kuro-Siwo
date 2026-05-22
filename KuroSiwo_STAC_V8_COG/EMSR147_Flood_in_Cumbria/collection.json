@@ -1,0 +1,73 @@
+{
+  "type": "Collection",
+  "id": "EMSR147_Flood_in_Cumbria",
+  "stac_version": "1.1.0",
+  "description": "Flood event EMSR147_Flood_in_Cumbria",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./Precipitation/Precipitation.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./LULC/LULC.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-1/Sentinel-1.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./SRTM/SRTM.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./MLU/MLU.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./flood_event_label/flood_event_label.json",
+      "type": "application/geo+json"
+    }
+  ],
+  "title": "EMSR147_Flood_in_Cumbria",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          -3.557373441,
+          53.25166239245966,
+          0.1250005717852314,
+          55.146367311026914
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2015-12-10T00:00:00Z",
+          "2015-12-10T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "other",
+  "keywords": [
+    "Europe"
+  ]
+}

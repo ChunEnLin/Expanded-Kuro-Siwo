@@ -1,0 +1,78 @@
+{
+  "type": "Collection",
+  "id": "EMSR470_Flood_in_Togo",
+  "stac_version": "1.1.0",
+  "description": "Flood event EMSR470_Flood_in_Togo",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./Precipitation/Precipitation.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./LULC/LULC.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-2/Sentinel-2.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-1/Sentinel-1.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./SRTM/SRTM.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./MLU/MLU.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./flood_event_label/flood_event_label.json",
+      "type": "application/geo+json"
+    }
+  ],
+  "title": "EMSR470_Flood_in_Togo",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          -0.862697083,
+          8.263861043400002,
+          1.9946641726231915,
+          11.731223138009367
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2020-10-14T00:00:00Z",
+          "2020-10-14T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "other",
+  "keywords": [
+    "Africa"
+  ]
+}

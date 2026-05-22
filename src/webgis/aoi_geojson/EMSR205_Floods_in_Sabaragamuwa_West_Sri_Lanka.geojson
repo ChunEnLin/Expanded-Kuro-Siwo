@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "aoi",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "name": "Beruwala", "act_id": "EMSR205", "obj_type": null }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 80.118909894007245, 6.506014819829384 ], [ 80.119180164833836, 6.382935900623115 ], [ 79.967974117889781, 6.382828628215524 ], [ 79.967378260195304, 6.505990799965097 ], [ 80.118909894007245, 6.506014819829384 ] ] ] } }
+]
+}

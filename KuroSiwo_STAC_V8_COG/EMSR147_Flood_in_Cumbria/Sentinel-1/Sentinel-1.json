@@ -1,0 +1,187 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "Sentinel-1",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          0.1250005717852314,
+          53.25166239245966
+        ],
+        [
+          0.1250005717852314,
+          55.146367311026914
+        ],
+        [
+          -3.557373441,
+          55.146367311026914
+        ],
+        [
+          -3.557373441,
+          53.25166239245966
+        ],
+        [
+          0.1250005717852314,
+          53.25166239245966
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    -3.557373441,
+    53.25166239245966,
+    0.1250005717852314,
+    55.146367311026914
+  ],
+  "properties": {
+    "start_datetime": "2015-12-10T00:00:00Z",
+    "end_datetime": "2015-12-10T00:00:00Z",
+    "category": "Sentinel-1",
+    "sci:doi": "10.5270/S1-d363604",
+    "sci:citation": "Copernicus Sentinel-1 data processed by ESA.Merged from Kuro Siwo dataset.",
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      4256,
+      5824
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      -355515.0,
+      0.0,
+      -10.0,
+      7354425.0
+    ],
+    "eo:bands": [
+      {
+        "name": "VV",
+        "common_name": "vv",
+        "description": "Vertical Transmit, Vertical Receive"
+      },
+      {
+        "name": "VH",
+        "common_name": "vh",
+        "description": "Vertical Transmit, Horizontal Receive"
+      }
+    ],
+    "datetime": "2015-12-10T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR147_Flood_in_Cumbria"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR147_Flood_in_Cumbria"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5270/S1-d363604"
+    }
+  ],
+  "assets": {
+    "s1_147_01_SL1_IVV_20150625": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_01_SL1_IVV_20150625_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_01_SL2_IVV_20150613": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_01_SL2_IVV_20150613_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_01_SL1_IVH_20150625": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_01_SL1_IVH_20150625_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_01_MK0_SLOPE_20151210": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_01_MK0_SLOPE_20151210_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_01_MS1_IVH_20151210": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_01_MS1_IVH_20151210_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_01_SL2_IVH_20150613": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_01_SL2_IVH_20150613_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_01_MS1_IVV_20151210": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_01_MS1_IVV_20151210_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_02_MS1_IVH_20151210": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_02_MS1_IVH_20151210_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_02_MK0_SLOPE_20151210": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_02_MK0_SLOPE_20151210_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_02_SL1_IVV_20150625": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_02_SL1_IVV_20150625_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_02_SL2_IVV_20150613": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_02_SL2_IVV_20150613_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_02_MS1_IVV_20151210": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_02_MS1_IVV_20151210_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_02_SL1_IVH_20150625": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_02_SL1_IVH_20150625_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_02_SL2_IVH_20150613": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_02_SL2_IVH_20150613_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_03_SL2_IVV_20150613": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_03_SL2_IVV_20150613_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_03_MS1_IVV_20151210": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_03_MS1_IVV_20151210_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_03_SL1_IVH_20150625": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_03_SL1_IVH_20150625_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_03_SL1_IVV_20150625": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_03_SL1_IVV_20150625_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_03_MK0_SLOPE_20151210": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_03_MK0_SLOPE_20151210_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_03_SL2_IVH_20150613": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_03_SL2_IVH_20150613_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_147_03_MS1_IVH_20151210": {
+      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/147/s1_dem/147_03_MS1_IVH_20151210_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR147_Flood_in_Cumbria"
+}
