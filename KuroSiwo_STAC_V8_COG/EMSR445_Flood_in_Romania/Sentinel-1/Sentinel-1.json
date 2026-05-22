@@ -99,31 +99,31 @@
   ],
   "assets": {
     "s1_445_01_MK0_SLOPE_20200626": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/445/s1_dem/445_01_MK0_SLOPE_20200626_cog.tif",
+      "href": "KuroSiwo_COG_V8/445/s1_dem/445_01_MK0_SLOPE_20200626_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_445_01_SL2_IVV_20200602": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/445/s1_dem/445_01_SL2_IVV_20200602_cog.tif",
+      "href": "KuroSiwo_COG_V8/445/s1_dem/445_01_SL2_IVV_20200602_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_445_01_SL2_IVH_20200602": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/445/s1_dem/445_01_SL2_IVH_20200602_cog.tif",
+      "href": "KuroSiwo_COG_V8/445/s1_dem/445_01_SL2_IVH_20200602_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_445_01_SL1_IVV_20200614": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/445/s1_dem/445_01_SL1_IVV_20200614_cog.tif",
+      "href": "KuroSiwo_COG_V8/445/s1_dem/445_01_SL1_IVV_20200614_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_445_01_SL1_IVH_20200614": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/445/s1_dem/445_01_SL1_IVH_20200614_cog.tif",
+      "href": "KuroSiwo_COG_V8/445/s1_dem/445_01_SL1_IVH_20200614_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_445_01_MS1_IVV_20200626": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/445/s1_dem/445_01_MS1_IVV_20200626_cog.tif",
+      "href": "KuroSiwo_COG_V8/445/s1_dem/445_01_MS1_IVV_20200626_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_445_01_MS1_IVH_20200626": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/445/s1_dem/445_01_MS1_IVH_20200626_cog.tif",
+      "href": "KuroSiwo_COG_V8/445/s1_dem/445_01_MS1_IVH_20200626_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

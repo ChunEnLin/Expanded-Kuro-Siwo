@@ -119,7 +119,7 @@
   ],
   "assets": {
     "s2_1111010_20161121T155434": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/s2/1111010_20161121T155434_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/s2/1111010_20161121T155434_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

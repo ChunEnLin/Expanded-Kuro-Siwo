@@ -119,15 +119,15 @@
   ],
   "assets": {
     "s2_1111004_20170828T172538": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/s2/1111004_20170828T172538_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/s2/1111004_20170828T172538_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s2_1111004_20170805T171528": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/s2/1111004_20170805T171528_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/s2/1111004_20170805T171528_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s2_1111004_20170723T170538": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/s2/1111004_20170723T170538_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/s2/1111004_20170723T170538_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

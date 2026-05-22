@@ -17,7 +17,7 @@ rewrite_stac_to_cog.py — 複製 STAC 並將 asset href 改為 COG 路徑
   python3 rewrite_stac_to_cog.py \
       --manifest /path/to/manifest.csv \
       --src-stac /home/NAS/homes/chunen-10029/bigdata/final/KuroSiwo_STAC_V8 \
-      --dst-stac /home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_STAC_V8_COG
+      --dst-stac KuroSiwo_STAC_V8_COG
 
   # Dry-run（只列計劃）：
   python3 rewrite_stac_to_cog.py --manifest manifest.csv --dry-run
@@ -37,7 +37,7 @@ from pathlib import Path
 # ─── 預設路徑 ─────────────────────────────────────────────────────────────────
 
 SRC_STAC_DEFAULT = "/home/NAS/homes/chunen-10029/bigdata/final/KuroSiwo_STAC_V8"
-DST_STAC_DEFAULT = "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_STAC_V8_COG"
+DST_STAC_DEFAULT = "KuroSiwo_STAC_V8_COG"
 
 # NAS 路徑別名 → 實際路徑（與 convert_to_cog.py 一致）
 PATH_ALIAS_MAP = [

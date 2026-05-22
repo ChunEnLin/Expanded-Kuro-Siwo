@@ -119,11 +119,11 @@
   ],
   "assets": {
     "s2_1111003_20191117T074639": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/s2/1111003_20191117T074639_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/s2/1111003_20191117T074639_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s2_1111003_20191107T074645": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/s2/1111003_20191107T074645_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/s2/1111003_20191107T074645_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

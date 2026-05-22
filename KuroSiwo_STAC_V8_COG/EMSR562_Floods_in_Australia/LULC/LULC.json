@@ -141,12 +141,12 @@
   ],
   "assets": {
     "dw_label_562_20210204-20220203": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/flood_label/dw_kurosiwo_562_annual-20210204-20220203_label_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/flood_label/dw_kurosiwo_562_annual-20210204-20220203_label_cog.tif",
       "type": "image/tiff; application=geotiff",
       "title": "Dynamic World Label (562_20210204-20220203)"
     },
     "dw_probs_562_20210204-20220203": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/lulc/dw_kurosiwo_562_annual-20210204-20220203_probs_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/lulc/dw_kurosiwo_562_annual-20210204-20220203_probs_cog.tif",
       "type": "image/tiff; application=geotiff",
       "title": "Dynamic World Probs (562_20210204-20220203)",
       "description": "9-band probability map. Bands correspond to: water, trees, grass, flooded_vegetation, crops, shrub_and_scrub, built, bare, snow_and_ice"

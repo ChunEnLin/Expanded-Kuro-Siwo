@@ -94,7 +94,7 @@
   ],
   "assets": {
     "imerg_acc_event_1111011_20201113_41": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/precipitation/Acc_event_1111011_20201113_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/precipitation/Acc_event_1111011_20201113_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

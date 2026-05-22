@@ -104,11 +104,11 @@
   ],
   "assets": {
     "srtm_427_03_MK0_DEM_20200222": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/427/dem/427_03_MK0_DEM_20200222_cog.tif",
+      "href": "KuroSiwo_COG_V8/427/dem/427_03_MK0_DEM_20200222_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "srtm_427_04_MK0_DEM_20200222": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/427/dem/427_04_MK0_DEM_20200222_cog.tif",
+      "href": "KuroSiwo_COG_V8/427/dem/427_04_MK0_DEM_20200222_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

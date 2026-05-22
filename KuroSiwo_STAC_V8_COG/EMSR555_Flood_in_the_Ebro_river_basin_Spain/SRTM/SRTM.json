@@ -104,7 +104,7 @@
   ],
   "assets": {
     "srtm_555_01_MK0_DEM_20211210": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/555/dem/555_01_MK0_DEM_20211210_cog.tif",
+      "href": "KuroSiwo_COG_V8/555/dem/555_01_MK0_DEM_20211210_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

@@ -94,7 +94,7 @@
   ],
   "assets": {
     "imerg_acc_event_324_20181016_11": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/precipitation/Acc_Floods_in_Aude__France_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/precipitation/Acc_Floods_in_Aude__France_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

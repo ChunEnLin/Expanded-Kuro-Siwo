@@ -8,7 +8,7 @@ GeoTIFF → Cloud Optimized GeoTIFF (COG) → STAC Rewrite 自動化流程
 ## 目錄結構
 
 ```
-/home/gisele/NAS/02.Course/26S_BigData/
+<LOCAL_DATA_ROOT>/
 │
 ├── cog_pipeline/                         ← 本腳本目錄
 │   ├── convert_to_cog.py                 ← A. GeoTIFF → COG 批次轉換
@@ -77,7 +77,7 @@ python3 --version   # >= 3.8
 ### 用法
 
 ```bash
-cd /home/gisele/NAS/02.Course/26S_BigData/cog_pipeline
+cd src/cog_pipeline
 
 # 從 txt 清單（小批次測試）
 python3 convert_to_cog.py \
@@ -134,7 +134,7 @@ python3 rewrite_stac_to_cog.py \
 python3 rewrite_stac_to_cog.py \
     --manifest manifest_full.csv \
     --src-stac /home/NAS/homes/chunen-10029/bigdata/final/KuroSiwo_STAC_V8 \
-    --dst-stac /home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_STAC_V8_COG
+    --dst-stac KuroSiwo_STAC_V8_COG
 ```
 
 ---
@@ -142,7 +142,7 @@ python3 rewrite_stac_to_cog.py \
 ## 完整執行流程（從頭開始）
 
 ```bash
-cd /home/gisele/NAS/02.Course/26S_BigData/cog_pipeline
+cd src/cog_pipeline
 
 # Step 1：生成測試清單
 bash gen_test_inputs.sh
@@ -184,7 +184,7 @@ python3 rewrite_stac_to_cog.py --manifest manifest_full.csv
 
 # Step 7：切換 WebGIS symlink
 rm /home/gisele/webgis_v7_app/data
-ln -s /home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_STAC_V8_COG \
+ln -s KuroSiwo_STAC_V8_COG \
       /home/gisele/webgis_v7_app/data
 ```
 

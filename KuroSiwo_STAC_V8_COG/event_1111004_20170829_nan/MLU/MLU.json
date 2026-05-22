@@ -116,7 +116,7 @@
   ],
   "assets": {
     "mlu_1111004_01_MK0_MLU_20170829": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/lulc/1111004_01_MK0_MLU_20170829_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/lulc/1111004_01_MK0_MLU_20170829_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

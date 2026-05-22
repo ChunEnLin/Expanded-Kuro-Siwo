@@ -104,7 +104,7 @@
   ],
   "assets": {
     "srtm_1111003_01_MK0_DEM_20191127": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/dem/1111003_01_MK0_DEM_20191127_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/dem/1111003_01_MK0_DEM_20191127_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

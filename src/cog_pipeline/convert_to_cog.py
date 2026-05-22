@@ -33,7 +33,7 @@ from pathlib import Path
 
 # ─── 路徑常數 ─────────────────────────────────────────────────────────────────
 
-COG_ROOT = Path("/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8")
+COG_ROOT = Path("KuroSiwo_COG_V8")
 
 COG_BLOCKSIZE   = 256
 COG_COMPRESS    = "DEFLATE"

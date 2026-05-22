@@ -119,15 +119,15 @@
   ],
   "assets": {
     "s2_437_20200513T110903": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/437/s2/437_20200513T110903_cog.tif",
+      "href": "KuroSiwo_COG_V8/437/s2/437_20200513T110903_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s2_437_20200408T110854": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/437/s2/437_20200408T110854_cog.tif",
+      "href": "KuroSiwo_COG_V8/437/s2/437_20200408T110854_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s2_437_20200314T110854": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/437/s2/437_20200314T110854_cog.tif",
+      "href": "KuroSiwo_COG_V8/437/s2/437_20200314T110854_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

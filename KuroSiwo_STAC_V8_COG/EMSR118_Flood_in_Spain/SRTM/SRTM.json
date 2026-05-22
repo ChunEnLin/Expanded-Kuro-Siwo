@@ -104,11 +104,11 @@
   ],
   "assets": {
     "srtm_118_01_MK0_DEM_20150203": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/118/dem/118_01_MK0_DEM_20150203_cog.tif",
+      "href": "KuroSiwo_COG_V8/118/dem/118_01_MK0_DEM_20150203_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "srtm_118_02_MK0_DEM_20150202": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/118/dem/118_02_MK0_DEM_20150202_cog.tif",
+      "href": "KuroSiwo_COG_V8/118/dem/118_02_MK0_DEM_20150202_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

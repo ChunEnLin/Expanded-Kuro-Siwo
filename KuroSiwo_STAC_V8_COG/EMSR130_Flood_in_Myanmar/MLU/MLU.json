@@ -116,7 +116,7 @@
   ],
   "assets": {
     "mlu_130_06_MK0_MLU_20150913": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/130/lulc/130_06_MK0_MLU_20150913_cog.tif",
+      "href": "KuroSiwo_COG_V8/130/lulc/130_06_MK0_MLU_20150913_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

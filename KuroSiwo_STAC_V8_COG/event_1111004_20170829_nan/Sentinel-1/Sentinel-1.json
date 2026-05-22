@@ -99,31 +99,31 @@
   ],
   "assets": {
     "s1_1111004_01_MS1_IVH_20170829": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/s1_dem/1111004_01_MS1_IVH_20170829_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/s1_dem/1111004_01_MS1_IVH_20170829_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_1111004_01_MS1_IVV_20170829": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/s1_dem/1111004_01_MS1_IVV_20170829_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/s1_dem/1111004_01_MS1_IVV_20170829_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_1111004_01_SL1_IVV_20170805": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/s1_dem/1111004_01_SL1_IVV_20170805_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/s1_dem/1111004_01_SL1_IVV_20170805_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_1111004_01_SL2_IVH_20170724": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/s1_dem/1111004_01_SL2_IVH_20170724_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/s1_dem/1111004_01_SL2_IVH_20170724_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_1111004_01_SL2_IVV_20170724": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/s1_dem/1111004_01_SL2_IVV_20170724_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/s1_dem/1111004_01_SL2_IVV_20170724_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_1111004_01_SL1_IVH_20170805": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/s1_dem/1111004_01_SL1_IVH_20170805_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/s1_dem/1111004_01_SL1_IVH_20170805_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_1111004_01_MK0_SLOPE_20170829": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/s1_dem/1111004_01_MK0_SLOPE_20170829_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/s1_dem/1111004_01_MK0_SLOPE_20170829_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

@@ -99,87 +99,87 @@
   ],
   "assets": {
     "s1_279_05_SL2_IVV_20170822": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_05_SL2_IVV_20170822_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_05_SL2_IVV_20170822_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_05_MS1_IVV_20180413": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_05_MS1_IVV_20180413_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_05_MS1_IVV_20180413_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_05_MS1_IVH_20180413": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_05_MS1_IVH_20180413_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_05_MS1_IVH_20180413_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_05_SL1_IVH_20170915": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_05_SL1_IVH_20170915_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_05_SL1_IVH_20170915_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_05_MK0_SLOPE_20180413": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_05_MK0_SLOPE_20180413_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_05_MK0_SLOPE_20180413_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_05_SL2_IVH_20170822": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_05_SL2_IVH_20170822_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_05_SL2_IVH_20170822_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_05_SL1_IVV_20170915": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_05_SL1_IVV_20170915_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_05_SL1_IVV_20170915_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_06_SL1_IVH_20170915": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_06_SL1_IVH_20170915_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_06_SL1_IVH_20170915_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_06_SL2_IVV_20170822": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_06_SL2_IVV_20170822_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_06_SL2_IVV_20170822_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_06_SL1_IVV_20170915": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_06_SL1_IVV_20170915_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_06_SL1_IVV_20170915_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_06_MS1_IVH_20180413": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_06_MS1_IVH_20180413_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_06_MS1_IVH_20180413_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_06_MK0_SLOPE_20180413": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_06_MK0_SLOPE_20180413_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_06_MK0_SLOPE_20180413_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_06_MS1_IVV_20180413": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_06_MS1_IVV_20180413_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_06_MS1_IVV_20180413_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_06_SL2_IVH_20170822": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_06_SL2_IVH_20170822_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_06_SL2_IVH_20170822_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_11_MK0_SLOPE_20180419": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_11_MK0_SLOPE_20180419_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_11_MK0_SLOPE_20180419_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_11_MS1_IVV_20180419": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_11_MS1_IVV_20180419_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_11_MS1_IVV_20180419_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_11_SL1_IVH_20170915": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_11_SL1_IVH_20170915_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_11_SL1_IVH_20170915_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_11_MS1_IVH_20180419": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_11_MS1_IVH_20180419_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_11_MS1_IVH_20180419_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_11_SL2_IVV_20170828": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_11_SL2_IVV_20170828_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_11_SL2_IVV_20170828_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_11_SL1_IVV_20170915": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_11_SL1_IVV_20170915_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_11_SL1_IVV_20170915_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "s1_279_11_SL2_IVH_20170828": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/279/s1_dem/279_11_SL2_IVH_20170828_cog.tif",
+      "href": "KuroSiwo_COG_V8/279/s1_dem/279_11_SL2_IVH_20170828_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

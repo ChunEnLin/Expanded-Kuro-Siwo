@@ -116,11 +116,11 @@
   ],
   "assets": {
     "mlu_427_03_MK0_MLU_20200222": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/427/lulc/427_03_MK0_MLU_20200222_cog.tif",
+      "href": "KuroSiwo_COG_V8/427/lulc/427_03_MK0_MLU_20200222_cog.tif",
       "type": "image/tiff; application=geotiff"
     },
     "mlu_427_04_MK0_MLU_20200222": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/427/lulc/427_04_MK0_MLU_20200222_cog.tif",
+      "href": "KuroSiwo_COG_V8/427/lulc/427_04_MK0_MLU_20200222_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },

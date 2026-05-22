@@ -94,7 +94,7 @@
   ],
   "assets": {
     "imerg_acc_event_496_20210127_20": {
-      "href": "/home/gisele/NAS/02.Course/26S_BigData/KuroSiwo_COG_V8/unknown_event/precipitation/Acc_Flood_in_Lazio_Region__Italy_cog.tif",
+      "href": "KuroSiwo_COG_V8/unknown_event/precipitation/Acc_Flood_in_Lazio_Region__Italy_cog.tif",
       "type": "image/tiff; application=geotiff"
     }
   },
