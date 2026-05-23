@@ -177,6 +177,7 @@ uv add \
   rioxarray \
   shapely \
   stac-validator \
+  "titiler[application]" \
   tqdm \
   "uvicorn[standard]" \
   xarray \
@@ -197,79 +198,168 @@ The script will build the catalog under `KuroSiwo_STAC_V8/` and print a STAC val
 
 ### COG Pipeline → `KuroSiwo_STAC_V8_COG`
 
-The COG pipeline (under [src/cog_pipeline/](src/cog_pipeline/)) converts all source GeoTIFFs to Cloud-Optimized GeoTIFF format and rewrites the STAC asset `href` fields accordingly. It consists of three steps:
+The COG pipeline (under [src/cog_pipeline/](src/cog_pipeline/)) converts all source GeoTIFFs to Cloud-Optimized GeoTIFF format and rewrites the STAC asset `href` fields accordingly. All commands should be run from `src/cog_pipeline/`.
 
-**Step 1 — (Optional) Generate a small test input list**
+Each GeoTIFF is converted via `gdal_translate -of COG` with DEFLATE compression and 256 px tiles. Resampling is set automatically per layer type: `NEAREST` for categorical layers (LULC, flood labels), `BILINEAR` for continuous layers (S1, S2, DEM, Precipitation).
 
 ```bash
-bash src/cog_pipeline/gen_test_inputs.sh
+cd src/cog_pipeline
+```
+
+**Step 1 — Generate a small test input list (optional)**
+
+```bash
+bash gen_test_inputs.sh
 # Outputs: test_inputs.txt  (one representative file per layer type)
 ```
 
-**Step 2 — Convert GeoTIFFs to COG**
+**Step 2 — Dry-run to verify the plan**
 
 ```bash
-# Small-batch test from the txt list:
-uv run python src/cog_pipeline/convert_to_cog.py \
-    --list test_inputs.txt \
-    --manifest manifest_test.csv
-
-# Full batch from a directory:
-uv run python src/cog_pipeline/convert_to_cog.py \
-    --dir /path/to/your/data \
-    --manifest manifest_full.csv
-
-# Dry-run (plan only, no conversion):
-uv run python src/cog_pipeline/convert_to_cog.py \
-    --list test_inputs.txt --dry-run
+python3 convert_to_cog.py --list test_inputs.txt --manifest manifest_test.csv --dry-run
 ```
 
-Each GeoTIFF is converted via `gdal_translate -of COG` with DEFLATE compression and 256 px tiles. Resampling is set automatically per layer type (nearest for categorical, bilinear for continuous). A `manifest.csv` is written recording the source path, destination COG path, layer type, and conversion status for every file.
-
-**Step 3 — Rewrite STAC asset hrefs to COG paths**
+**Step 3 — Small-batch test**
 
 ```bash
-uv run python src/cog_pipeline/rewrite_stac_to_cog.py \
+python3 convert_to_cog.py --list test_inputs.txt --manifest manifest_test.csv
+```
+
+**Step 4 — Full batch conversion, one run per data source**
+
+```bash
+python3 convert_to_cog.py \
+    --dir /path/to/kurosiwo_S1_DEM   --manifest manifest_s1dem.csv
+
+python3 convert_to_cog.py \
+    --dir /path/to/DW                --manifest manifest_lulc.csv
+
+python3 convert_to_cog.py \
+    --dir /path/to/S2_aoi_modify     --manifest manifest_s2.csv
+
+python3 convert_to_cog.py \
+    --dir /path/to/Imerg/7days_sum   --manifest manifest_prec.csv
+```
+
+**Step 5 — Merge per-layer manifests into a single `manifest_full.csv`**
+
+```bash
+python3 - <<'EOF'
+import csv, glob
+fields = None
+rows = []
+for f in sorted(glob.glob("manifest_*.csv")):
+    if f in ("manifest_test.csv", "manifest_full.csv"):
+        continue
+    with open(f) as fh:
+        reader = csv.DictReader(fh)
+        if fields is None:
+            fields = reader.fieldnames
+        rows.extend(reader)
+with open("manifest_full.csv", "w", newline="") as fh:
+    w = csv.DictWriter(fh, fieldnames=fields)
+    w.writeheader()
+    w.writerows(rows)
+print(f"Merged: {len(rows)} entries")
+EOF
+```
+
+**Step 6 — Rewrite STAC asset hrefs to COG paths**
+
+```bash
+python3 rewrite_stac_to_cog.py \
     --manifest manifest_full.csv \
-    --src-stac KuroSiwo_STAC_V8 \
+    --src-stac /path/to/KuroSiwo_STAC_V8 \
     --dst-stac KuroSiwo_STAC_V8_COG
 ```
 
-This copies `KuroSiwo_STAC_V8/` to `KuroSiwo_STAC_V8_COG/` and rewrites every asset `href` that has a corresponding entry in `manifest.csv` to point to the new COG file. Any unmatched hrefs are logged to `KuroSiwo_STAC_V8_COG/_unmatched_hrefs.txt` for inspection.
+This copies the entire STAC directory structure to `KuroSiwo_STAC_V8_COG/` and rewrites every asset `href` that has a matching entry in `manifest_full.csv` to point to the new COG file. Any unmatched hrefs are logged to `KuroSiwo_STAC_V8_COG/_unmatched_hrefs.txt`.
 
 ```
 KuroSiwo_STAC_V8/         ← original STAC (hrefs → source GeoTIFFs)
-KuroSiwo_STAC_V8_COG/     ← COG STAC (hrefs → COG files, STAC structure identical)
+KuroSiwo_STAC_V8_COG/     ← COG STAC (hrefs → COG files, identical STAC structure)
 ```
 
 ### Launching the WebGIS
 
-The WebGIS consists of a **FastAPI backend** for on-the-fly raster analysis and a **Leaflet frontend** served as a static HTML file.
+The WebGIS runs three services. In our lab these run on a GPU server (`up3090`) managed with `tmux`, and the browser connects via SSH port forwarding. Adjust hostnames and paths to match your own environment.
 
-**Step 1 — Configure paths in the backend**
+**Services overview**
 
-Open [src/webgis/aoi_analysis_api.py](src/webgis/aoi_analysis_api.py) and update `APP_ROOT` and `AOI_DIR` to match the actual location of the WebGIS directory on your machine:
+| tmux session | Service | Bind port | Role |
+| :--- | :--- | :--- | :--- |
+| `webv7_8002` | Static HTTP server | 8002 | Serves `index.html` and static assets |
+| `titiler8003` | TiTiler | 8003 | On-the-fly COG tile rendering |
+| `aoiapi` | AOI Analysis API | 8004 | Raster statistics masked to event AOI |
+
+**Step 1 — Deploy WebGIS files to the server**
+
+Copy `src/webgis/` to the deployment directory on the server (e.g. `/home/gisele/webgis_v7_app`), then update `APP_ROOT` in [src/webgis/aoi_analysis_api.py](src/webgis/aoi_analysis_api.py) to match:
 
 ```python
-# src/webgis/aoi_analysis_api.py  (top of file)
-APP_ROOT = Path("/path/to/expanded_kuro_siwo/src/webgis")
+# aoi_analysis_api.py  (top of file)
+APP_ROOT = Path("/home/gisele/webgis_v7_app")
 AOI_DIR  = APP_ROOT / "aoi_geojson"
 ```
 
-**Step 2 — Start the backend API server**
+**Step 2 — Start all three services on the server**
 
 ```bash
-uv run uvicorn src.webgis.aoi_analysis_api:app --host 0.0.0.0 --port 8000
-```
+# Kill any previous sessions first
+tmux kill-session -t webv7_8002  2>/dev/null
+tmux kill-session -t titiler8003 2>/dev/null
+tmux kill-session -t aoiapi      2>/dev/null
 
-Verify it is running:
+# Static frontend
+tmux new-session -d -s webv7_8002 \
+    'python3 -m http.server 8002 --bind 127.0.0.1 --directory /home/gisele/webgis_v7_app'
 
-```bash
-curl http://localhost:8000/health
+# TiTiler (COG tile server)
+tmux new-session -d -s titiler8003 \
+    'conda run -n cogenv uvicorn titiler.application.main:app --host 127.0.0.1 --port 8003'
+
+# AOI Analysis API
+tmux new-session -d -s aoiapi \
+    'cd /home/gisele/webgis_v7_app && conda run -n cogenv uvicorn aoi_analysis_api:app --host 127.0.0.1 --port 8004'
+
+# Verify all three are up
+sleep 3
+ss -ltnp | grep -E '8002|8003|8004'
+curl http://127.0.0.1:8004/health
 # Expected: {"status":"ok"}
 ```
 
-Available analysis endpoints:
+**Step 3 — Open an SSH tunnel on your local machine**
+
+```bash
+# Close any existing tunnels on these ports
+for p in 8080 8081 8082; do
+  pid=$(lsof -ti tcp:$p) && kill $pid 2>/dev/null
+done
+
+# Forward local ports to the server (keep this terminal open)
+ssh -N \
+    -L 8080:127.0.0.1:8002 \
+    -L 8081:127.0.0.1:8003 \
+    -L 8082:127.0.0.1:8004 \
+    gisele@up3090
+```
+
+| Local port | Forwarded to | Service |
+| :--- | :--- | :--- |
+| 8080 | server:8002 | WebGIS frontend |
+| 8081 | server:8003 | TiTiler |
+| 8082 | server:8004 | AOI Analysis API |
+
+**Step 4 — Open the browser**
+
+```
+http://127.0.0.1:8080/index.html
+```
+
+The map loads all 43 flood event AOIs. Click any event to browse data layers and trigger on-the-fly analysis.
+
+**AOI Analysis API endpoints**
 
 | Endpoint | Description |
 | :--- | :--- |
@@ -277,17 +367,6 @@ Available analysis endpoints:
 | `GET /analyze/lulc?event_id=&raster_path=` | LULC class composition (%) masked to AOI |
 | `GET /analyze/raster_basic?event_id=&raster_path=` | Per-band statistics for any raster |
 | `GET /analyze/s2rgb?event_id=&raster_path=` | Sentinel-2 RGB band statistics |
-
-**Step 3 — Open the frontend**
-
-Serve `index.html` from a local HTTP server (required for browser security policies):
-
-```bash
-# From the webgis directory:
-python3 -m http.server 5500 --directory src/webgis
-```
-
-Then open `http://localhost:5500` in your browser. The map will load all 43 flood event AOIs from the `aoi_geojson/` directory. Click any event to browse its data layers and trigger on-the-fly analysis via the backend API.
 
 ---
 
