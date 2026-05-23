@@ -73,7 +73,7 @@ Each Item carries:
 
 ---
 
-## End-to-End Workflow
+## Workflow
 
 ```
 Raw Kuro Siwo tiles   GEE (S2, IMERG, DW)   Copernicus EMS metadata
@@ -92,7 +92,7 @@ Raw Kuro Siwo tiles   GEE (S2, IMERG, DW)   Copernicus EMS metadata
         ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  2. Data Download and Preprocessing                         │
-│     S2_data.ipynb · IMERG_catch.ipynb                       │
+│     S2_data.ipynb · IMERG_catch.ipynb · Dynamic_World.ipynb │
 │     · Download target spatial range and target time data    |
 |       from GEE                                              │
 │     · Perform accumulation and synthesis operations         │
@@ -120,16 +120,20 @@ Raw Kuro Siwo tiles   GEE (S2, IMERG, DW)   Copernicus EMS metadata
         ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  5. STAC Catalog Construction                               │
-│     Final_Stac.py                                           │
+│     Final_Stac.py · convert_to_cog.py ·                     |
+|     rewrite_stac_to_cog.py                                  │
 │     · Build Catalog → Collections → Items → Assets          │
 │     · Attach EO, Projection, Scientific, Classification     │
 │       metadata extracted dynamically from each file         │
 │     · Validate all JSON against the STAC specification      │
+|     · Convert GeoTIFFs to COG                               |
+|     · Rewrite STAC asset hrefs to COG paths                 |
 └─────────────────────────────────────────────────────────────┘
         │
         ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  6. WebGIS Visualization                                    │
+|     aoi_analysis_api.py                                     |
 │     · Load STAC catalog via Leaflet front-end               │
 │     · Spatial search, layer toggling, event browsing        │
 └─────────────────────────────────────────────────────────────┘
@@ -145,6 +149,7 @@ Raw Kuro Siwo tiles   GEE (S2, IMERG, DW)   Copernicus EMS metadata
 
 - Python ≥ 3.12
 - [uv](https://docs.astral.sh/uv/) for dependency management
+- GDAL command-line tools (`gdal_translate`) — required for the COG pipeline only
 
 ### Installation
 
@@ -157,6 +162,7 @@ uv add \
   cmocean \
   dask \
   earthengine-api \
+  fastapi \
   geemap \
   geopandas \
   hvplot \
@@ -172,6 +178,7 @@ uv add \
   shapely \
   stac-validator \
   tqdm \
+  "uvicorn[standard]" \
   xarray \
   zarr
 ```
@@ -184,7 +191,103 @@ Update the path constants at the top of [src/stac_build/Final_Stac.py](src/stac_
 uv run python src/stac_build/Final_Stac.py
 ```
 
-The script will build the catalog and print a STAC validation report to the terminal.
+The script will build the catalog under `KuroSiwo_STAC_V8/` and print a STAC validation report to the terminal. The `KuroSiwo_STAC_V8/` directory in this repository serves as a pre-built sample output; asset `href` fields point to the original GeoTIFF files on the NAS.
+
+> To obtain a catalog whose assets point to Cloud-Optimized GeoTIFFs instead, follow the COG Pipeline below to produce `KuroSiwo_STAC_V8_COG/`.
+
+### COG Pipeline → `KuroSiwo_STAC_V8_COG`
+
+The COG pipeline (under [src/cog_pipeline/](src/cog_pipeline/)) converts all source GeoTIFFs to Cloud-Optimized GeoTIFF format and rewrites the STAC asset `href` fields accordingly. It consists of three steps:
+
+**Step 1 — (Optional) Generate a small test input list**
+
+```bash
+bash src/cog_pipeline/gen_test_inputs.sh
+# Outputs: test_inputs.txt  (one representative file per layer type)
+```
+
+**Step 2 — Convert GeoTIFFs to COG**
+
+```bash
+# Small-batch test from the txt list:
+uv run python src/cog_pipeline/convert_to_cog.py \
+    --list test_inputs.txt \
+    --manifest manifest_test.csv
+
+# Full batch from a directory:
+uv run python src/cog_pipeline/convert_to_cog.py \
+    --dir /path/to/your/data \
+    --manifest manifest_full.csv
+
+# Dry-run (plan only, no conversion):
+uv run python src/cog_pipeline/convert_to_cog.py \
+    --list test_inputs.txt --dry-run
+```
+
+Each GeoTIFF is converted via `gdal_translate -of COG` with DEFLATE compression and 256 px tiles. Resampling is set automatically per layer type (nearest for categorical, bilinear for continuous). A `manifest.csv` is written recording the source path, destination COG path, layer type, and conversion status for every file.
+
+**Step 3 — Rewrite STAC asset hrefs to COG paths**
+
+```bash
+uv run python src/cog_pipeline/rewrite_stac_to_cog.py \
+    --manifest manifest_full.csv \
+    --src-stac KuroSiwo_STAC_V8 \
+    --dst-stac KuroSiwo_STAC_V8_COG
+```
+
+This copies `KuroSiwo_STAC_V8/` to `KuroSiwo_STAC_V8_COG/` and rewrites every asset `href` that has a corresponding entry in `manifest.csv` to point to the new COG file. Any unmatched hrefs are logged to `KuroSiwo_STAC_V8_COG/_unmatched_hrefs.txt` for inspection.
+
+```
+KuroSiwo_STAC_V8/         ← original STAC (hrefs → source GeoTIFFs)
+KuroSiwo_STAC_V8_COG/     ← COG STAC (hrefs → COG files, STAC structure identical)
+```
+
+### Launching the WebGIS
+
+The WebGIS consists of a **FastAPI backend** for on-the-fly raster analysis and a **Leaflet frontend** served as a static HTML file.
+
+**Step 1 — Configure paths in the backend**
+
+Open [src/webgis/aoi_analysis_api.py](src/webgis/aoi_analysis_api.py) and update `APP_ROOT` and `AOI_DIR` to match the actual location of the WebGIS directory on your machine:
+
+```python
+# src/webgis/aoi_analysis_api.py  (top of file)
+APP_ROOT = Path("/path/to/expanded_kuro_siwo/src/webgis")
+AOI_DIR  = APP_ROOT / "aoi_geojson"
+```
+
+**Step 2 — Start the backend API server**
+
+```bash
+uv run uvicorn src.webgis.aoi_analysis_api:app --host 0.0.0.0 --port 8000
+```
+
+Verify it is running:
+
+```bash
+curl http://localhost:8000/health
+# Expected: {"status":"ok"}
+```
+
+Available analysis endpoints:
+
+| Endpoint | Description |
+| :--- | :--- |
+| `GET /analyze/precip?event_id=&raster_path=` | Precipitation statistics (mean, min, max, std) masked to AOI |
+| `GET /analyze/lulc?event_id=&raster_path=` | LULC class composition (%) masked to AOI |
+| `GET /analyze/raster_basic?event_id=&raster_path=` | Per-band statistics for any raster |
+| `GET /analyze/s2rgb?event_id=&raster_path=` | Sentinel-2 RGB band statistics |
+
+**Step 3 — Open the frontend**
+
+Serve `index.html` from a local HTTP server (required for browser security policies):
+
+```bash
+# From the webgis directory:
+python3 -m http.server 5500 --directory src/webgis
+```
+
+Then open `http://localhost:5500` in your browser. The map will load all 43 flood event AOIs from the `aoi_geojson/` directory. Click any event to browse its data layers and trigger on-the-fly analysis via the backend API.
 
 ---
 
