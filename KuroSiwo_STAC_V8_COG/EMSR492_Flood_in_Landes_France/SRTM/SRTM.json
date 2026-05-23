@@ -1,0 +1,112 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "SRTM",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          1.2346894422580763,
+          42.25307792310338
+        ],
+        [
+          1.2346894422580763,
+          44.072864079368806
+        ],
+        [
+          -2.18609516,
+          44.072864079368806
+        ],
+        [
+          -2.18609516,
+          42.25307792310338
+        ],
+        [
+          1.2346894422580763,
+          42.25307792310338
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    -2.18609516,
+    42.25307792310338,
+    1.2346894422580763,
+    44.072864079368806
+  ],
+  "properties": {
+    "start_datetime": "2021-01-02T00:00:00Z",
+    "end_datetime": "2021-01-02T00:00:00Z",
+    "category": "SRTM",
+    "sci:doi": "10.5067/MEaSUREs/SRTM/SRTMGL1.003",
+    "sci:citation": "Farr, T. G., et al. (2007). The Shuttle Radar Topography Mission. ",
+    "sci:publications": [
+      {
+        "doi": "10.1029/2005RG000183",
+        "citation": "Farr, T. G., et al. (2007), The Shuttle Radar Topography Mission, Rev. Geophys., 45, RG2004, doi:10.1029/2005RG000183."
+      }
+    ],
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      8064,
+      10528
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      -152225.0,
+      0.0,
+      -10.0,
+      5462455.0
+    ],
+    "eo:bands": [
+      {
+        "name": "elevation",
+        "common_name": "elevation",
+        "description": "Digital Elevation Model"
+      }
+    ],
+    "datetime": "2021-01-02T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR492_Flood_in_Landes_France"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR492_Flood_in_Landes_France"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5067/MEaSUREs/SRTM/SRTMGL1.003"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1029/2005RG000183"
+    }
+  ],
+  "assets": {
+    "srtm_492_01_MK0_DEM_20210102": {
+      "href": "KuroSiwo_COG_V8/492/dem/492_01_MK0_DEM_20210102_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR492_Flood_in_Landes_France"
+}

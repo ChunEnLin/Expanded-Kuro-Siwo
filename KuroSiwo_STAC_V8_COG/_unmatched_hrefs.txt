@@ -1,0 +1,8 @@
+# 未匹配的 href 清單
+# 產生時間：2026-05-21T23:05:55.435028
+# 這些 href 在 manifest 中找不到對應的 COG
+
+/home/chunen/nas/bigdata/final/S2_aoi_modify/1111009/1111009_1_20220607T061118-0000000000-0000000000.tif
+/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/1111009/1111009_01_MS1_IVH_20220911.tif
+/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/1111009/1111009_01_MS1_IVV_20220911.tif
+/home/chunen/nas/bigdata/final/kurosiwo_S1_DEM/1111009/1111009_01_SL2_IVH_20220607.tif

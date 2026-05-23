@@ -1,0 +1,131 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "Sentinel-1",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          151.67716704126573,
+          -28.76228584
+        ],
+        [
+          151.67716704126573,
+          -26.92980864
+        ],
+        [
+          148.79968352317408,
+          -26.92980864
+        ],
+        [
+          148.79968352317408,
+          -28.76228584
+        ],
+        [
+          151.67716704126573,
+          -28.76228584
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    148.79968352317408,
+    -28.76228584,
+    151.67716704126573,
+    -26.92980864
+  ],
+  "properties": {
+    "start_datetime": "2021-11-30T00:00:00Z",
+    "end_datetime": "2021-11-30T00:00:00Z",
+    "category": "Sentinel-1",
+    "sci:doi": "10.5270/S1-d363604",
+    "sci:citation": "Copernicus Sentinel-1 data processed by ESA.Merged from Kuro Siwo dataset.",
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      1568,
+      3808
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      16806435.0,
+      0.0,
+      -10.0,
+      -3296155.0
+    ],
+    "eo:bands": [
+      {
+        "name": "VV",
+        "common_name": "vv",
+        "description": "Vertical Transmit, Vertical Receive"
+      },
+      {
+        "name": "VH",
+        "common_name": "vh",
+        "description": "Vertical Transmit, Horizontal Receive"
+      }
+    ],
+    "datetime": "2021-11-30T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR554_Floods_in_Queensland_Australia"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR554_Floods_in_Queensland_Australia"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5270/S1-d363604"
+    }
+  ],
+  "assets": {
+    "s1_554_01_MS1_IVH_20211130": {
+      "href": "KuroSiwo_COG_V8/554/s1_dem/554_01_MS1_IVH_20211130_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_554_01_MK0_SLOPE_20211130": {
+      "href": "KuroSiwo_COG_V8/554/s1_dem/554_01_MK0_SLOPE_20211130_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_554_01_SL1_IVH_20211025": {
+      "href": "KuroSiwo_COG_V8/554/s1_dem/554_01_SL1_IVH_20211025_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_554_01_SL1_IVV_20211025": {
+      "href": "KuroSiwo_COG_V8/554/s1_dem/554_01_SL1_IVV_20211025_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_554_01_MS1_IVV_20211130": {
+      "href": "KuroSiwo_COG_V8/554/s1_dem/554_01_MS1_IVV_20211130_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_554_01_SL2_IVV_20211013": {
+      "href": "KuroSiwo_COG_V8/554/s1_dem/554_01_SL2_IVV_20211013_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s1_554_01_SL2_IVH_20211013": {
+      "href": "KuroSiwo_COG_V8/554/s1_dem/554_01_SL2_IVH_20211013_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR554_Floods_in_Queensland_Australia"
+}

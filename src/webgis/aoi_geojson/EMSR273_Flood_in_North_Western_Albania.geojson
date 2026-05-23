@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "aoi",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "emsr_id": "EMSR273", "glide_no": "Not Applicable", "area_id": "02", "locality": "DAJC", "map_type": "Delineation" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 19.291600662000064, 42.097463975000025 ], [ 19.427984680000066, 42.097365636000056 ], [ 19.457348279000026, 42.097401072000025 ], [ 19.457344865000039, 41.964118467000048 ], [ 19.291600662000064, 41.964118467000048 ], [ 19.291600662000064, 42.097463975000025 ] ] ] } }
+]
+}

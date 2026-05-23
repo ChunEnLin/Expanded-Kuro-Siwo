@@ -8,3 +8,20 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Local large raster outputs
+*.tif
+*.tiff
+*.vrt
+*.aux.xml
+*.ovr
+
+# Local data directories
+KuroSiwo_COG_V8/
+webgis_v7_app/data
+src/webgis/data
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

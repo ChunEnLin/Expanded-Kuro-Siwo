@@ -1,0 +1,171 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "Sentinel-2",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          153.3752524228369,
+          -33.81146956
+        ],
+        [
+          153.3752524228369,
+          -29.11079243
+        ],
+        [
+          149.1696995887029,
+          -29.11079243
+        ],
+        [
+          149.1696995887029,
+          -33.81146956
+        ],
+        [
+          153.3752524228369,
+          -33.81146956
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    149.1696995887029,
+    -33.81146956,
+    153.3752524228369,
+    -29.11079243
+  ],
+  "properties": {
+    "start_datetime": "2022-03-07T00:00:00Z",
+    "end_datetime": "2022-03-07T00:00:00Z",
+    "category": "Sentinel-2",
+    "sci:doi": "10.5270/S2_-26n7jr4",
+    "sci:citation": "Copernicus Sentinel data (2015-2022) processed by ESA. Retrieved from Google Earth Engine (COPERNICUS/S2_SR_HARMONIZED).",
+    "sci:publications": [
+      {
+        "doi": "10.1016/j.rse.2018.04.031",
+        "citation": "Claverie, M., et al. (2018). The Harmonized Landsat and Sentinel-2 (HLS) product: Algorithms and methods. Remote Sensing of Environment."
+      }
+    ],
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      1311,
+      1507
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      16818840.0,
+      0.0,
+      -10.0,
+      -3831620.0
+    ],
+    "eo:bands": [
+      {
+        "name": "B4",
+        "common_name": "red",
+        "description": "Red"
+      },
+      {
+        "name": "B3",
+        "common_name": "green",
+        "description": "Green"
+      },
+      {
+        "name": "B2",
+        "common_name": "blue",
+        "description": "Blue"
+      },
+      {
+        "name": "B8",
+        "common_name": "nir",
+        "description": "NIR"
+      }
+    ],
+    "datetime": "2022-03-07T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR567_Floods_in_Queensland_Australia"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR567_Floods_in_Queensland_Australia"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5270/S2_-26n7jr4"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1016/j.rse.2018.04.031"
+    }
+  ],
+  "assets": {
+    "s2_567_2_20220305T000550": {
+      "href": "KuroSiwo_COG_V8/567/s2/567_2_20220305T000550_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s2_567_2_20220228T000556": {
+      "href": "KuroSiwo_COG_V8/567/s2/567_2_20220228T000556_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s2_567_2_20210921T000541": {
+      "href": "KuroSiwo_COG_V8/567/s2/567_2_20210921T000541_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s2_567_2_20210901T000554": {
+      "href": "KuroSiwo_COG_V8/567/s2/567_2_20210901T000554_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s2_567_2_20210906T000550": {
+      "href": "KuroSiwo_COG_V8/567/s2/567_2_20210906T000550_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s2_567_1_20220306T235500": {
+      "href": "KuroSiwo_COG_V8/567/s2/567_1_20220306T235500_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s2_567_2_20210822T000555": {
+      "href": "KuroSiwo_COG_V8/567/s2/567_2_20210822T000555_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s2_567_1_20220301T235452": {
+      "href": "KuroSiwo_COG_V8/567/s2/567_1_20220301T235452_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s2_567_1_20210921T000454": {
+      "href": "KuroSiwo_COG_V8/567/s2/567_1_20210921T000454_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s2_567_1_20210907T235456": {
+      "href": "KuroSiwo_COG_V8/567/s2/567_1_20210907T235456_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s2_567_1_20210902T235452": {
+      "href": "KuroSiwo_COG_V8/567/s2/567_1_20210902T235452_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s2_567_1_20210822T000454": {
+      "href": "KuroSiwo_COG_V8/567/s2/567_1_20210822T000454_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR567_Floods_in_Queensland_Australia"
+}

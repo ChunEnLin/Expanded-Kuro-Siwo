@@ -1,0 +1,303 @@
+{
+  "EMSR118_Flood_in_Spain": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/118/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/118/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR118_Flood_in_Spain.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR118_Flood_in_Spain.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR130_Flood_in_Myanmar": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/130/06/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/130/06/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR130_Flood_in_Myanmar.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR130_Flood_in_Myanmar.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR147_Flood_in_Cumbria": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/147/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/147/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR147_Flood_in_Cumbria.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR147_Flood_in_Cumbria.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR174_Flood_in_Skopje": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/174/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/174/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR174_Flood_in_Skopje.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR174_Flood_in_Skopje.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR205_Floods_in_Sabaragamuwa_West_Sri_Lanka": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/205/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/205/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR205_Floods_in_Sabaragamuwa_West_Sri_Lanka.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR205_Floods_in_Sabaragamuwa_West_Sri_Lanka.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR267_Flood_in_Silute_Lithuania": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/267/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/267/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR267_Flood_in_Silute_Lithuania.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR267_Flood_in_Silute_Lithuania.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR273_Flood_in_North_Western_Albania": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/273/02/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/273/02/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR273_Flood_in_North_Western_Albania.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR273_Flood_in_North_Western_Albania.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR275_Floods_in_Central_Croatia": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/275/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/275/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR275_Floods_in_Central_Croatia.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR275_Floods_in_Central_Croatia.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR277_Flood_in_Thrace_Greece": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/277/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/277/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR277_Flood_in_Thrace_Greece.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR277_Flood_in_Thrace_Greece.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR279_Flood_in_the_Ebro_river_basin_Spain": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/279/05/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/279/05/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR279_Flood_in_the_Ebro_river_basin_Spain.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR279_Flood_in_the_Ebro_river_basin_Spain.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR321_Flood_in_Honduras_and_Nicaragua": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/321/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/321/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR321_Flood_in_Honduras_and_Nicaragua.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR321_Flood_in_Honduras_and_Nicaragua.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR324_Floods_in_Aude_France": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/324/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/324/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR324_Floods_in_Aude_France.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR324_Floods_in_Aude_France.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR411_Flood_in_South_East_France": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/411/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/411/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR411_Flood_in_South_East_France.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR411_Flood_in_South_East_France.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR417_Flood_in_Portugal": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/417/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/417/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR417_Flood_in_Portugal.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR417_Flood_in_Portugal.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR421_Flood_in_Occitanie_France": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/421/05/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/421/05/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR421_Flood_in_Occitanie_France.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR421_Flood_in_Occitanie_France.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR427_Flood_in_Vastra_Gotaland_Sweden": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/427/03/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/427/03/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR427_Flood_in_Vastra_Gotaland_Sweden.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR427_Flood_in_Vastra_Gotaland_Sweden.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR437_Flood_in_South_West_of_France": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/437/07/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/437/07/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR437_Flood_in_South_West_of_France.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR437_Flood_in_South_West_of_France.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR445_Flood_in_Romania": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/445/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/445/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR445_Flood_in_Romania.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR445_Flood_in_Romania.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR470_Flood_in_Togo": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/470/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/470/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR470_Flood_in_Togo.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR470_Flood_in_Togo.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR492_Flood_in_Landes_France": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/492/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/492/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR492_Flood_in_Landes_France.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR492_Flood_in_Landes_France.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR496_Flood_in_Lazio_Region_Italy": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/496/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/496/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR496_Flood_in_Lazio_Region_Italy.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR496_Flood_in_Lazio_Region_Italy.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR497_Flood_in_Germany": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/497/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/497/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR497_Flood_in_Germany.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR497_Flood_in_Germany.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR498_Flood_in_Correze_department_France": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/498/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/498/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR498_Flood_in_Correze_department_France.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR498_Flood_in_Correze_department_France.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR502_Flood_in_Southern_Ireland": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/502/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/502/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR502_Flood_in_Southern_Ireland.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR502_Flood_in_Southern_Ireland.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR518_Flood_in_Belgium": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/518/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/518/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR518_Flood_in_Belgium.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR518_Flood_in_Belgium.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR520_Flood_in_Netherlands": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/520/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/520/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR520_Flood_in_Netherlands.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR520_Flood_in_Netherlands.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR554_Floods_in_Queensland_Australia": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/554/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/554/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR554_Floods_in_Queensland_Australia.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR554_Floods_in_Queensland_Australia.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR555_Flood_in_the_Ebro_river_basin_Spain": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/555/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/555/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR555_Flood_in_the_Ebro_river_basin_Spain.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR555_Flood_in_the_Ebro_river_basin_Spain.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR559_Flood_in_Madagascar": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/559/04/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/559/04/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR559_Flood_in_Madagascar.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR559_Flood_in_Madagascar.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR561_Floods_in_Malawi": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/561/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/561/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR561_Floods_in_Malawi.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR561_Floods_in_Malawi.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR562_Floods_in_Australia": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/562/13/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/562/13/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR562_Floods_in_Australia.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR562_Floods_in_Australia.geojson",
+    "aoi_area_km2": null
+  },
+  "EMSR567_Floods_in_Queensland_Australia": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/567/08/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/567/08/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/EMSR567_Floods_in_Queensland_Australia.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/EMSR567_Floods_in_Queensland_Australia.geojson",
+    "aoi_area_km2": null
+  },
+  "event_1111002_20200915_nan": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/1111002/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/1111002/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/event_1111002_20200915_nan.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/event_1111002_20200915_nan.geojson",
+    "aoi_area_km2": null
+  },
+  "event_1111003_20191127_nan": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/1111003/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/1111003/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/event_1111003_20191127_nan.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/event_1111003_20191127_nan.geojson",
+    "aoi_area_km2": null
+  },
+  "event_1111004_20170829_nan": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/1111004/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/1111004/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/event_1111004_20170829_nan.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/event_1111004_20170829_nan.geojson",
+    "aoi_area_km2": null
+  },
+  "event_1111005_20200126_nan": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/1111005/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/1111005/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/event_1111005_20200126_nan.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/event_1111005_20200126_nan.geojson",
+    "aoi_area_km2": null
+  },
+  "event_1111006_20200131_nan": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/1111006/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/1111006/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/event_1111006_20200131_nan.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/event_1111006_20200131_nan.geojson",
+    "aoi_area_km2": null
+  },
+  "event_1111007_20190918_nan": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/1111007/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/1111007/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/event_1111007_20190918_nan.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/event_1111007_20190918_nan.geojson",
+    "aoi_area_km2": null
+  },
+  "event_1111008_20200816_nan": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/1111008/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/1111008/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/event_1111008_20200816_nan.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/event_1111008_20200816_nan.geojson",
+    "aoi_area_km2": null
+  },
+  "event_1111009_20220911_nan": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/1111009/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/1111009/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/event_1111009_20220911_nan.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/event_1111009_20220911_nan.geojson",
+    "aoi_area_km2": null
+  },
+  "event_1111010_20170311_nan": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/1111010/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/1111010/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/event_1111010_20170311_nan.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/event_1111010_20170311_nan.geojson",
+    "aoi_area_km2": null
+  },
+  "event_1111011_20201113_nan": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/1111011/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/1111011/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/event_1111011_20201113_nan.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/event_1111011_20201113_nan.geojson",
+    "aoi_area_km2": null
+  },
+  "event_1111013_20170504_nan": {
+    "raw_shp_href": "/home/chunen/nas/bigdata/final/kurosiwo_events/1111013/01/aoi/aoi.shp",
+    "mapped_shp_path": "/home/NAS/homes/chunen-10029/bigdata/final/kurosiwo_events/1111013/01/aoi/aoi.shp",
+    "geojson_web_path": "./aoi_geojson/event_1111013_20170504_nan.geojson",
+    "geojson_abs_path": "/home/gisele/webgis_v7_app/aoi_geojson/event_1111013_20170504_nan.geojson",
+    "aoi_area_km2": null
+  }
+}

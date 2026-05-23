@@ -1,0 +1,73 @@
+{
+  "type": "Collection",
+  "id": "EMSR130_Flood_in_Myanmar",
+  "stac_version": "1.1.0",
+  "description": "Flood event EMSR130_Flood_in_Myanmar",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./Precipitation/Precipitation.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./LULC/LULC.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-1/Sentinel-1.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./SRTM/SRTM.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./MLU/MLU.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./flood_event_label/flood_event_label.json",
+      "type": "application/geo+json"
+    }
+  ],
+  "title": "EMSR130_Flood_in_Myanmar",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          94.24894890584568,
+          16.112417373897674,
+          96.08007478,
+          17.940155171397237
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2015-09-13T00:00:00Z",
+          "2015-09-13T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "other",
+  "keywords": [
+    "Asia"
+  ]
+}

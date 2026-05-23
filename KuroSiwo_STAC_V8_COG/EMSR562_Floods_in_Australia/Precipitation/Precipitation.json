@@ -1,0 +1,102 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "Precipitation",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          139.89692989990755,
+          -18.17749911
+        ],
+        [
+          139.89692989990755,
+          -16.33279811
+        ],
+        [
+          137.4420138914657,
+          -16.33279811
+        ],
+        [
+          137.4420138914657,
+          -18.17749911
+        ],
+        [
+          139.89692989990755,
+          -18.17749911
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    137.4420138914657,
+    -18.17749911,
+    139.89692989990755,
+    -16.33279811
+  ],
+  "properties": {
+    "start_datetime": "2022-02-03T00:00:00Z",
+    "end_datetime": "2022-02-03T00:00:00Z",
+    "category": "Precipitation",
+    "sci:doi": "10.5067/GPM/IMERG/3B-HH/07",
+    "sci:citation": "Huffman, G.J., et al. (2023). GPM IMERG Final Run L3 Hourly 0.1 degree x 0.1 degree V07. NASA GES DISC. Data (2014-2022) retrieved from Google Earth Engine (NASA/GPM_L3/IMERG_V07).",
+    "proj:code": "EPSG:4326",
+    "proj:shape": [
+      19,
+      25
+    ],
+    "proj:transform": [
+      0.10000045742818513,
+      0.0,
+      137.40062850632637,
+      0.0,
+      -0.10000045742818513,
+      -16.300074560794176
+    ],
+    "eo:bands": [
+      {
+        "name": "precipitation",
+        "common_name": "precipitation",
+        "description": "Accumulated Precipitation"
+      }
+    ],
+    "datetime": "2022-02-03T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR562_Floods_in_Australia"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR562_Floods_in_Australia"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5067/GPM/IMERG/3B-HH/07"
+    }
+  ],
+  "assets": {
+    "imerg_acc_event_562_20220203_30": {
+      "href": "KuroSiwo_COG_V8/unknown_event/precipitation/Acc_Floods_in_Australia_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR562_Floods_in_Australia"
+}

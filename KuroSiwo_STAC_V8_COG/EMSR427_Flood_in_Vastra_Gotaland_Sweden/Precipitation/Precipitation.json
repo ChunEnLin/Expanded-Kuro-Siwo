@@ -1,0 +1,102 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "Precipitation",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          14.263764491599202,
+          57.41425786480876
+        ],
+        [
+          14.263764491599202,
+          59.31353662378383
+        ],
+        [
+          9.514910573629765,
+          59.31353662378383
+        ],
+        [
+          9.514910573629765,
+          57.41425786480876
+        ],
+        [
+          14.263764491599202,
+          57.41425786480876
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    9.514910573629765,
+    57.41425786480876,
+    14.263764491599202,
+    59.31353662378383
+  ],
+  "properties": {
+    "start_datetime": "2020-02-22T00:00:00Z",
+    "end_datetime": "2020-02-22T00:00:00Z",
+    "category": "Precipitation",
+    "sci:doi": "10.5067/GPM/IMERG/3B-HH/07",
+    "sci:citation": "Huffman, G.J., et al. (2023). GPM IMERG Final Run L3 Hourly 0.1 degree x 0.1 degree V07. NASA GES DISC. Data (2014-2022) retrieved from Google Earth Engine (NASA/GPM_L3/IMERG_V07).",
+    "proj:code": "EPSG:4326",
+    "proj:shape": [
+      20,
+      48
+    ],
+    "proj:transform": [
+      0.10000045742818513,
+      0.0,
+      9.500043455677588,
+      0.0,
+      -0.10000045742818513,
+      59.40027171234197
+    ],
+    "eo:bands": [
+      {
+        "name": "precipitation",
+        "common_name": "precipitation",
+        "description": "Accumulated Precipitation"
+      }
+    ],
+    "datetime": "2020-02-22T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR427_Flood_in_Vastra_Gotaland_Sweden"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "EMSR427_Flood_in_Vastra_Gotaland_Sweden"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5067/GPM/IMERG/3B-HH/07"
+    }
+  ],
+  "assets": {
+    "imerg_acc_event_427_20200222_15": {
+      "href": "KuroSiwo_COG_V8/unknown_event/precipitation/Acc_Flood_in_Vastra_Gotaland__Sweden_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "EMSR427_Flood_in_Vastra_Gotaland_Sweden"
+}

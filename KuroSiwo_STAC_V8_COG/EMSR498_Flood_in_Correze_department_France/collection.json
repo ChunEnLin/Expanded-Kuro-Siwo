@@ -1,0 +1,78 @@
+{
+  "type": "Collection",
+  "id": "EMSR498_Flood_in_Correze_department_France",
+  "stac_version": "1.1.0",
+  "description": "Flood event EMSR498_Flood_in_Correze_department_France",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "href": "./Precipitation/Precipitation.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./LULC/LULC.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-2/Sentinel-2.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./Sentinel-1/Sentinel-1.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./SRTM/SRTM.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./MLU/MLU.json",
+      "type": "application/geo+json"
+    },
+    {
+      "rel": "item",
+      "href": "./flood_event_label/flood_event_label.json",
+      "type": "application/geo+json"
+    }
+  ],
+  "title": "EMSR498_Flood_in_Correze_department_France",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          0.148266938,
+          43.52616141,
+          3.629418326663896,
+          45.435376425701705
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2021-02-02T00:00:00Z",
+          "2021-02-02T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "license": "other",
+  "keywords": [
+    "Europe"
+  ]
+}

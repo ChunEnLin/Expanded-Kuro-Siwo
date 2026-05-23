@@ -1,0 +1,135 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "Sentinel-2",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          48.79518367621044,
+          -18.06241154
+        ],
+        [
+          48.79518367621044,
+          -17.1597171
+        ],
+        [
+          47.95004865691078,
+          -17.1597171
+        ],
+        [
+          47.95004865691078,
+          -18.06241154
+        ],
+        [
+          48.79518367621044,
+          -18.06241154
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    47.95004865691078,
+    -18.06241154,
+    48.79518367621044,
+    -17.1597171
+  ],
+  "properties": {
+    "start_datetime": "2020-01-26T00:00:00Z",
+    "end_datetime": "2020-01-26T00:00:00Z",
+    "category": "Sentinel-2",
+    "sci:doi": "10.5270/S2_-26n7jr4",
+    "sci:citation": "Copernicus Sentinel data (2015-2022) processed by ESA. Retrieved from Google Earth Engine (COPERNICUS/S2_SR_HARMONIZED).",
+    "sci:publications": [
+      {
+        "doi": "10.1016/j.rse.2018.04.031",
+        "citation": "Claverie, M., et al. (2018). The Harmonized Landsat and Sentinel-2 (HLS) product: Algorithms and methods. Remote Sensing of Environment."
+      }
+    ],
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      7632,
+      6101
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      5355170.0,
+      0.0,
+      -10.0,
+      -1954490.0
+    ],
+    "eo:bands": [
+      {
+        "name": "B4",
+        "common_name": "red",
+        "description": "Red"
+      },
+      {
+        "name": "B3",
+        "common_name": "green",
+        "description": "Green"
+      },
+      {
+        "name": "B2",
+        "common_name": "blue",
+        "description": "Blue"
+      },
+      {
+        "name": "B8",
+        "common_name": "nir",
+        "description": "NIR"
+      }
+    ],
+    "datetime": "2020-01-26T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "event_1111005_20200126_nan"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "event_1111005_20200126_nan"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5270/S2_-26n7jr4"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1016/j.rse.2018.04.031"
+    }
+  ],
+  "assets": {
+    "s2_1111005_20200126T070426": {
+      "href": "KuroSiwo_COG_V8/unknown_event/s2/1111005_20200126T070426_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s2_1111005_20191127T070432": {
+      "href": "KuroSiwo_COG_V8/unknown_event/s2/1111005_20191127T070432_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    },
+    "s2_1111005_20191117T070434": {
+      "href": "KuroSiwo_COG_V8/unknown_event/s2/1111005_20191117T070434_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "event_1111005_20200126_nan"
+}

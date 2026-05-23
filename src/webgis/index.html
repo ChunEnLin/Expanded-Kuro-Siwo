@@ -1,0 +1,5080 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <title>KuroSiwo Multi-Event WebGIS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+    }
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; height: 74px;
+      background: linear-gradient(90deg, #183153 0%, #244b7a 100%);
+      color: white; z-index: 2000; box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; box-sizing: border-box;
+    }
+    .topbar-title { font-size: 28px; font-weight: 700; letter-spacing: 0.4px; }
+    .topbar-subtitle { font-size: 13px; opacity: 0.9; white-space: nowrap; }
+    .container {
+      display: grid; grid-template-columns: 340px 1fr 360px;
+      height: calc(100vh - 74px); margin-top: 74px;
+    }
+    .left, .right {
+      padding: 12px; overflow: auto; background: #fafafa; box-sizing: border-box;
+    }
+    .left { border-right: 1px solid #ddd; }
+    .right { border-left: 1px solid #ddd; }
+    .map-wrap { position: relative; width: 100%; height: 100%; background: white; }
+    #map { width: 100%; height: 100%; }
+    .map-legend {
+      position: absolute; left: 12px; bottom: 12px; z-index: 1000;
+      background: rgba(255,255,255,0.95); border: 1px solid #ccc; border-radius: 10px;
+      padding: 10px 12px; min-width: 220px; max-width: 300px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12); font-size: 13px; line-height: 1.5;
+    }
+    .card {
+      background: white; border: 1px solid #ddd; border-radius: 10px;
+      padding: 12px; margin-bottom: 12px;
+    }
+    .btn {
+      display: block; width: 100%; margin: 8px 0; padding: 10px 12px;
+      border: 1px solid #ccc; border-radius: 8px; background: white; cursor: pointer;
+      text-align: left; font-size: 14px; box-sizing: border-box;
+    }
+    .btn:hover { background: #eef6ff; }
+    .btn.active-layer { background: #dcecff; border-color: #6aa0db; font-weight: 700; }
+    .layer-group-title {
+      margin-top: 12px; margin-bottom: 6px; font-weight: 700; font-size: 15px; color: #1e3d63;
+    }
+    .mono { font-family: monospace; word-break: break-word; font-size: 12px; line-height: 1.5; }
+    .legend-row { display: flex; align-items: center; gap: 8px; margin: 4px 0; font-size: 13px; }
+    .swatch {
+      width: 14px; height: 14px; border: 1px solid #999; display: inline-block; flex: 0 0 14px;
+    }
+    .legend-gradient {
+      margin-top: 8px; height: 18px; border-radius: 6px;
+      background: linear-gradient(to right, #f7fbff 0%, #deebf7 25%, #9ecae1 50%, #3182bd 75%, #08519c 100%);
+    }
+    .tick-row { display: flex; justify-content: space-between; font-size: 12px; margin-top: 4px; }
+    select {
+      width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #ccc;
+      background: white; font-size: 14px; margin-top: 8px; box-sizing: border-box;
+    }
+    .small-note { font-size: 12px; color: #666; line-height: 1.5; }
+    .stats-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 12px; }
+    .stats-table th, .stats-table td {
+      border: 1px solid #ddd; padding: 6px 8px; text-align: center;
+    }
+    .stats-table th { background: #f3f3f3; }
+    .slider-wrap { margin-top: 8px; }
+    .slider-wrap input[type="range"] { width: 100%; }
+    .toggle-line { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 14px; }
+    .coord-value {
+      margin-top: 8px; padding: 8px 10px; background: #f7f9fb;
+      border: 1px solid #d8e0e8; border-radius: 8px; min-height: 20px;
+    }
+    details.info-accordion {
+      background: white; border: 1px solid #ddd; border-radius: 10px;
+      margin-bottom: 12px; overflow: hidden;
+    }
+    details.info-accordion summary {
+      cursor: pointer; list-style: none; padding: 14px 14px;
+      font-weight: 700; font-size: 16px; background: #ffffff; border-bottom: 1px solid transparent;
+    }
+    details.info-accordion[open] summary { border-bottom: 1px solid #e5e5e5; }
+    details.info-accordion summary::-webkit-details-marker { display: none; }
+    .accordion-body { padding: 12px 14px 14px 14px; background: #fff; }
+    h3 { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-title">KuroSiwo Multi-Event WebGIS</div>
+    <div class="topbar-subtitle">STAC × COG × TiTiler × Flood Event Viewer</div>
+  </header>
+
+  <div class="container">
+    <div class="left">
+      <div class="card">
+        <div><b>選擇事件</b></div>
+        <select id="eventSelect"></select>
+        <div class="small-note" style="margin-top:8px;">也可以直接點地圖上的事件框來切換。</div>
+      </div>
+
+      <div class="card">
+        <div><b>目前事件：</b><span id="currentEventName">尚未載入</span></div>
+        <div style="margin-top:8px;"><b>目前圖層：</b><span id="layerName">無</span></div>
+      </div>
+
+      <div class="card">
+        <div><b>圖層透明度</b></div>
+        <div class="slider-wrap">
+          <input type="range" id="opacitySlider" min="0" max="1" step="0.05" value="0.80">
+        </div>
+        <div class="small-note">目前透明度：<span id="opacityValue">0.80</span></div>
+      </div>
+
+      <div class="card">
+        <div><b>座標顯示</b></div>
+        <label class="toggle-line">
+          <input type="checkbox" id="coordToggle">
+          <span>顯示游標座標</span>
+        </label>
+        <div class="small-note" style="margin-top:8px;">啟用後，滑鼠移動到地圖上即可顯示目前 WGS84 經緯度。</div>
+        <div id="coordValue" class="mono coord-value">未啟用</div>
+      </div>
+
+      <div class="card">
+        <div id="layerControlContent">載入中...</div>
+      </div>
+    </div>
+
+    <div class="map-wrap">
+      <div id="map"></div>
+      <div class="map-legend">
+        <div id="legendBox">請先選擇圖層</div>
+      </div>
+    </div>
+
+    <div class="right">
+      <details class="info-accordion" open>
+        <summary>事件資訊</summary>
+        <div class="accordion-body">
+          <div id="metaBox">載入中...</div>
+        </div>
+      </details>
+      <div class="card">
+        <h3>AOI 資訊</h3>
+        <div id="aoiInfoBox">載入中...</div>
+      </div>
+
+
+
+      <div class="card">
+        <h3>圖層統計</h3>
+        <div id="statsBox">請先選擇圖層</div>
+      </div>
+
+      <details class="info-accordion">
+        <summary>資料資產</summary>
+        <div class="accordion-body">
+          <div class="mono" id="assetBox">尚未載入</div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+  <script>
+
+    const ROOT_CATALOG_URL = "./data/catalog.json";
+    const CHUNEN_NAS_PREFIX = "/home/chunen/nas";
+    const CHUNEN_REAL_PREFIX = "/home/NAS/homes/chunen-10029";
+    const TITILER_BASE = "http://127.0.0.1:8081";
+
+    const LULC_COLORMAP = {
+      "0": [65,155,223,255],
+      "1": [57,125,73,255],
+      "2": [136,176,83,255],
+      "3": [122,135,198,255],
+      "4": [228,150,53,255],
+      "5": [223,195,90,255],
+      "6": [196,40,27,255],
+      "7": [165,155,143,255],
+      "8": [179,159,225,255]
+    };
+
+    const ITEM_ORDER = {
+      "LULC": 1,
+      "Precipitation": 2,
+      "S2": 3,
+      "S1": 4,
+      "DEM": 5,
+      "flood_event_label": 6
+    };
+
+    const map = L.map("map").setView([20, 0], 2);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: "&copy; OpenStreetMap contributors"
+    }).addTo(map);
+
+    let rasterLayer = null;
+    let eventOutlineLayer = null;
+    let currentEventId = null;
+
+    const eventDataMap = new Map();
+    const eventLayerMap = new Map();
+    const layerCatalogByEvent = new Map();
+    const displayEntryMap = new Map();
+    const statsCache = new Map();
+    const aoiGeojsonCache = new Map();
+        const aoiInfoByEvent = new Map();
+    let aoiMetaCache = null;
+    let precipOverrideCache = null;
+let aoiLayer = null;
+
+        let currentAOIOverlapRatio = null;
+function setLayerName(text) {
+      const el = document.getElementById("layerName");
+      if (el) el.textContent = text;
+    }
+
+    function getCurrentOpacity() {
+      const slider = document.getElementById("opacitySlider");
+      return slider ? parseFloat(slider.value) : 0.8;
+    }
+
+    function updateOpacityText(value) {
+      const el = document.getElementById("opacityValue");
+      if (el) el.textContent = Number(value).toFixed(2);
+    }
+
+    async function fetchJSON(url) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`讀取失敗: ${url}`);
+      return await res.json();
+    }
+
+    async function fetchAllLayerStatistics(localPath) {
+      if (statsCache.has(localPath)) return statsCache.get(localPath);
+      const url = `${TITILER_BASE}/cog/statistics?url=${encodeURIComponent(localPath)}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Statistics 讀取失敗: ${localPath}`);
+      const data = await res.json();
+      statsCache.set(localPath, data);
+      return data;
+    }
+
+    async function fetchCogInfo(localPath) {
+      const url = `${TITILER_BASE}/cog/info?url=${encodeURIComponent(localPath)}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`COG info 讀取失敗: ${localPath}`);
+      return await res.json();
+    }
+
+    function getCollectionBBox(collection) {
+      if (collection.extent?.spatial?.bbox?.length) return collection.extent.spatial.bbox[0];
+      if (collection.bbox) return collection.bbox;
+      return null;
+    }
+
+
+    async function loadAOIGeoJSON(eventId) {
+      if (aoiGeojsonCache.has(eventId)) return aoiGeojsonCache.get(eventId);
+
+      try {
+        const res = await fetch(`./aoi_geojson/${eventId}.geojson`);
+        if (!res.ok) {
+          aoiGeojsonCache.set(eventId, null);
+          return null;
+        }
+        const geo = await res.json();
+        aoiGeojsonCache.set(eventId, geo);
+        return geo;
+      } catch (err) {
+        console.warn("AOI GeoJSON load failed:", eventId, err);
+        aoiGeojsonCache.set(eventId, null);
+        return null;
+      }
+    }
+
+    async function renderAOIOverlay(eventId) {
+      if (aoiLayer) {
+        map.removeLayer(aoiLayer);
+        aoiLayer = null;
+      }
+
+      const geo = await loadAOIGeoJSON(eventId);
+      if (!geo) return null;
+
+      aoiLayer = L.geoJSON(geo, {
+        style: {
+          color: "#ff7f0e",
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.08
+        }
+      }).addTo(map);
+
+      return geo;
+    }
+
+    function mercatorXToLon(x) {
+      return (x / 20037508.34) * 180.0;
+    }
+
+    function mercatorYToLat(y) {
+      return (180 / Math.PI) * (2 * Math.atan(Math.exp(y / 6378137)) - Math.PI / 2);
+    }
+
+    function tileInfoToWGS84Polygon(info) {
+      if (!info || !info.bounds || !info.crs) return null;
+
+      const crsText = String(info.crs);
+      let west, south, east, north;
+
+      if (crsText.includes("3857")) {
+        const [minx, miny, maxx, maxy] = info.bounds;
+        west = mercatorXToLon(minx);
+        east = mercatorXToLon(maxx);
+        south = mercatorYToLat(miny);
+        north = mercatorYToLat(maxy);
+      } else if (crsText.includes("4326")) {
+        [west, south, east, north] = info.bounds;
+      } else {
+        return null;
+      }
+
+      return turf.bboxPolygon([west, south, east, north]);
+    }
+
+    function normalizeToFeatureList(geo) {
+      if (!geo) return [];
+      if (geo.type === "FeatureCollection") return geo.features || [];
+      if (geo.type === "Feature") return [geo];
+      return [{ type: "Feature", properties: {}, geometry: geo }];
+    }
+
+    function computeAOIOverlapRatio(tilePoly, aoiGeo) {
+      if (!tilePoly || !aoiGeo) return 0;
+
+      let totalArea = 0;
+      const tileArea = turf.area(tilePoly);
+      if (!tileArea || tileArea <= 0) return 0;
+
+      for (const feat of normalizeToFeatureList(aoiGeo)) {
+        try {
+          if (!feat || !feat.geometry) continue;
+          const inter = turf.intersect(tilePoly, feat);
+          if (inter) totalArea += turf.area(inter);
+        } catch (err) {
+          console.warn("AOI intersection failed:", err);
+        }
+      }
+
+      return totalArea / tileArea;
+    }
+
+    function drawSelectedBBox(bbox) {
+      if (!bbox) return;
+      const [west, south, east, north] = bbox;
+      if (eventOutlineLayer) map.removeLayer(eventOutlineLayer);
+
+      eventOutlineLayer = L.rectangle([[south, west], [north, east]], {
+        color: "#d62728",
+        weight: 3,
+        opacity: 1,
+        fillOpacity: 0,
+        interactive: false
+      }).addTo(map);
+
+      eventOutlineLayer.bringToFront();
+    }
+
+    function focusOnEvent(eventId) {
+      const layer = eventLayerMap.get(eventId);
+      if (layer) {
+        map.fitBounds(layer.getBounds(), { padding: [40, 40], animate: true });
+        layer.bringToFront();
+        return;
+      }
+
+      const data = eventDataMap.get(eventId);
+      if (data?.bbox) {
+        const [west, south, east, north] = data.bbox;
+        map.fitBounds([[south, west], [north, east]], { padding: [40, 40], animate: true });
+      }
+    }
+
+    function formatTickValue(v) {
+      if (!isFinite(v)) return "-";
+      if (Math.abs(v) >= 100) return v.toFixed(0);
+      if (Math.abs(v) >= 10) return v.toFixed(1);
+      return v.toFixed(2);
+    }
+
+    function niceStep(range, targetSegments = 4) {
+      const rough = range / targetSegments;
+      if (rough <= 0) return 1;
+      const exponent = Math.floor(Math.log10(rough));
+      const base = Math.pow(10, exponent);
+      const fraction = rough / base;
+
+      let niceFraction;
+      if (fraction <= 1) niceFraction = 1;
+      else if (fraction <= 2) niceFraction = 2;
+      else if (fraction <= 5) niceFraction = 5;
+      else niceFraction = 10;
+
+      return niceFraction * base;
+    }
+
+    function computeNiceRange(minVal, maxVal, forceMin = null) {
+      let min = (forceMin !== null && forceMin !== undefined) ? forceMin : minVal;
+      let max = maxVal;
+
+      if (!isFinite(min)) min = 0;
+      if (!isFinite(max)) max = 1;
+      if (max <= min) max = min + 1;
+
+      const step = niceStep(max - min, 4);
+      const niceMin = (forceMin !== null && forceMin !== undefined)
+        ? forceMin
+        : Math.floor(min / step) * step;
+      const niceMax = Math.ceil(max / step) * step;
+
+      const ticks = [];
+      for (let v = niceMin; v <= niceMax + step * 0.5; v += step) {
+        ticks.push(Number(v.toFixed(6)));
+      }
+
+      return { min: niceMin, max: niceMax, step, ticks };
+    }
+
+    function renderContinuousLegend(title, unit, rangeInfo) {
+      const box = document.getElementById("legendBox");
+      const tickHtml = rangeInfo.ticks.map(v => `<span>${formatTickValue(v)}</span>`).join("");
+      box.innerHTML = `
+        <div><b>${title}</b>${unit ? `（${unit}）` : ""}</div>
+        <div class="legend-gradient"></div>
+        <div class="tick-row">${tickHtml}</div>
+      `;
+    }
+
+    function renderLulcLegend() {
+      const box = document.getElementById("legendBox");
+      box.innerHTML = `
+        <div><b>LULC 類別圖例</b></div>
+        <div style="margin-top:8px;">
+          <div class="legend-row"><span class="swatch" style="background:#419BDF;"></span>Water</div>
+          <div class="legend-row"><span class="swatch" style="background:#397D49;"></span>Trees</div>
+          <div class="legend-row"><span class="swatch" style="background:#88B053;"></span>Grass</div>
+          <div class="legend-row"><span class="swatch" style="background:#7A87C6;"></span>Flooded vegetation</div>
+          <div class="legend-row"><span class="swatch" style="background:#E49635;"></span>Crops</div>
+          <div class="legend-row"><span class="swatch" style="background:#DFC35A;"></span>Shrub & Scrub</div>
+          <div class="legend-row"><span class="swatch" style="background:#C4281B;"></span>Built Area</div>
+          <div class="legend-row"><span class="swatch" style="background:#A59B8F;"></span>Bare ground</div>
+          <div class="legend-row"><span class="swatch" style="background:#B39FE1;"></span>Snow & Ice</div>
+        </div>
+      `;
+    }
+
+    function renderRgbLegend(text) {
+      const box = document.getElementById("legendBox");
+      box.innerHTML = `
+        <div><b>RGB 影像</b></div>
+        <div style="margin-top:8px;">${text}</div>
+        <div style="margin-top:8px;height:18px;border-radius:6px;
+                    background: linear-gradient(to right, black 0%, #666 35%, #bbb 70%, white 100%);"></div>
+        <div style="font-size:12px;margin-top:4px;">
+          這是 RGB 組合影像的顯示範圍參考，不是單一物理量色帶。
+        </div>
+      `;
+    }
+
+    function clearLegend() {
+      document.getElementById("legendBox").innerHTML = "請先選擇圖層";
+    }
+
+    function renderStatsPlaceholder(text) {
+      document.getElementById("statsBox").innerHTML = text;
+    }
+
+    function renderContinuousStats(label, unit, stats, rangeInfo) {
+      document.getElementById("statsBox").innerHTML = `
+        <div><b>${label}</b>${unit ? `（${unit}）` : ""}</div>
+        <table class="stats-table">
+          <tr><th>min</th><th>max</th><th>mean</th><th>stddev</th></tr>
+          <tr>
+            <td>${formatTickValue(stats.min)}</td>
+            <td>${formatTickValue(stats.max)}</td>
+            <td>${formatTickValue(stats.mean)}</td>
+            <td>${formatTickValue(stats.std ?? stats.stdev ?? NaN)}</td>
+          </tr>
+        </table>
+        <div class="small-note" style="margin-top:8px;">
+          目前顯示 rescale 範圍：${formatTickValue(rangeInfo.min)} – ${formatTickValue(rangeInfo.max)}
+        </div>
+      `;
+    }
+
+    function renderRgbStats(label, statsObj, desc) {
+      const keys = Object.keys(statsObj).sort();
+      const rows = keys.map(key => {
+        const s = statsObj[key];
+        return `
+          <tr>
+            <td>${key}</td>
+            <td>${formatTickValue(s.min)}</td>
+            <td>${formatTickValue(s.max)}</td>
+            <td>${formatTickValue(s.mean)}</td>
+            <td>${formatTickValue(s.std ?? s.stdev ?? NaN)}</td>
+          </tr>
+        `;
+      }).join("");
+
+      document.getElementById("statsBox").innerHTML = `
+        <div><b>${label}</b></div>
+        <div class="small-note">${desc}</div>
+        <table class="stats-table">
+          <tr><th>Band</th><th>min</th><th>max</th><th>mean</th><th>stddev</th></tr>
+          ${rows}
+        </table>
+      `;
+    }
+
+    function renderCategoricalStats(label, statsObj) {
+      const firstKey = Object.keys(statsObj)[0];
+      const s = firstKey ? statsObj[firstKey] : {};
+      document.getElementById("statsBox").innerHTML = `
+        <div><b>${label}</b></div>
+        <div class="small-note" style="margin-top:8px;">
+          此圖層以分類色彩方式顯示。若需各類別面積比例，建議另做 histogram / zonal 類統計。
+        </div>
+        <table class="stats-table">
+          <tr><th>min</th><th>max</th><th>mean</th><th>stddev</th></tr>
+          <tr>
+            <td>${formatTickValue(s.min)}</td>
+            <td>${formatTickValue(s.max)}</td>
+            <td>${formatTickValue(s.mean)}</td>
+            <td>${formatTickValue(s.std ?? s.stdev ?? NaN)}</td>
+          </tr>
+        </table>
+      `;
+    }
+
+    function getTileUrl(localPath, extra = "") {
+      let url = `${TITILER_BASE}/cog/tiles/WebMercatorQuad/{z}/{x}/{y}?url=${encodeURIComponent(localPath)}`;
+      if (extra) url += `&${extra}`;
+      return url;
+    }
+
+    function clearRaster() {
+      if (rasterLayer) map.removeLayer(rasterLayer);
+      rasterLayer = null;
+      setLayerName("無");
+      clearLegend();
+      renderStatsPlaceholder("請先選擇圖層");
+      document.querySelectorAll(".btn[data-layer-id]").forEach(btn => {
+        btn.classList.remove("active-layer");
+      });
+          if (currentEventId) {
+        renderAOIInfo(currentEventId);
+      }
+}
+
+    function normalizeItemName(name) {
+      if (!name) return "Other";
+      const lower = name.toLowerCase();
+      if (lower.includes("lulc")) return "LULC";
+      if (lower.includes("precip")) return "Precipitation";
+      if (lower === "s2" || lower.includes("/s2") || lower.includes("sentinel-2")) return "S2";
+      if (lower === "s1" || lower.includes("/s1") || lower.includes("sentinel-1")) return "S1";
+      if (lower.includes("dem")) return "DEM";
+      if (lower.includes("label")) return "flood_event_label";
+      return name;
+    }
+
+    function getItemOrder(name) {
+      return ITEM_ORDER[name] || 999;
+    }
+
+    function hrefToLocalPath(assetHref, itemUrl) {
+      if (assetHref.startsWith(CHUNEN_NAS_PREFIX + "/")) {
+        return assetHref.replace(CHUNEN_NAS_PREFIX, CHUNEN_REAL_PREFIX);
+      }
+
+      if (assetHref.startsWith("/home/NAS/")) {
+        return assetHref;
+      }
+
+      const resolvedUrl = new URL(assetHref, itemUrl).toString();
+      const u = new URL(resolvedUrl);
+
+      if (u.pathname.startsWith("/home/chunen/nas/")) {
+        return u.pathname.replace(CHUNEN_NAS_PREFIX, CHUNEN_REAL_PREFIX);
+      }
+
+      return u.pathname;
+    }
+
+    function getFileName(path) {
+      return path.split("/").pop();
+    }
+
+    function parseDateFromFileName(filename) {
+      const m = filename.match(/(20\d{2})(\d{2})(\d{2})/);
+      if (!m) return null;
+      return `${m[1]}-${m[2]}-${m[3]}`;
+    }
+
+    function getLayerDate(layer) {
+      return parseDateFromFileName(layer.filename) || layer.assetKey || "unknown-date";
+    }
+
+    function prettyLayerLabel(itemName, filename, assetKey) {
+      const eventDate = parseDateFromFileName(filename);
+      if (itemName === "S2") return eventDate ? `Sentinel-2（${eventDate}）` : `Sentinel-2（${assetKey}）`;
+      if (itemName === "Precipitation") return eventDate ? `降雨（${eventDate}）` : "降雨";
+      if (itemName === "LULC") return eventDate ? `LULC（${eventDate}）` : "LULC";
+      if (itemName === "DEM") return "DEM";
+      if (itemName === "S1") return eventDate ? `Sentinel-1（${eventDate}）` : `Sentinel-1（${assetKey}）`;
+      return `${itemName}（${assetKey}）`;
+    }
+
+    function getStatsStd(s) {
+      return Number(s.std ?? s.stdev ?? 0);
+    }
+
+    function isS2StatsEmpty(statsObj) {
+      const keys = Object.keys(statsObj).sort().slice(0, 4);
+      if (!keys.length) return true;
+
+      const hasSignal = keys.some(k => {
+        const s = statsObj[k] || {};
+        return Number(s.max || 0) > 0 || Number(s.mean || 0) > 0 || getStatsStd(s) > 0;
+      });
+
+      return !hasSignal;
+    }
+
+    function scoreS2Stats(statsObj) {
+      const keys = Object.keys(statsObj).sort().slice(0, 4);
+      let score = 0;
+      for (const k of keys) {
+        const s = statsObj[k] || {};
+        score += Number(s.max || 0);
+        score += Number(s.mean || 0);
+        score += getStatsStd(s);
+      }
+      return score;
+    }
+
+    
+
+    
+    
+    async function loadPrecipOverride() {
+      if (precipOverrideCache) return precipOverrideCache;
+      try {
+        const res = await fetch("./precip_override.json");
+        if (!res.ok) {
+          precipOverrideCache = {};
+          return precipOverrideCache;
+        }
+        precipOverrideCache = await res.json();
+        return precipOverrideCache;
+      } catch (err) {
+        console.warn("precip override load failed:", err);
+        precipOverrideCache = {};
+        return precipOverrideCache;
+      }
+    }
+
+async function loadAOIMeta() {
+      if (aoiMetaCache) return aoiMetaCache;
+      try {
+        const res = await fetch("./aoi_meta.json");
+        if (!res.ok) {
+          aoiMetaCache = {};
+          return aoiMetaCache;
+        }
+        aoiMetaCache = await res.json();
+        return aoiMetaCache;
+      } catch (err) {
+        console.warn("AOI meta load failed:", err);
+        aoiMetaCache = {};
+        return aoiMetaCache;
+      }
+    }
+
+function getAOIGeoJSONWebPath(eventId) {
+      return `./aoi_geojson/${eventId}.geojson`;
+    }
+
+    function computeAOIAreaKm2(aoiGeo) {
+      if (!aoiGeo) return null;
+
+      let totalArea = 0;
+      for (const feat of normalizeToFeatureList(aoiGeo)) {
+        try {
+          if (!feat || !feat.geometry) continue;
+          totalArea += turf.area(feat);
+        } catch (err) {
+          console.warn("AOI area calculation failed:", err);
+        }
+      }
+
+      return totalArea > 0 ? totalArea / 1e6 : null;
+    }
+
+    
+    async function renderAOIInfo(eventId) {
+      const box = document.getElementById("aoiInfoBox");
+      if (!box) return;
+
+      const meta = await loadAOIMeta();
+      const info = meta[eventId] || {};
+
+      const rawShp = info.raw_shp_href || "metadata 中未找到 .shp asset";
+      const geojsonPath = info.geojson_web_path || `./aoi_geojson/${eventId}.geojson`;
+
+      let areaKm2 = info.aoi_area_km2;
+      if (areaKm2 == null) {
+        const aoiGeo = await loadAOIGeoJSON(eventId);
+        areaKm2 = computeAOIAreaKm2(aoiGeo);
+      }
+
+      const overlapText = currentAOIOverlapRatio == null
+        ? "尚未選取 S2 tile 或此圖層未使用 AOI overlap"
+        : `${(currentAOIOverlapRatio * 100).toFixed(1)}%`;
+
+      box.innerHTML = `
+        <div><b>AOI shp 原始路徑</b><br><span class="mono">${rawShp}</span></div>
+        <div style="margin-top:10px;"><b>轉出的 GeoJSON 路徑</b><br><span class="mono">${geojsonPath}</span></div>
+        <div style="margin-top:10px;"><b>AOI 面積</b><br>${areaKm2 == null ? "未找到 / 無法計算" : Number(areaKm2).toFixed(2) + " km²"}</div>
+        <div style="margin-top:10px;"><b>AOI overlap ratio</b><br>${overlapText}</div>
+      `;
+    }
+
+async function chooseBestS2Layer(candidates, eventId) {
+      const aoiGeo = await loadAOIGeoJSON(eventId);
+      const evaluated = [];
+
+      for (const layer of candidates) {
+        try {
+          const info = await fetchCogInfo(layer.localPath);
+          const stats = await fetchAllLayerStatistics(layer.localPath);
+
+          if (isS2StatsEmpty(stats)) continue;
+
+          const tilePoly = tileInfoToWGS84Polygon(info);
+          const overlapRatio = (aoiGeo && tilePoly) ? computeAOIOverlapRatio(tilePoly, aoiGeo) : 0;
+          const signalScore = scoreS2Stats(stats);
+
+          evaluated.push({
+            layer,
+            info,
+            stats,
+            overlapRatio,
+            signalScore
+          });
+        } catch (err) {
+          console.warn("S2 tile statistics failed:", layer.localPath, err);
+        }
+      }
+
+      if (!evaluated.length) {
+        throw new Error("此日期的所有 S2 tiles 幾乎都是空值、nodata，或 TiTiler 無法讀取。");
+      }
+
+      evaluated.sort((a, b) => {
+        if (Math.abs(b.overlapRatio - a.overlapRatio) > 1e-9) {
+          return b.overlapRatio - a.overlapRatio;
+        }
+        return b.signalScore - a.signalScore;
+      });
+
+      return evaluated[0];
+    }
+
+    async function loadLayerCatalogForEvent(eventId) {
+      const eventData = eventDataMap.get(eventId);
+      if (!eventData) return [];
+
+      const collectionUrl = eventData.collectionUrl;
+      const collection = await fetchJSON(collectionUrl);
+      const itemLinks = (collection.links || []).filter(link => link.rel === "item");
+      const layers = [];
+
+      for (const link of itemLinks) {
+        const itemUrl = new URL(link.href, collectionUrl).toString();
+        const itemJson = await fetchJSON(itemUrl);
+
+        const urlObj = new URL(itemUrl);
+        const pathParts = urlObj.pathname.split("/").filter(Boolean);
+        const folderName = pathParts[pathParts.length - 2] || itemJson.id || "Other";
+        const itemName = normalizeItemName(folderName);
+
+        if (!itemJson.assets) continue;
+
+        for (const [assetKey, asset] of Object.entries(itemJson.assets)) {
+          if (!asset?.href) continue;
+
+          const hrefLower = asset.href.toLowerCase();
+          if (!(hrefLower.endsWith(".tif") || hrefLower.endsWith(".tiff"))) continue;
+
+          let localPath = hrefToLocalPath(asset.href, itemUrl);
+          const filename = getFileName(asset.href);
+
+          if (itemName === "Precipitation") {
+            const precipOverride = await loadPrecipOverride();
+            if (precipOverride[eventId]) {
+              localPath = precipOverride[eventId];
+            }
+          }
+
+          layers.push({
+            id: `${eventId}__${itemName}__${assetKey}`,
+            eventId,
+            itemName,
+            assetKey,
+            itemUrl,
+            itemId: itemJson.id || folderName,
+            label: prettyLayerLabel(itemName, filename, assetKey),
+            filename,
+            localPath,
+            assetTitle: asset.title || assetKey
+          });
+        }
+      }
+
+      layers.sort((a, b) => {
+        const orderDiff = getItemOrder(a.itemName) - getItemOrder(b.itemName);
+        if (orderDiff !== 0) return orderDiff;
+        return a.label.localeCompare(b.label);
+      });
+
+      layerCatalogByEvent.set(eventId, layers);
+      return layers;
+    }
+
+    function buildDisplayEntries(eventId) {
+      const rawLayers = layerCatalogByEvent.get(eventId) || [];
+      const entries = [];
+      const s2Groups = {};
+
+      for (const layer of rawLayers) {
+        if (layer.itemName === "S2") {
+          const date = getLayerDate(layer);
+          if (!s2Groups[date]) s2Groups[date] = [];
+          s2Groups[date].push(layer);
+        } else {
+          entries.push({
+            id: layer.id,
+            type: "single",
+            itemName: layer.itemName,
+            label: layer.label,
+            layer: layer
+          });
+        }
+      }
+
+      Object.keys(s2Groups).sort().forEach(date => {
+        const groupLayers = s2Groups[date];
+        entries.push({
+          id: `${eventId}__S2GROUP__${date}`,
+          type: "s2_group",
+          itemName: "S2",
+          label: `Sentinel-2（${date}）`,
+          date: date,
+          layers: groupLayers,
+          count: groupLayers.length
+        });
+      });
+
+      entries.sort((a, b) => {
+        const orderDiff = getItemOrder(a.itemName) - getItemOrder(b.itemName);
+        if (orderDiff !== 0) return orderDiff;
+        return a.label.localeCompare(b.label);
+      });
+
+      return entries;
+    }
+
+    function renderLayerControls(eventId) {
+      const box = document.getElementById("layerControlContent");
+      const entries = buildDisplayEntries(eventId);
+
+      displayEntryMap.clear();
+      for (const entry of entries) {
+        displayEntryMap.set(entry.id, entry);
+      }
+
+      if (!entries.length) {
+        box.innerHTML = `
+          <div style="font-weight:bold; margin-bottom:8px;">圖層控制</div>
+          <div class="small-note">
+            此事件目前尚未在 STAC assets 中找到可直接顯示的 tif 圖層。
+          </div>
+        `;
+        return;
+      }
+
+      const grouped = {};
+      for (const entry of entries) {
+        if (!grouped[entry.itemName]) grouped[entry.itemName] = [];
+        grouped[entry.itemName].push(entry);
+      }
+
+      let html = "";
+      Object.keys(grouped)
+        .sort((a, b) => getItemOrder(a) - getItemOrder(b))
+        .forEach(groupName => {
+          html += `<div class="layer-group-title">${groupName}</div>`;
+          for (const entry of grouped[groupName]) {
+            const suffix = (entry.type === "s2_group" && entry.count > 1) ? `　〔${entry.count} tiles〕` : "";
+            html += `
+              <button class="btn" data-layer-id="${entry.id}" onclick="showDynamicLayer('${entry.id}')">
+                ${entry.label}${suffix}
+              </button>
+            `;
+          }
+        });
+
+        html += `<button class="btn" onclick="clearRaster()">關閉 raster 圖層</button>`;
+        box.innerHTML = html;
+    }
+
+    function renderMeta(collection) {
+      const bbox = getCollectionBBox(collection);
+      let temporal = ["-", "-"];
+
+      if (collection.extent?.temporal?.interval?.length) {
+        temporal = collection.extent.temporal.interval[0];
+      }
+
+      document.getElementById("metaBox").innerHTML = `
+        <p><b>標題：</b>${collection.title || "-"}</p>
+        <p><b>ID：</b>${collection.id || "-"}</p>
+        <p><b>時間：</b>${temporal[0] || "-"} ~ ${temporal[1] || "-"}</p>
+        <p><b>空間範圍：</b>${bbox ? bbox.map(v => Number(v).toFixed(4)).join(", ") : "-"}</p>
+        <p><b>說明：</b>${collection.description || "-"}</p>
+      `;
+    }
+
+    function renderAssets(eventId) {
+      const box = document.getElementById("assetBox");
+      const layers = layerCatalogByEvent.get(eventId) || [];
+
+      if (!layers.length) {
+        box.innerHTML = "此事件目前尚未找到可直接顯示的 tif 圖層資產。";
+        return;
+      }
+
+      box.innerHTML = layers.map(layer => `
+        <div style="margin-bottom:12px;">
+          <div><b>${layer.label}</b></div>
+          <div>Item：${layer.itemName}</div>
+          <div>Local path：<br>${layer.localPath}</div>
+        </div>
+      `).join("");
+    }
+
+    function updateEventStyles() {
+      for (const [eventId, layer] of eventLayerMap.entries()) {
+        if (eventId === currentEventId) {
+          layer.setStyle({ color: "#d62728", weight: 3, fillOpacity: 0 });
+          layer.bringToFront();
+        } else {
+          layer.setStyle({ color: "#3388ff", weight: 1, fillOpacity: 0 });
+        }
+      }
+    }
+
+    async function showDynamicLayer(controlId) {
+      try {
+        const entry = displayEntryMap.get(controlId);
+        if (!entry) throw new Error("找不到對應圖層設定。");
+
+        let cfg = null;
+        let displayLabel = entry.label;
+        let chosenTileNote = "";
+
+        if (entry.type === "s2_group") {
+          const chosen = await chooseBestS2Layer(entry.layers, currentEventId);
+          cfg = chosen.layer;
+          currentAOIOverlapRatio = chosen.overlapRatio;
+          chosenTileNote = `自動選用：${getFileName(cfg.localPath)}；AOI 重疊比例：${(chosen.overlapRatio * 100).toFixed(1)}%`;
+          chosenTileNote = `自動選用：${getFileName(cfg.localPath)}`;
+        } else {
+          cfg = entry.layer;
+          currentAOIOverlapRatio = null;
+        }
+
+        if (!cfg) throw new Error("找不到可顯示的圖層。");
+
+        if (rasterLayer) map.removeLayer(rasterLayer);
+
+        setLayerName(`載入中：${displayLabel}`);
+        document.getElementById("legendBox").innerHTML = "圖例載入中...";
+        renderStatsPlaceholder("統計載入中...");
+
+        document.querySelectorAll(".btn[data-layer-id]").forEach(btn => {
+          btn.classList.toggle("active-layer", btn.dataset.layerId === controlId);
+        });
+
+        const info = await fetchCogInfo(cfg.localPath);
+        const stats = await fetchAllLayerStatistics(cfg.localPath);
+        const count = info.count || 1;
+        const currentOpacity = getCurrentOpacity();
+
+        let tileUrl = "";
+
+        if (cfg.itemName === "LULC") {
+          renderLulcLegend();
+          if (count >= 3) {
+            tileUrl = getTileUrl(cfg.localPath, "bidx=1&bidx=2&bidx=3");
+            renderRgbStats(displayLabel, stats, "LULC 以 RGB display raster 方式呈現");
+          } else {
+            const cmap = encodeURIComponent(JSON.stringify(LULC_COLORMAP));
+            tileUrl = getTileUrl(cfg.localPath, `bidx=1&colormap=${cmap}`);
+            renderCategoricalStats(displayLabel, stats);
+          }
+        } else if (cfg.itemName === "Precipitation" || cfg.itemName === "DEM" || cfg.itemName === "S1") {
+          const firstKey = Object.keys(stats)[0];
+          const s = stats[firstKey];
+          const rangeInfo = computeNiceRange(s.min, s.max, cfg.itemName === "Precipitation" ? 0 : null);
+
+          tileUrl = getTileUrl(
+            cfg.localPath,
+            `bidx=1&rescale=${rangeInfo.min},${rangeInfo.max}&colormap_name=blues`
+          );
+
+          renderContinuousLegend(displayLabel, cfg.itemName === "Precipitation" ? "mm" : "", rangeInfo);
+          renderContinuousStats(displayLabel, cfg.itemName === "Precipitation" ? "mm" : "", s, rangeInfo);
+        } else if (cfg.itemName === "S2") {
+          if (count >= 3) {
+            tileUrl = getTileUrl(cfg.localPath, "bidx=1&bidx=2&bidx=3&rescale=0,3000");
+            renderRgbLegend(displayLabel);
+            renderRgbStats(displayLabel, stats, `Sentinel-2 RGB 組合顯示（預設 1/2/3 band）<br>${chosenTileNote}`);
+          } else {
+            const firstKey = Object.keys(stats)[0];
+            const s = stats[firstKey];
+            const rangeInfo = computeNiceRange(s.min, s.max, null);
+
+            tileUrl = getTileUrl(
+              cfg.localPath,
+              `bidx=1&rescale=${rangeInfo.min},${rangeInfo.max}&colormap_name=gray`
+            );
+
+            renderContinuousLegend(displayLabel, "", rangeInfo);
+            renderContinuousStats(displayLabel, "", s, rangeInfo);
+          }
+        } else {
+          const firstKey = Object.keys(stats)[0];
+          const s = stats[firstKey];
+          const rangeInfo = computeNiceRange(s.min, s.max, null);
+
+          tileUrl = getTileUrl(
+            cfg.localPath,
+            `bidx=1&rescale=${rangeInfo.min},${rangeInfo.max}&colormap_name=viridis`
+          );
+
+          renderContinuousLegend(displayLabel, "", rangeInfo);
+          renderContinuousStats(displayLabel, "", s, rangeInfo);
+        }
+
+        rasterLayer = L.tileLayer(tileUrl, {
+          opacity: currentOpacity,
+          attribution: "TiTiler"
+        }).addTo(map);
+
+        setLayerName(displayLabel);
+        await renderAOIInfo(currentEventId);
+      } catch (err) {
+        console.error(err);
+        currentAOIOverlapRatio = null;
+        setLayerName("載入失敗");
+        document.getElementById("legendBox").innerHTML = "圖層載入失敗";
+        document.getElementById("statsBox").innerHTML = `<div style="color:#b00020;"><b>錯誤：</b>${err.message}</div>`;
+        await renderAOIInfo(currentEventId);
+      }
+    }
+
+    async function switchEvent(eventId, zoom = true) {
+      const data = eventDataMap.get(eventId);
+      if (!data) return;
+
+      currentEventId = eventId;
+      document.getElementById("currentEventName").textContent = eventId;
+      document.getElementById("eventSelect").value = eventId;
+
+      renderMeta(data.collection);
+      clearRaster();
+
+      if (!layerCatalogByEvent.has(eventId)) {
+        await loadLayerCatalogForEvent(eventId);
+      }
+
+      renderLayerControls(eventId);
+      renderAssets(eventId);
+
+      const aoiGeo = await renderAOIOverlay(eventId);
+      await renderAOIInfo(eventId);
+      const bbox = data.bbox;
+      drawSelectedBBox(bbox);
+      updateEventStyles();
+
+      const layer = eventLayerMap.get(eventId);
+      if (layer) {
+        layer.bindPopup(`<b>${eventId}</b>`).openPopup();
+      }
+
+      if (zoom) {
+        focusOnEvent(eventId);
+      }
+    }
+
+    function initOpacityControl() {
+      const slider = document.getElementById("opacitySlider");
+      if (!slider) return;
+
+      updateOpacityText(slider.value);
+      slider.addEventListener("input", (e) => {
+        const value = parseFloat(e.target.value);
+        updateOpacityText(value);
+        if (rasterLayer) rasterLayer.setOpacity(value);
+      });
+    }
+
+    function initCoordinateControl() {
+      const toggle = document.getElementById("coordToggle");
+      const valueBox = document.getElementById("coordValue");
+      if (!toggle || !valueBox) return;
+
+      toggle.addEventListener("change", () => {
+        valueBox.textContent = toggle.checked ? "移動滑鼠至地圖上讀取座標" : "未啟用";
+      });
+
+      map.on("mousemove", (e) => {
+        if (!toggle.checked) return;
+        valueBox.textContent = `Lon: ${e.latlng.lng.toFixed(5)}, Lat: ${e.latlng.lat.toFixed(5)}`;
+      });
+
+      map.on("mouseout", () => {
+        if (!toggle.checked) return;
+        valueBox.textContent = "移動滑鼠至地圖上讀取座標";
+      });
+    }
+
+    async function loadAllEvents() {
+      const catalogUrl = new URL(ROOT_CATALOG_URL, window.location.href).toString();
+      const catalog = await fetchJSON(catalogUrl);
+      const childLinks = (catalog.links || []).filter(link => link.rel === "child");
+
+      const select = document.getElementById("eventSelect");
+      select.innerHTML = "";
+
+      let firstEventId = null;
+
+      for (const link of childLinks) {
+        const collectionUrl = new URL(link.href, catalogUrl).toString();
+        const collection = await fetchJSON(collectionUrl);
+        const bbox = getCollectionBBox(collection);
+        const eventId = collection.id || link.title || link.href;
+
+        eventDataMap.set(eventId, { collection, bbox, collectionUrl });
+
+        const option = document.createElement("option");
+        option.value = eventId;
+        option.textContent = eventId;
+        select.appendChild(option);
+
+        if (bbox) {
+          const [west, south, east, north] = bbox;
+          const rect = L.rectangle(
+            [[south, west], [north, east]],
+            { color: "#3388ff", weight: 1, fillOpacity: 0 }
+          ).addTo(map);
+
+          rect.on("click", () => switchEvent(eventId, true));
+          rect.bindTooltip(eventId, { sticky: true });
+          eventLayerMap.set(eventId, rect);
+        }
+
+        if (!firstEventId) firstEventId = eventId;
+      }
+
+      select.addEventListener("change", (e) => {
+        switchEvent(e.target.value, true);
+      });
+
+      if (firstEventId) {
+        await switchEvent(firstEventId, true);
+      }
+    }
+
+    initOpacityControl();
+    initCoordinateControl();
+
+    loadAllEvents().catch(err => {
+      console.error(err);
+      document.getElementById("metaBox").textContent = err.message;
+      document.getElementById("layerControlContent").textContent = err.message;
+    });
+
+  
+    /* === AOI MASK PATCH START === */
+    let currentAOIGeoForMask = null;
+    let inverseAoiMaskLayer = null;
+    let currentRasterItemNameForMask = null;
+    let currentAoiMaskMode = "full";
+
+    function setupAOIMaskUI() {
+      if (document.getElementById("aoiMaskMode")) return;
+
+      const leftPanel = document.querySelector(".left");
+      if (!leftPanel) return;
+
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div><b>AOI 遮罩模式</b></div>
+        <select id="aoiMaskMode" style="margin-top:8px;">
+          <option value="full">顯示完整圖層</option>
+          <option value="dim">AOI 外部淡化</option>
+          <option value="inside_only">只顯示 AOI 內部（視覺遮罩）</option>
+        </select>
+        <div class="small-note" style="margin-top:8px;">
+          目前先支援 LULC 與降雨。這是前端視覺遮罩，不是真正裁切。
+        </div>
+      `;
+
+      leftPanel.appendChild(card);
+
+      const sel = document.getElementById("aoiMaskMode");
+      sel.addEventListener("change", (e) => {
+        currentAoiMaskMode = e.target.value;
+        updateAOIMaskDisplay();
+      });
+    }
+
+    function collectAoiOuterRings(geo) {
+      const features = normalizeToFeatureList(geo);
+      const holes = [];
+
+      for (const feat of features) {
+        if (!feat || !feat.geometry) continue;
+
+        const g = feat.geometry;
+
+        if (g.type === "Polygon") {
+          if (g.coordinates && g.coordinates.length) {
+            holes.push(g.coordinates[0]);
+          }
+        } else if (g.type === "MultiPolygon") {
+          for (const poly of (g.coordinates || [])) {
+            if (poly && poly.length) {
+              holes.push(poly[0]);
+            }
+          }
+        }
+      }
+
+      return holes;
+    }
+
+    function buildInverseMaskGeoJSON(aoiGeo) {
+      const holes = collectAoiOuterRings(aoiGeo);
+      if (!holes.length) return null;
+
+      const worldOuter = [
+        [-179.999, -89.999],
+        [ 179.999, -89.999],
+        [ 179.999,  89.999],
+        [-179.999,  89.999],
+        [-179.999, -89.999]
+      ];
+
+      return {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            properties: {},
+            geometry: {
+              type: "Polygon",
+              coordinates: [worldOuter, ...holes]
+            }
+          }
+        ]
+      };
+    }
+
+    function removeAOIMaskDisplay() {
+      if (inverseAoiMaskLayer) {
+        map.removeLayer(inverseAoiMaskLayer);
+        inverseAoiMaskLayer = null;
+      }
+    }
+
+    function updateAOIMaskDisplay() {
+      removeAOIMaskDisplay();
+
+      if (!currentAOIGeoForMask) return;
+      if (!["LULC", "Precipitation"].includes(currentRasterItemNameForMask)) return;
+      if (currentAoiMaskMode === "full") return;
+
+      const inverseGeo = buildInverseMaskGeoJSON(currentAOIGeoForMask);
+      if (!inverseGeo) return;
+
+      const fillOpacity = currentAoiMaskMode === "dim" ? 0.35 : 0.92;
+
+      inverseAoiMaskLayer = L.geoJSON(inverseGeo, {
+        interactive: false,
+        style: {
+          stroke: false,
+          fillColor: "#f4f6f8",
+          fillOpacity: fillOpacity
+        }
+      }).addTo(map);
+
+      if (rasterLayer && rasterLayer.bringToFront) rasterLayer.bringToFront();
+      if (inverseAoiMaskLayer && inverseAoiMaskLayer.bringToFront) inverseAoiMaskLayer.bringToFront();
+      if (aoiLayer && aoiLayer.bringToFront) aoiLayer.bringToFront();
+      if (eventOutlineLayer && eventOutlineLayer.bringToFront) eventOutlineLayer.bringToFront();
+    }
+
+    const _origRenderAOIOverlay = renderAOIOverlay;
+    renderAOIOverlay = async function(eventId) {
+      const geo = await _origRenderAOIOverlay(eventId);
+      currentAOIGeoForMask = geo;
+      updateAOIMaskDisplay();
+      return geo;
+    };
+
+    const _origShowDynamicLayer = showDynamicLayer;
+    showDynamicLayer = async function(controlId) {
+      const entry = displayEntryMap ? displayEntryMap.get(controlId) : null;
+
+      await _origShowDynamicLayer(controlId);
+
+      if (entry) {
+        if (entry.type === "s2_group") {
+          currentRasterItemNameForMask = "S2";
+        } else if (entry.layer) {
+          currentRasterItemNameForMask = entry.layer.itemName || null;
+        } else {
+          currentRasterItemNameForMask = entry.itemName || null;
+        }
+      } else {
+        currentRasterItemNameForMask = null;
+      }
+
+      updateAOIMaskDisplay();
+    };
+
+    const _origClearRaster = clearRaster;
+    clearRaster = function() {
+      _origClearRaster();
+      currentRasterItemNameForMask = null;
+      updateAOIMaskDisplay();
+    };
+
+    setupAOIMaskUI();
+    /* === AOI MASK PATCH END === */
+
+
+    /* === AOI ANALYSIS PATCH START === */
+    const ANALYSIS_API_BASE = "http://127.0.0.1:8082";
+    let currentAnalysisLocalPath = null;
+    let currentAnalysisItemName = null;
+    let currentAnalysisLabel = null;
+
+    function setupAOIAnalysisUI() {
+      if (document.getElementById("analysisBox")) return;
+
+      const statsBox = document.getElementById("statsBox");
+      const statsCard = statsBox ? statsBox.closest(".card") : null;
+
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h3>AOI 分析</h3>
+        <div id="analysisTarget" class="small-note">尚未選取圖層</div>
+        <div style="margin-top:8px; display:flex; gap:6px; flex-wrap:wrap;">
+          <button class="btn" id="btnAnalyzePrecip">AOI 內降雨</button>
+          <button class="btn" id="btnAnalyzeLulc">AOI 內 LULC</button>
+          <button class="btn" id="btnAnalyzeRaster">AOI 內 raster 統計</button>
+        </div>
+        <div id="analysisBox" style="margin-top:10px;">請先選擇圖層</div>
+      `;
+
+      if (statsCard && statsCard.parentNode) {
+        statsCard.parentNode.insertBefore(card, statsCard);
+      } else {
+        const rightPanel = document.querySelector(".right");
+        if (rightPanel) rightPanel.appendChild(card);
+      }
+
+      document.getElementById("btnAnalyzePrecip").addEventListener("click", runAOIPrecipAnalysis);
+      document.getElementById("btnAnalyzeLulc").addEventListener("click", runAOILulcAnalysis);
+      document.getElementById("btnAnalyzeRaster").addEventListener("click", runAOIRasterBasicAnalysis);
+    }
+
+    function resetAnalysisBox(msg = "請先選擇圖層") {
+      const box = document.getElementById("analysisBox");
+      if (box) box.innerHTML = msg;
+    }
+
+    function updateAnalysisTarget() {
+      const el = document.getElementById("analysisTarget");
+      if (!el) return;
+
+      if (!currentAnalysisLocalPath) {
+        el.textContent = "尚未選取圖層";
+        return;
+      }
+
+      el.innerHTML = `<b>目前圖層：</b>${currentAnalysisLabel || currentAnalysisItemName || "-"}<br><span class="mono">${currentAnalysisLocalPath}</span>`;
+    }
+
+    async function fetchAnalysisJson(url) {
+      const res = await fetch(url);
+      if (!res.ok) {
+        const txt = await res.text();
+        throw new Error(txt || `HTTP ${res.status}`);
+      }
+      return await res.json();
+    }
+
+    async function runAOIPrecipAnalysis() {
+      if (!currentEventId || !currentAnalysisLocalPath) {
+        resetAnalysisBox("請先選擇圖層");
+        return;
+      }
+      if (currentAnalysisItemName !== "Precipitation") {
+        resetAnalysisBox("目前選取的不是降雨圖層");
+        return;
+      }
+
+      resetAnalysisBox("AOI 降雨分析中...");
+      try {
+        const url = `${ANALYSIS_API_BASE}/analyze/precip?event_id=${encodeURIComponent(currentEventId)}&raster_path=${encodeURIComponent(currentAnalysisLocalPath)}`;
+        const data = await fetchAnalysisJson(url);
+
+        document.getElementById("analysisBox").innerHTML = `
+          <div><b>AOI 內降雨統計</b></div>
+          <table class="stats-table">
+            <tr><th>有效像元</th><th>平均</th><th>最小</th><th>最大</th><th>標準差</th></tr>
+            <tr>
+              <td>${data.count_valid ?? "-"}</td>
+              <td>${data.mean == null ? "-" : Number(data.mean).toFixed(3)}</td>
+              <td>${data.min == null ? "-" : Number(data.min).toFixed(3)}</td>
+              <td>${data.max == null ? "-" : Number(data.max).toFixed(3)}</td>
+              <td>${data.std == null ? "-" : Number(data.std).toFixed(3)}</td>
+            </tr>
+          </table>
+        `;
+      } catch (err) {
+        resetAnalysisBox(`<div style="color:#b00020;"><b>錯誤：</b>${err.message}</div>`);
+      }
+    }
+
+    async function runAOILulcAnalysis() {
+      if (!currentEventId || !currentAnalysisLocalPath) {
+        resetAnalysisBox("請先選擇圖層");
+        return;
+      }
+      if (currentAnalysisItemName !== "LULC") {
+        resetAnalysisBox("目前選取的不是 LULC 圖層");
+        return;
+      }
+
+      resetAnalysisBox("AOI LULC 分析中...");
+      try {
+        const url = `${ANALYSIS_API_BASE}/analyze/lulc?event_id=${encodeURIComponent(currentEventId)}&raster_path=${encodeURIComponent(currentAnalysisLocalPath)}`;
+        const data = await fetchAnalysisJson(url);
+
+        const rows = (data.composition || []).slice(0, 12).map(r => `
+          <tr>
+            <td>${r.class_value}</td>
+            <td>${r.class_name}</td>
+            <td>${r.pixel_count}</td>
+            <td>${(Number(r.ratio) * 100).toFixed(2)}%</td>
+          </tr>
+        `).join("");
+
+        document.getElementById("analysisBox").innerHTML = `
+          <div><b>AOI 內 LULC 組成</b></div>
+          <div class="small-note" style="margin:6px 0 8px 0;">
+            注意：若目前使用的是 <code>*_vis.tif</code>，結果可能是視覺化像元值，不一定是最終類別代碼。
+          </div>
+          <table class="stats-table">
+            <tr><th>值</th><th>類別</th><th>像元數</th><th>比例</th></tr>
+            ${rows || '<tr><td colspan="4">無資料</td></tr>'}
+          </table>
+        `;
+      } catch (err) {
+        resetAnalysisBox(`<div style="color:#b00020;"><b>錯誤：</b>${err.message}</div>`);
+      }
+    }
+
+    async function runAOIRasterBasicAnalysis() {
+      if (!currentEventId || !currentAnalysisLocalPath) {
+        resetAnalysisBox("請先選擇圖層");
+        return;
+      }
+
+      resetAnalysisBox("AOI raster 統計分析中...");
+      try {
+        const url = `${ANALYSIS_API_BASE}/analyze/raster_basic?event_id=${encodeURIComponent(currentEventId)}&raster_path=${encodeURIComponent(currentAnalysisLocalPath)}`;
+        const data = await fetchAnalysisJson(url);
+
+        const rows = (data.bands || []).map(r => `
+          <tr>
+            <td>${r.band_index}</td>
+            <td>${r.count_valid ?? "-"}</td>
+            <td>${r.mean == null ? "-" : Number(r.mean).toFixed(3)}</td>
+            <td>${r.min == null ? "-" : Number(r.min).toFixed(3)}</td>
+            <td>${r.max == null ? "-" : Number(r.max).toFixed(3)}</td>
+            <td>${r.std == null ? "-" : Number(r.std).toFixed(3)}</td>
+          </tr>
+        `).join("");
+
+        document.getElementById("analysisBox").innerHTML = `
+          <div><b>AOI 內 raster 基本統計</b></div>
+          <table class="stats-table">
+            <tr><th>Band</th><th>有效像元</th><th>平均</th><th>最小</th><th>最大</th><th>標準差</th></tr>
+            ${rows || '<tr><td colspan="6">無資料</td></tr>'}
+          </table>
+        `;
+      } catch (err) {
+        resetAnalysisBox(`<div style="color:#b00020;"><b>錯誤：</b>${err.message}</div>`);
+      }
+    }
+
+    const _origShowDynamicLayerForAnalysis = showDynamicLayer;
+    showDynamicLayer = async function(controlId) {
+      const entry = displayEntryMap ? displayEntryMap.get(controlId) : null;
+
+      await _origShowDynamicLayerForAnalysis(controlId);
+
+      if (entry && entry.type === "single" && entry.layer) {
+        currentAnalysisLocalPath = entry.layer.localPath || null;
+        currentAnalysisItemName = entry.layer.itemName || null;
+        currentAnalysisLabel = entry.label || entry.layer.label || null;
+      } else {
+        currentAnalysisLocalPath = null;
+        currentAnalysisItemName = entry ? (entry.itemName || null) : null;
+        currentAnalysisLabel = entry ? (entry.label || null) : null;
+      }
+
+      updateAnalysisTarget();
+      resetAnalysisBox("請選擇分析按鈕");
+    };
+
+    const _origClearRasterForAnalysis = clearRaster;
+    clearRaster = function() {
+      _origClearRasterForAnalysis();
+      currentAnalysisLocalPath = null;
+      currentAnalysisItemName = null;
+      currentAnalysisLabel = null;
+      updateAnalysisTarget();
+      resetAnalysisBox("請先選擇圖層");
+    };
+
+    const _origSwitchEventForAnalysis = switchEvent;
+    switchEvent = async function(eventId, zoom = true) {
+      await _origSwitchEventForAnalysis(eventId, zoom);
+      currentAnalysisLocalPath = null;
+      currentAnalysisItemName = null;
+      currentAnalysisLabel = null;
+      updateAnalysisTarget();
+      resetAnalysisBox("請先選擇圖層");
+    };
+
+    setupAOIAnalysisUI();
+    /* === AOI ANALYSIS PATCH END === */
+
+
+    /* === AOI UI CLEANUP PATCH START === */
+    const EN_TEXT_MAP = {
+      "事件資訊": "Event Info",
+      "AOI 資訊": "AOI Info",
+      "圖層統計": "Layer Statistics",
+      "資料資產": "Assets",
+      "AOI 分析": "AOI Analysis",
+      "降雨": "Precipitation",
+      "關閉 raster 圖層": "Clear Raster Layer",
+      "顯示游標座標": "Show Cursor Coordinates",
+      "未啟用": "Disabled",
+      "AOI 遮罩模式": "AOI Mask Mode",
+      "顯示完整圖層": "Show Full Layer",
+      "AOI 外部淡化": "Dim Outside AOI",
+      "只顯示 AOI 內部（視覺遮罩）": "Show AOI Only",
+      "請先選擇圖層": "Select a layer first",
+      "目前圖層：": "Current Layer:",
+      "目前圖層": "Current Layer",
+      "目前事件：": "Current Event:",
+      "目前事件": "Current Event",
+      "AOI shp 原始路徑": "AOI Source SHP",
+      "轉出的 GeoJSON 路徑": "AOI GeoJSON",
+      "AOI 面積": "AOI Area"
+    };
+
+    function translateTextNodeExact(root = document.body) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+
+      for (const node of nodes) {
+        const raw = node.nodeValue;
+        const trimmed = raw.trim();
+        if (EN_TEXT_MAP[trimmed]) {
+          node.nodeValue = raw.replace(trimmed, EN_TEXT_MAP[trimmed]);
+        }
+      }
+    }
+
+    function injectUICleanupStyles() {
+      if (document.getElementById("uiCleanupStyle")) return;
+
+      const style = document.createElement("style");
+      style.id = "uiCleanupStyle";
+      style.textContent = `
+        .right .card.is-collapsible h3 {
+          cursor: pointer;
+          user-select: none;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .right .card.is-collapsible h3::after {
+          content: "▾";
+          font-size: 14px;
+          opacity: 0.75;
+        }
+        .right .card.is-collapsible.collapsed h3::after {
+          content: "▸";
+        }
+        .right .card .card-body-wrap {
+          margin-top: 8px;
+        }
+        .right .card.collapsed .card-body-wrap {
+          display: none;
+        }
+        .stats-table th, .stats-table td {
+          text-align: center;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    function makeRightCardsCollapsible() {
+      injectUICleanupStyles();
+
+      document.querySelectorAll(".right .card").forEach(card => {
+        if (card.dataset.collapsibleReady === "1") return;
+
+        const h3 = card.querySelector("h3");
+        if (!h3) return;
+
+        const wrap = document.createElement("div");
+        wrap.className = "card-body-wrap";
+
+        const children = Array.from(card.children).filter(el => el !== h3);
+        children.forEach(el => wrap.appendChild(el));
+        card.appendChild(wrap);
+
+        card.classList.add("is-collapsible");
+        card.dataset.collapsibleReady = "1";
+
+        const title = h3.textContent.trim();
+        if (["Event Info", "AOI Info", "Assets"].includes(title) ||
+            ["事件資訊", "AOI 資訊", "資料資產"].includes(title)) {
+          card.classList.add("collapsed");
+        }
+
+        h3.addEventListener("click", () => {
+          card.classList.toggle("collapsed");
+        });
+      });
+    }
+
+    function cleanupAOIInfoBox() {
+      const box = document.getElementById("aoiInfoBox");
+      if (!box) return;
+
+      box.innerHTML = box.innerHTML
+        .replace(/<div[^>]*><b>AOI overlap ratio<\/b><br>.*?<\/div>/is, "")
+        .replace(/AOI shp 原始路徑/g, "AOI Source SHP")
+        .replace(/轉出的 GeoJSON 路徑/g, "AOI GeoJSON")
+        .replace(/AOI 面積/g, "AOI Area");
+    }
+
+    function simplifyAnalysisCard() {
+      const box = document.getElementById("analysisBox");
+      if (!box) return;
+
+      const card = box.closest(".card");
+      if (!card) return;
+
+      const btns = card.querySelectorAll("button");
+      btns.forEach(btn => btn.style.display = "none");
+
+      const target = document.getElementById("analysisTarget");
+      if (target) {
+        target.innerHTML = target.innerHTML
+          .replace(/目前圖層/g, "Current Layer");
+      }
+    }
+
+    async function runAutoAnalysisForCurrentLayer() {
+      if (!currentAnalysisLocalPath || !currentAnalysisItemName) {
+        resetAnalysisBox("Select a layer first");
+        return;
+      }
+
+      if (currentAnalysisItemName === "Precipitation") {
+        await runAOIPrecipAnalysis();
+      } else if (currentAnalysisItemName === "LULC") {
+        await runAOILulcAnalysis();
+      } else {
+        resetAnalysisBox("AOI analysis is currently available for Precipitation and LULC.");
+      }
+    }
+
+    // ================= [MODIFIED] Override analysis renderers to English =================
+    runAOIPrecipAnalysis = async function() {
+      if (!currentEventId || !currentAnalysisLocalPath) {
+        resetAnalysisBox("Select a layer first");
+        return;
+      }
+      if (currentAnalysisItemName !== "Precipitation") {
+        resetAnalysisBox("Current layer is not a precipitation raster.");
+        return;
+      }
+
+      resetAnalysisBox("Running AOI rainfall analysis...");
+      try {
+        const url = `${ANALYSIS_API_BASE}/analyze/precip?event_id=${encodeURIComponent(currentEventId)}&raster_path=${encodeURIComponent(currentAnalysisLocalPath)}`;
+        const data = await fetchAnalysisJson(url);
+
+        document.getElementById("analysisBox").innerHTML = `
+          <div><b>AOI Rainfall Statistics</b></div>
+          <table class="stats-table">
+            <tr><th>Valid Pixels</th><th>Mean</th><th>Min</th><th>Max</th><th>Std. Dev.</th></tr>
+            <tr>
+              <td>${data.count_valid ?? "-"}</td>
+              <td>${data.mean == null ? "-" : Number(data.mean).toFixed(3)}</td>
+              <td>${data.min == null ? "-" : Number(data.min).toFixed(3)}</td>
+              <td>${data.max == null ? "-" : Number(data.max).toFixed(3)}</td>
+              <td>${data.std == null ? "-" : Number(data.std).toFixed(3)}</td>
+            </tr>
+          </table>
+        `;
+      } catch (err) {
+        resetAnalysisBox(`<div style="color:#b00020;"><b>Error:</b> ${err.message}</div>`);
+      }
+    };
+
+    runAOILulcAnalysis = async function() {
+      if (!currentEventId || !currentAnalysisLocalPath) {
+        resetAnalysisBox("Select a layer first");
+        return;
+      }
+      if (currentAnalysisItemName !== "LULC") {
+        resetAnalysisBox("Current layer is not a LULC raster.");
+        return;
+      }
+
+      resetAnalysisBox("Running AOI LULC analysis...");
+      try {
+        const url = `${ANALYSIS_API_BASE}/analyze/lulc?event_id=${encodeURIComponent(currentEventId)}&raster_path=${encodeURIComponent(currentAnalysisLocalPath)}`;
+        const data = await fetchAnalysisJson(url);
+
+        const rows = (data.composition || []).map(r => `
+          <tr>
+            <td>${r.class_name}</td>
+            <td>${r.pixel_count}</td>
+            <td>${(Number(r.ratio) * 100).toFixed(2)}%</td>
+          </tr>
+        `).join("");
+
+        document.getElementById("analysisBox").innerHTML = `
+          <div><b>AOI LULC Composition</b></div>
+          <table class="stats-table">
+            <tr><th>Class</th><th>Pixels</th><th>Ratio</th></tr>
+            ${rows || '<tr><td colspan="3">No data</td></tr>'}
+          </table>
+        `;
+      } catch (err) {
+        resetAnalysisBox(`<div style="color:#b00020;"><b>Error:</b> ${err.message}</div>`);
+      }
+    };
+
+    runAOIRasterBasicAnalysis = async function() {
+      if (!currentEventId || !currentAnalysisLocalPath) {
+        resetAnalysisBox("Select a layer first");
+        return;
+      }
+
+      resetAnalysisBox("Running AOI raster statistics...");
+      try {
+        const url = `${ANALYSIS_API_BASE}/analyze/raster_basic?event_id=${encodeURIComponent(currentEventId)}&raster_path=${encodeURIComponent(currentAnalysisLocalPath)}`;
+        const data = await fetchAnalysisJson(url);
+
+        const rows = (data.bands || []).map(r => `
+          <tr>
+            <td>${r.band_index}</td>
+            <td>${r.count_valid ?? "-"}</td>
+            <td>${r.mean == null ? "-" : Number(r.mean).toFixed(3)}</td>
+            <td>${r.min == null ? "-" : Number(r.min).toFixed(3)}</td>
+            <td>${r.max == null ? "-" : Number(r.max).toFixed(3)}</td>
+            <td>${r.std == null ? "-" : Number(r.std).toFixed(3)}</td>
+          </tr>
+        `).join("");
+
+        document.getElementById("analysisBox").innerHTML = `
+          <div><b>AOI Raster Statistics</b></div>
+          <table class="stats-table">
+            <tr><th>Band</th><th>Valid Pixels</th><th>Mean</th><th>Min</th><th>Max</th><th>Std. Dev.</th></tr>
+            ${rows || '<tr><td colspan="6">No data</td></tr>'}
+          </table>
+        `;
+      } catch (err) {
+        resetAnalysisBox(`<div style="color:#b00020;"><b>Error:</b> ${err.message}</div>`);
+      }
+    };
+
+    // ================= [MODIFIED] True clip for inside_only, transparent outside =================
+    function getFirstAOIRing() {
+      if (!currentAOIGeoForMask) return null;
+
+      const features = normalizeToFeatureList(currentAOIGeoForMask);
+      for (const feat of features) {
+        const g = feat && feat.geometry ? feat.geometry : null;
+        if (!g) continue;
+
+        if (g.type === "Polygon" && g.coordinates && g.coordinates.length) {
+          return g.coordinates[0];
+        }
+        if (g.type === "MultiPolygon" && g.coordinates && g.coordinates.length) {
+          const poly = g.coordinates[0];
+          if (poly && poly.length) return poly[0];
+        }
+      }
+      return null;
+    }
+
+    function clearRasterClipPath() {
+      if (!rasterLayer || !rasterLayer.getContainer) return;
+      const container = rasterLayer.getContainer();
+      if (!container) return;
+      container.style.clipPath = "";
+      container.style.webkitClipPath = "";
+    }
+
+    function applyRasterClipPathToAOI() {
+      if (!rasterLayer || !rasterLayer.getContainer) return false;
+      const container = rasterLayer.getContainer();
+      if (!container) return false;
+
+      const ring = getFirstAOIRing();
+      if (!ring || ring.length < 3) return false;
+
+      const mapEl = map.getContainer();
+      const mapRect = mapEl.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+
+      const pts = ring.map(([lng, lat]) => {
+        const p = map.latLngToContainerPoint([lat, lng]);
+        const x = p.x - (containerRect.left - mapRect.left);
+        const y = p.y - (containerRect.top - mapRect.top);
+        return `${x.toFixed(1)}px ${y.toFixed(1)}px`;
+      });
+
+      const clip = `polygon(${pts.join(",")})`;
+      container.style.clipPath = clip;
+      container.style.webkitClipPath = clip;
+      return true;
+    }
+
+    updateAOIMaskDisplay = function() {
+      removeAOIMaskDisplay();
+      clearRasterClipPath();
+
+      if (!currentAOIGeoForMask) return;
+      if (!["LULC", "Precipitation"].includes(currentRasterItemNameForMask)) return;
+
+      if (currentAoiMaskMode === "inside_only") {
+        applyRasterClipPathToAOI();
+        if (aoiLayer && aoiLayer.bringToFront) aoiLayer.bringToFront();
+        if (eventOutlineLayer && eventOutlineLayer.bringToFront) eventOutlineLayer.bringToFront();
+        return;
+      }
+
+      if (currentAoiMaskMode === "dim") {
+        const inverseGeo = buildInverseMaskGeoJSON(currentAOIGeoForMask);
+        if (!inverseGeo) return;
+
+        inverseAoiMaskLayer = L.geoJSON(inverseGeo, {
+          interactive: false,
+          style: {
+            stroke: false,
+            fillColor: "#000000",
+            fillOpacity: 0.18
+          }
+        }).addTo(map);
+
+        if (inverseAoiMaskLayer && inverseAoiMaskLayer.bringToFront) inverseAoiMaskLayer.bringToFront();
+        if (aoiLayer && aoiLayer.bringToFront) aoiLayer.bringToFront();
+        if (eventOutlineLayer && eventOutlineLayer.bringToFront) eventOutlineLayer.bringToFront();
+      }
+    };
+
+    map.on("zoomend moveend resize", () => {
+      if (currentAoiMaskMode === "inside_only") {
+        applyRasterClipPathToAOI();
+      }
+    });
+
+    // ================= [MODIFIED] Auto analysis on layer switch =================
+    const _origShowDynamicLayerUICleanup = showDynamicLayer;
+    showDynamicLayer = async function(controlId) {
+      await _origShowDynamicLayerUICleanup(controlId);
+      updateAnalysisTarget();
+      await runAutoAnalysisForCurrentLayer();
+      cleanupAOIInfoBox();
+      translateTextNodeExact(document.body);
+      simplifyAnalysisCard();
+      makeRightCardsCollapsible();
+    };
+
+    const _origSwitchEventUICleanup = switchEvent;
+    switchEvent = async function(eventId, zoom = true) {
+      await _origSwitchEventUICleanup(eventId, zoom);
+      cleanupAOIInfoBox();
+      translateTextNodeExact(document.body);
+      simplifyAnalysisCard();
+      makeRightCardsCollapsible();
+    };
+
+    const _origRenderAOIInfoUICleanup = renderAOIInfo;
+    renderAOIInfo = async function(eventId) {
+      await _origRenderAOIInfoUICleanup(eventId);
+      cleanupAOIInfoBox();
+      translateTextNodeExact(document.body);
+      makeRightCardsCollapsible();
+    };
+
+    // initial cleanup
+    setTimeout(() => {
+      translateTextNodeExact(document.body);
+      cleanupAOIInfoBox();
+      simplifyAnalysisCard();
+      makeRightCardsCollapsible();
+
+      const sel = document.getElementById("aoiMaskMode");
+      if (sel) {
+        Array.from(sel.options).forEach(opt => {
+          if (opt.value === "full") opt.text = "Show Full Layer";
+          if (opt.value === "dim") opt.text = "Dim Outside AOI";
+          if (opt.value === "inside_only") opt.text = "Show AOI Only";
+        });
+      }
+    }, 500);
+    /* === AOI UI CLEANUP PATCH END === */
+
+
+    /* === WEBGIS BEAUTIFY PATCH START === */
+    function injectBeautifyStyles() {
+      if (document.getElementById("beautifyPatchStyle")) return;
+
+      const style = document.createElement("style");
+      style.id = "beautifyPatchStyle";
+      style.textContent = `
+        :root {
+          --ui-title-size: 16px;
+          --ui-body-size: 13px;
+          --ui-small-size: 12px;
+          --ui-radius: 14px;
+          --ui-shadow: 0 6px 18px rgba(17, 24, 39, 0.08);
+          --ui-border: 1px solid rgba(15, 23, 42, 0.08);
+          --ui-primary: #214b7a;
+          --ui-primary-2: #2d5f99;
+          --ui-bg-soft: #f8fafc;
+        }
+
+        body {
+          font-size: var(--ui-body-size);
+          color: #1f2937;
+        }
+
+        .topbar {
+          box-shadow: 0 2px 10px rgba(15,23,42,0.12);
+        }
+
+        .topbar h1,
+        .topbar .title,
+        .topbar .brand {
+          font-size: 24px !important;
+          font-weight: 800 !important;
+          letter-spacing: -0.02em;
+        }
+
+        .left .card,
+        .right .card {
+          border-radius: var(--ui-radius);
+          box-shadow: var(--ui-shadow);
+          border: var(--ui-border);
+          background: rgba(255,255,255,0.96);
+        }
+
+        .left .card h3,
+        .right .card h3,
+        .left .card > div:first-child > b,
+        .right .card > div:first-child > b {
+          font-size: var(--ui-title-size) !important;
+          font-weight: 800 !important;
+          color: #111827;
+        }
+
+        .left .card,
+        .right .card,
+        .left .card *:not(h1):not(h2):not(h3),
+        .right .card *:not(h1):not(h2):not(h3) {
+          font-size: var(--ui-body-size);
+          line-height: 1.45;
+        }
+
+        .small-note,
+        .mono,
+        .stats-table th,
+        .stats-table td {
+          font-size: var(--ui-small-size) !important;
+        }
+
+        .btn,
+        button,
+        select {
+          border-radius: 12px !important;
+          transition: all 0.18s ease;
+        }
+
+        .btn,
+        button {
+          border: 1px solid rgba(33, 75, 122, 0.15) !important;
+          background: #ffffff !important;
+          color: #1f2937 !important;
+          font-weight: 600;
+          box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        .btn:hover,
+        button:hover {
+          background: #f3f7fb !important;
+          border-color: rgba(33, 75, 122, 0.28) !important;
+        }
+
+        .btn.active-mask-btn,
+        .btn.active-layer,
+        .beautify-primary-btn.active-mask-btn {
+          background: var(--ui-primary) !important;
+          color: #fff !important;
+          border-color: var(--ui-primary) !important;
+        }
+
+        .beautify-standalone-action {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .beautify-action-btn {
+          width: 100%;
+          padding: 12px 14px;
+          background: var(--ui-primary) !important;
+          color: #fff !important;
+          border: 1px solid var(--ui-primary) !important;
+          font-weight: 700;
+        }
+
+        .beautify-action-btn:hover {
+          background: var(--ui-primary-2) !important;
+          border-color: var(--ui-primary-2) !important;
+        }
+
+        .beautify-mask-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 8px;
+          margin-top: 10px;
+        }
+
+        .beautify-mask-row .btn {
+          padding: 10px 8px;
+          text-align: center;
+          font-size: 12px !important;
+          line-height: 1.25;
+          min-height: 44px;
+        }
+
+        .beautify-map-floating {
+          position: absolute;
+          right: 18px;
+          bottom: 18px;
+          z-index: 800;
+          width: 280px;
+          max-width: calc(100% - 36px);
+          background: rgba(255,255,255,0.95);
+          backdrop-filter: blur(6px);
+          border: var(--ui-border);
+          border-radius: 14px;
+          box-shadow: var(--ui-shadow);
+          overflow: hidden;
+        }
+
+        .beautify-map-floating .card {
+          margin: 0 !important;
+          box-shadow: none !important;
+          border: none !important;
+          border-radius: 0 !important;
+          background: transparent !important;
+        }
+
+        .beautify-map-floating .card h3 {
+          margin-bottom: 8px;
+        }
+
+        .beautify-map-floating .card-body-wrap {
+          display: block !important;
+        }
+
+        .beautify-map-floating .collapsed .card-body-wrap {
+          display: block !important;
+        }
+
+        .beautify-map-container {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+        }
+
+        .beautify-map-floating,
+        .beautify-map-floating * {
+          pointer-events: auto;
+        }
+
+        .stats-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 8px;
+        }
+
+        .stats-table th {
+          background: #f8fafc;
+          color: #374151;
+          font-weight: 700;
+        }
+
+        .stats-table th,
+        .stats-table td {
+          padding: 7px 8px;
+          border: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .left .card + .card,
+        .right .card + .card {
+          margin-top: 14px;
+        }
+
+        .card.is-collapsible h3 {
+          padding-right: 6px;
+        }
+
+        .leaflet-control-container .leaflet-bottom.leaflet-right {
+          margin-bottom: 6px;
+        }
+
+        .beautify-hidden {
+          display: none !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    function findCardByText(textCandidates) {
+      const cards = Array.from(document.querySelectorAll(".left .card, .right .card"));
+      for (const card of cards) {
+        const t = card.textContent || "";
+        if (textCandidates.some(k => t.includes(k))) return card;
+      }
+      return null;
+    }
+
+    function ensureMapOverlayContainer() {
+      const mapEl = document.getElementById("map");
+      if (!mapEl) return null;
+
+      let box = mapEl.querySelector(".beautify-map-container");
+      if (!box) {
+        box = document.createElement("div");
+        box.className = "beautify-map-container";
+        mapEl.appendChild(box);
+      }
+      return box;
+    }
+
+    function moveCoordinateCardToMapBottomRight() {
+      const coordCard = findCardByText([
+        "Show Cursor Coordinates",
+        "顯示游標座標",
+        "Show Cursor CoordinatesDisabled",
+        "Show Cursor Coordinates Disabled"
+      ]);
+      if (!coordCard) return;
+
+      const container = ensureMapOverlayContainer();
+      if (!container) return;
+
+      let floating = container.querySelector(".beautify-map-floating");
+      if (!floating) {
+        floating = document.createElement("div");
+        floating.className = "beautify-map-floating";
+        container.appendChild(floating);
+      }
+
+      floating.appendChild(coordCard);
+
+      const heading = coordCard.querySelector("h3");
+      if (heading) heading.textContent = "Coordinates";
+
+      // 保持可展開卡片不受之前樣式折疊影響
+      coordCard.classList.remove("collapsed");
+    }
+
+    function makeClearRasterStandalone() {
+      const clearBtn = Array.from(document.querySelectorAll("button, .btn")).find(el => {
+        const t = (el.textContent || "").trim();
+        return t === "Clear Raster Layer" || t === "關閉 raster 圖層";
+      });
+      if (!clearBtn) return;
+
+      const existingStandalone = document.getElementById("beautifyClearRasterCard");
+      if (existingStandalone) return;
+
+      const parentCard = clearBtn.closest(".card");
+
+      const standalone = document.createElement("div");
+      standalone.className = "card beautify-standalone-action";
+      standalone.id = "beautifyClearRasterCard";
+
+      const title = document.createElement("h3");
+      title.textContent = "Actions";
+
+      clearBtn.classList.add("beautify-action-btn");
+      clearBtn.textContent = "Clear Raster Layer";
+
+      standalone.appendChild(title);
+      standalone.appendChild(clearBtn);
+
+      // 插在左邊面板中，放在圖層透明度後面比較合理
+      const left = document.querySelector(".left");
+      if (!left) return;
+
+      const opacityCard = findCardByText(["圖層透明度", "Opacity", "Layer Opacity"]);
+      if (opacityCard && opacityCard.parentNode === left) {
+        left.insertBefore(standalone, opacityCard.nextSibling);
+      } else {
+        left.appendChild(standalone);
+      }
+
+      // 如果原本 parentCard 變空，可隱藏
+      if (parentCard && parentCard !== standalone) {
+        const buttonsLeft = parentCard.querySelectorAll("button, .btn");
+        if (buttonsLeft.length === 0 || (buttonsLeft.length === 1 && buttonsLeft[0] === clearBtn)) {
+          // 不直接刪 parentCard，避免影響既有邏輯；若只剩空殼再隱藏
+        }
+      }
+    }
+
+    function convertMaskModeToButtons() {
+      const select = document.getElementById("aoiMaskMode");
+      if (!select) return;
+      if (document.getElementById("beautifyMaskRow")) return;
+
+      const containerCard = select.closest(".card");
+      if (!containerCard) return;
+
+      const row = document.createElement("div");
+      row.className = "beautify-mask-row";
+      row.id = "beautifyMaskRow";
+
+      const options = [
+        { value: "full", label: "Show Full Layer" },
+        { value: "dim", label: "Dim Outside AOI" },
+        { value: "inside_only", label: "Show AOI Only" }
+      ];
+
+      function refreshActive() {
+        row.querySelectorAll("button").forEach(btn => {
+          if (btn.dataset.value === select.value) {
+            btn.classList.add("active-mask-btn");
+          } else {
+            btn.classList.remove("active-mask-btn");
+          }
+        });
+      }
+
+      for (const opt of options) {
+        const btn = document.createElement("button");
+        btn.className = "btn beautify-primary-btn";
+        btn.type = "button";
+        btn.dataset.value = opt.value;
+        btn.textContent = opt.label;
+        btn.addEventListener("click", () => {
+          select.value = opt.value;
+          select.dispatchEvent(new Event("change", { bubbles: true }));
+          refreshActive();
+        });
+        row.appendChild(btn);
+      }
+
+      select.classList.add("beautify-hidden");
+      select.parentNode.insertBefore(row, select.nextSibling);
+      refreshActive();
+
+      select.addEventListener("change", refreshActive);
+    }
+
+    function unifyTextSizingAndLabels() {
+      // 左邊小區塊標題英文化
+      const leftCards = Array.from(document.querySelectorAll(".left .card"));
+      leftCards.forEach(card => {
+        const html = card.innerHTML;
+        card.innerHTML = html
+          .replace(/圖層透明度/g, "Layer Opacity")
+          .replace(/目前透明度：/g, "Current Opacity: ")
+          .replace(/座標顯示/g, "Coordinates")
+          .replace(/AOI 遮罩模式/g, "AOI Mask Mode")
+          .replace(/目前先支援 LULC 與降雨。這是前端視覺遮罩，不是真正裁切。/g, "Currently supports LULC and Precipitation. This is a visual front-end mask, not a true raster clip.")
+          .replace(/目前先支援 LULC 與降雨：這是前端視覺遮罩，不是真正裁切。/g, "Currently supports LULC and Precipitation. This is a visual front-end mask, not a true raster clip.");
+      });
+
+      // 右側剩餘中文字英文化
+      document.body.innerHTML = document.body.innerHTML
+        .replace(/標題：/g, "Title: ")
+        .replace(/時間：/g, "Time: ")
+        .replace(/空間範圍：/g, "BBox: ")
+        .replace(/說明：/g, "Description: ");
+    }
+
+    function beautifyLegendTitle() {
+      document.querySelectorAll(".leaflet-control, .legend, .info.legend").forEach(el => {
+        el.innerHTML = el.innerHTML
+          .replace(/LULC 類別圖例/g, "LULC Legend")
+          .replace(/降雨\s*\(mm\)/g, "Precipitation (mm)");
+      });
+    }
+
+    function runBeautifyLayout() {
+      injectBeautifyStyles();
+      makeClearRasterStandalone();
+      convertMaskModeToButtons();
+      moveCoordinateCardToMapBottomRight();
+      beautifyLegendTitle();
+    }
+
+    // 初始與後續切圖層後都重新整理
+    setTimeout(() => {
+      try {
+        runBeautifyLayout();
+      } catch (err) {
+        console.warn("Beautify layout failed:", err);
+      }
+    }, 300);
+
+    const _origShowDynamicLayerBeautify = showDynamicLayer;
+    showDynamicLayer = async function(controlId) {
+      await _origShowDynamicLayerBeautify(controlId);
+      setTimeout(() => {
+        try {
+          runBeautifyLayout();
+          beautifyLegendTitle();
+        } catch (err) {
+          console.warn("Beautify refresh after showDynamicLayer failed:", err);
+        }
+      }, 80);
+    };
+
+    const _origSwitchEventBeautify = switchEvent;
+    switchEvent = async function(eventId, zoom = true) {
+      await _origSwitchEventBeautify(eventId, zoom);
+      setTimeout(() => {
+        try {
+          runBeautifyLayout();
+          beautifyLegendTitle();
+        } catch (err) {
+          console.warn("Beautify refresh after switchEvent failed:", err);
+        }
+      }, 120);
+    };
+    /* === WEBGIS BEAUTIFY PATCH END === */
+
+
+    /* === WEBGIS BEAUTIFY V2 PATCH START === */
+    function injectBeautifyV2Styles() {
+      if (document.getElementById("beautifyPatchStyleV2")) return;
+
+      const style = document.createElement("style");
+      style.id = "beautifyPatchStyleV2";
+      style.textContent = `
+        .beautify-actions-card {
+          border-radius: 14px;
+        }
+
+        .beautify-actions-card h3 {
+          margin-bottom: 10px;
+        }
+
+        .beautify-actions-section {
+          margin-top: 12px;
+          padding-top: 10px;
+          border-top: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .beautify-actions-section:first-of-type {
+          margin-top: 0;
+          padding-top: 0;
+          border-top: none;
+        }
+
+        .beautify-section-title {
+          font-size: 13px;
+          font-weight: 700;
+          color: #334155;
+          margin-bottom: 8px;
+          letter-spacing: 0.01em;
+        }
+
+        .beautify-soft-danger {
+          background: #b45f6a !important;
+          border-color: #b45f6a !important;
+          color: #ffffff !important;
+          font-weight: 700;
+        }
+
+        .beautify-soft-danger:hover {
+          background: #9f4f5a !important;
+          border-color: #9f4f5a !important;
+          color: #ffffff !important;
+        }
+
+        .beautify-actions-card .btn,
+        .beautify-actions-card button {
+          width: 100%;
+        }
+
+        .beautify-coord-card-inline {
+          margin-top: 8px;
+          border: 1px solid rgba(15, 23, 42, 0.06);
+          border-radius: 12px;
+          background: #f8fafc;
+          padding: 10px 12px;
+        }
+
+        .beautify-coord-card-inline h3 {
+          font-size: 13px !important;
+          font-weight: 700 !important;
+          margin: 0 0 8px 0 !important;
+        }
+
+        .beautify-coord-card-inline .card-body-wrap,
+        .beautify-coord-card-inline .card-body-wrap * {
+          font-size: 12px !important;
+          line-height: 1.45;
+        }
+
+        .beautify-coord-card-inline input[type="checkbox"] {
+          transform: translateY(1px);
+          margin-right: 6px;
+        }
+
+        .beautify-coord-card-inline .small-note {
+          color: #64748b;
+        }
+
+        .beautify-map-floating {
+          display: none !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    function getLeftPanel() {
+      return document.querySelector(".left");
+    }
+
+    function findCardByKeywords(keywords) {
+      const cards = Array.from(document.querySelectorAll(".left .card, .right .card, .beautify-map-floating .card"));
+      for (const card of cards) {
+        const t = (card.textContent || "").trim();
+        if (keywords.some(k => t.includes(k))) return card;
+      }
+      return null;
+    }
+
+    function ensureActionsCardV2() {
+      let card = document.getElementById("beautifyActionsCardV2");
+      if (card) return card;
+
+      const left = getLeftPanel();
+      if (!left) return null;
+
+      card = document.createElement("div");
+      card.className = "card beautify-actions-card";
+      card.id = "beautifyActionsCardV2";
+      card.innerHTML = `
+        <h3>Actions</h3>
+        <div id="beautifyActionsBodyV2"></div>
+      `;
+
+      const maskCard = findCardByKeywords(["AOI Mask Mode", "AOI 遮罩模式"]);
+      if (maskCard && maskCard.parentNode === left) {
+        left.insertBefore(card, maskCard);
+      } else {
+        left.appendChild(card);
+      }
+
+      return card;
+    }
+
+    function moveClearRasterIntoActions() {
+      const card = ensureActionsCardV2();
+      if (!card) return;
+
+      const body = document.getElementById("beautifyActionsBodyV2");
+      if (!body) return;
+
+      const existingSection = document.getElementById("beautifyClearRasterSection");
+      if (existingSection) return;
+
+      const clearBtn = Array.from(document.querySelectorAll("button, .btn")).find(el => {
+        const t = (el.textContent || "").trim();
+        return t === "Clear Raster Layer" || t === "關閉 raster 圖層";
+      });
+      if (!clearBtn) return;
+
+      const section = document.createElement("div");
+      section.className = "beautify-actions-section";
+      section.id = "beautifyClearRasterSection";
+
+      const title = document.createElement("div");
+      title.className = "beautify-section-title";
+      title.textContent = "Raster";
+
+      clearBtn.classList.add("beautify-soft-danger");
+      clearBtn.textContent = "Clear Raster Layer";
+
+      section.appendChild(title);
+      section.appendChild(clearBtn);
+      body.appendChild(section);
+    }
+
+    function moveCoordinateIntoActions() {
+      const actionsCard = ensureActionsCardV2();
+      if (!actionsCard) return;
+
+      const body = document.getElementById("beautifyActionsBodyV2");
+      if (!body) return;
+      if (document.getElementById("beautifyCoordSectionV2")) return;
+
+      const coordCard = findCardByKeywords([
+        "Show Cursor Coordinates",
+        "顯示游標座標",
+        "Coordinates"
+      ]);
+      if (!coordCard) return;
+
+      const section = document.createElement("div");
+      section.className = "beautify-actions-section";
+      section.id = "beautifyCoordSectionV2";
+
+      const title = document.createElement("div");
+      title.className = "beautify-section-title";
+      title.textContent = "Coordinates";
+
+      coordCard.classList.remove("collapsed");
+      coordCard.classList.remove("is-collapsible");
+      coordCard.classList.add("beautify-coord-card-inline");
+
+      const h3 = coordCard.querySelector("h3");
+      if (h3) h3.textContent = "Show Cursor Coordinates";
+
+      section.appendChild(title);
+      section.appendChild(coordCard);
+      body.appendChild(section);
+    }
+
+    function cleanupOldFloatingCoordinateBox() {
+      document.querySelectorAll(".beautify-map-floating").forEach(el => {
+        el.style.display = "none";
+      });
+    }
+
+    function runBeautifyV2Layout() {
+      injectBeautifyV2Styles();
+      cleanupOldFloatingCoordinateBox();
+      moveClearRasterIntoActions();
+      moveCoordinateIntoActions();
+    }
+
+    setTimeout(() => {
+      try {
+        runBeautifyV2Layout();
+      } catch (err) {
+        console.warn("Beautify V2 layout failed:", err);
+      }
+    }, 250);
+
+    const _origShowDynamicLayerBeautifyV2 = showDynamicLayer;
+    showDynamicLayer = async function(controlId) {
+      await _origShowDynamicLayerBeautifyV2(controlId);
+      setTimeout(() => {
+        try {
+          runBeautifyV2Layout();
+        } catch (err) {
+          console.warn("Beautify V2 refresh after showDynamicLayer failed:", err);
+        }
+      }, 80);
+    };
+
+    const _origSwitchEventBeautifyV2 = switchEvent;
+    switchEvent = async function(eventId, zoom = true) {
+      await _origSwitchEventBeautifyV2(eventId, zoom);
+      setTimeout(() => {
+        try {
+          runBeautifyV2Layout();
+        } catch (err) {
+          console.warn("Beautify V2 refresh after switchEvent failed:", err);
+        }
+      }, 120);
+    };
+    /* === WEBGIS BEAUTIFY V2 PATCH END === */
+
+
+    /* === TOOLBOX + GRID SIDEBAR FIX V5 START === */
+    function injectV5Styles() {
+      if (document.getElementById("v5ToolboxGridStyle")) return;
+
+      const style = document.createElement("style");
+      style.id = "v5ToolboxGridStyle";
+      style.textContent = `
+        #toolboxCardV5 h3 {
+          margin-bottom: 10px;
+        }
+
+        #toolboxBodyV5 {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+
+        .toolbox-section-v5 {
+          border-top: 1px solid rgba(15,23,42,0.08);
+          padding-top: 10px;
+        }
+
+        .toolbox-section-v5:first-child {
+          border-top: none;
+          padding-top: 0;
+        }
+
+        .toolbox-title-v5 {
+          font-size: 13px;
+          font-weight: 700;
+          color: #334155;
+          margin-bottom: 8px;
+        }
+
+        .toolbox-inline-card-v5 {
+          margin: 0 !important;
+          padding: 10px 12px !important;
+          border-radius: 12px;
+          border: 1px solid rgba(15,23,42,0.06);
+          background: #f8fafc;
+          box-shadow: none !important;
+        }
+
+        .toolbox-inline-card-v5 h3 {
+          display: none !important;
+        }
+
+        .toolbox-inline-card-v5 * {
+          font-size: 12px !important;
+          line-height: 1.45;
+        }
+
+        .toolbox-danger-v5 {
+          width: 100%;
+          background: #975b65 !important;
+          color: #ffffff !important;
+          border: 1px solid #975b65 !important;
+          font-weight: 700;
+        }
+
+        .toolbox-danger-v5:hover {
+          background: #804b54 !important;
+          color: #ffffff !important;
+          border-color: #804b54 !important;
+        }
+
+        .panel-toggle-v5 {
+          position: fixed;
+          top: 110px;
+          z-index: 1400;
+          width: 40px;
+          height: 40px;
+          border-radius: 999px;
+          border: 1px solid rgba(15,23,42,0.10);
+          background: rgba(255,255,255,0.94);
+          box-shadow: 0 6px 18px rgba(15,23,42,0.10);
+          font-weight: 800;
+          color: #334155;
+          cursor: pointer;
+          backdrop-filter: blur(6px);
+        }
+
+        #leftPanelToggleV5 { left: 10px; }
+        #rightPanelToggleV5 { right: 10px; }
+
+        .sidebar-hidden-v5 {
+          opacity: 0 !important;
+          pointer-events: none !important;
+        }
+
+        .left, .right {
+          transition: opacity .18s ease;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    function getMainLayoutV5() {
+      const left = document.querySelector(".left");
+      const right = document.querySelector(".right");
+      const mapEl = document.getElementById("map");
+      if (!left || !right || !mapEl) return null;
+
+      let node = left.parentElement;
+      while (node) {
+        if (node.contains(right) && node.contains(mapEl)) return node;
+        node = node.parentElement;
+      }
+      return left.parentElement;
+    }
+
+    function getCenterPanelV5() {
+      const mapEl = document.getElementById("map");
+      if (!mapEl) return null;
+      return mapEl.parentElement;
+    }
+
+    function applyLayoutStateV5() {
+      const left = document.querySelector(".left");
+      const right = document.querySelector(".right");
+      const center = getCenterPanelV5();
+      const layout = getMainLayoutV5();
+      if (!left || !right || !center || !layout) return;
+
+      const leftCollapsed = localStorage.getItem("v5_left_collapsed") === "1";
+      const rightCollapsed = localStorage.getItem("v5_right_collapsed") === "1";
+
+      left.classList.toggle("sidebar-hidden-v5", leftCollapsed);
+      right.classList.toggle("sidebar-hidden-v5", rightCollapsed);
+
+      if (getComputedStyle(layout).display.includes("grid")) {
+        const leftW = leftCollapsed ? "0px" : "350px";
+        const rightW = rightCollapsed ? "0px" : "350px";
+        layout.style.gridTemplateColumns = `${leftW} minmax(0,1fr) ${rightW}`;
+        left.style.width = leftW;
+        right.style.width = rightW;
+        left.style.minWidth = leftW;
+        right.style.minWidth = rightW;
+        center.style.minWidth = "0";
+      } else {
+        left.style.flex = leftCollapsed ? "0 0 0px" : "0 0 350px";
+        right.style.flex = rightCollapsed ? "0 0 350px" : "0 0 350px";
+        left.style.width = leftCollapsed ? "0px" : "350px";
+        right.style.width = rightCollapsed ? "0px" : "350px";
+        left.style.minWidth = leftCollapsed ? "0px" : "350px";
+        right.style.minWidth = rightCollapsed ? "0px" : "350px";
+        center.style.flex = "1 1 auto";
+        center.style.minWidth = "0";
+      }
+
+      [40, 140, 320, 650].forEach(ms => {
+        setTimeout(() => {
+          try {
+            if (typeof map !== "undefined" && map.invalidateSize) {
+              map.invalidateSize(true);
+            }
+            window.dispatchEvent(new Event("resize"));
+          } catch (err) {
+            console.warn("invalidateSize failed:", err);
+          }
+        }, ms);
+      });
+    }
+
+    function ensurePanelToggleButtonsV5() {
+      if (!document.getElementById("leftPanelToggleV5")) {
+        const btn = document.createElement("button");
+        btn.id = "leftPanelToggleV5";
+        btn.className = "panel-toggle-v5";
+        btn.type = "button";
+        btn.textContent = "☰";
+        btn.title = "Toggle left panel";
+        btn.addEventListener("click", () => {
+          const next = localStorage.getItem("v5_left_collapsed") === "1" ? "0" : "1";
+          localStorage.setItem("v5_left_collapsed", next);
+          applyLayoutStateV5();
+        });
+        document.body.appendChild(btn);
+      }
+
+      if (!document.getElementById("rightPanelToggleV5")) {
+        const btn = document.createElement("button");
+        btn.id = "rightPanelToggleV5";
+        btn.className = "panel-toggle-v5";
+        btn.type = "button";
+        btn.textContent = "☰";
+        btn.title = "Toggle right panel";
+        btn.addEventListener("click", () => {
+          const next = localStorage.getItem("v5_right_collapsed") === "1" ? "0" : "1";
+          localStorage.setItem("v5_right_collapsed", next);
+          applyLayoutStateV5();
+        });
+        document.body.appendChild(btn);
+      }
+    }
+
+    function findLeftCardsV5() {
+      return Array.from(document.querySelectorAll(".left .card"));
+    }
+
+    function findCardByKeywordsV5(keywords) {
+      return findLeftCardsV5().find(card => {
+        const t = (card.textContent || "").trim();
+        return keywords.some(k => t.includes(k));
+      }) || null;
+    }
+
+    function ensureToolboxCardV5() {
+      let toolbox = document.getElementById("toolboxCardV5");
+      const left = document.querySelector(".left");
+      if (!left) return null;
+
+      if (!toolbox) {
+        toolbox = document.createElement("div");
+        toolbox.className = "card";
+        toolbox.id = "toolboxCardV5";
+        toolbox.innerHTML = `<h3>Toolbox</h3><div id="toolboxBodyV5"></div>`;
+
+        const opacityCard = findCardByKeywordsV5(["Layer Opacity", "圖層透明度"]);
+        if (opacityCard && opacityCard.parentNode === left) {
+          left.insertBefore(toolbox, opacityCard.nextSibling);
+        } else {
+          left.prepend(toolbox);
+        }
+      }
+
+      return toolbox;
+    }
+
+    function ensureToolboxSectionV5(id, title) {
+      const toolbox = ensureToolboxCardV5();
+      if (!toolbox) return null;
+
+      const body = toolbox.querySelector("#toolboxBodyV5");
+      let sec = document.getElementById(id);
+      if (sec) return sec;
+
+      sec = document.createElement("div");
+      sec.className = "toolbox-section-v5";
+      sec.id = id;
+
+      const head = document.createElement("div");
+      head.className = "toolbox-title-v5";
+      head.textContent = title;
+
+      sec.appendChild(head);
+      body.appendChild(sec);
+      return sec;
+    }
+
+    function moveCoordinatesToToolboxV5() {
+      const card = findCardByKeywordsV5([
+        "Show Cursor Coordinates",
+        "顯示游標座標",
+        "Coordinates",
+        "座標顯示"
+      ]);
+      if (!card) return;
+
+      const sec = ensureToolboxSectionV5("toolboxCoordSectionV5", "Coordinates");
+      if (!sec) return;
+
+      card.classList.remove("collapsed");
+      card.classList.remove("is-collapsible");
+      card.classList.add("toolbox-inline-card-v5");
+
+      if (card.parentNode !== sec) {
+        sec.appendChild(card);
+      }
+    }
+
+    function moveClearRasterToToolboxV5() {
+      const btn = Array.from(document.querySelectorAll("button, .btn")).find(el => {
+        const t = (el.textContent || "").trim();
+        return t === "Clear Raster Layer" || t === "關閉 raster 圖層";
+      });
+      if (!btn) return;
+
+      const sec = ensureToolboxSectionV5("toolboxRasterSectionV5", "Raster");
+      if (!sec) return;
+
+      if (btn.parentNode !== sec) {
+        sec.appendChild(btn);
+      }
+
+      btn.textContent = "Clear Raster Layer";
+      btn.classList.add("toolbox-danger-v5");
+    }
+
+    function removeLegacyEmptyActionsV5() {
+      document.querySelectorAll(".left .card").forEach(card => {
+        if (card.id === "toolboxCardV5") return;
+
+        const h3 = card.querySelector("h3");
+        const title = h3 ? h3.textContent.trim() : "";
+        const txt = (card.textContent || "").trim();
+
+        if ((title === "Actions" || title === "Toolbox") && !card.querySelector("button, .btn, input, select")) {
+          card.style.display = "none";
+        }
+
+        if ((txt === "Actions" || txt === "Toolbox") && !card.querySelector("button, .btn, input, select")) {
+          card.style.display = "none";
+        }
+      });
+    }
+
+    function runV5ToolboxGridSidebarPatch() {
+      injectV5Styles();
+      ensureToolboxCardV5();
+      moveCoordinatesToToolboxV5();
+      moveClearRasterToToolboxV5();
+      removeLegacyEmptyActionsV5();
+      ensurePanelToggleButtonsV5();
+      applyLayoutStateV5();
+    }
+
+    setTimeout(() => {
+      try {
+        runV5ToolboxGridSidebarPatch();
+      } catch (err) {
+        console.warn("V5 toolbox/grid/sidebar patch failed:", err);
+      }
+    }, 280);
+
+    const _origShowDynamicLayerV5 = showDynamicLayer;
+    showDynamicLayer = async function(controlId) {
+      await _origShowDynamicLayerV5(controlId);
+      setTimeout(() => {
+        try {
+          runV5ToolboxGridSidebarPatch();
+        } catch (err) {
+          console.warn("V5 patch refresh after showDynamicLayer failed:", err);
+        }
+      }, 120);
+    };
+
+    const _origSwitchEventV5 = switchEvent;
+    switchEvent = async function(eventId, zoom = true) {
+      await _origSwitchEventV5(eventId, zoom);
+      setTimeout(() => {
+        try {
+          runV5ToolboxGridSidebarPatch();
+        } catch (err) {
+          console.warn("V5 patch refresh after switchEvent failed:", err);
+        }
+      }, 140);
+    };
+    /* === TOOLBOX + GRID SIDEBAR FIX V5 END === */
+
+
+    /* === STANDALONE COORDS + RASTER FIX START === */
+    function injectStandaloneUtilityStylesV6() {
+      if (document.getElementById("standaloneUtilityStyleV6")) return;
+
+      const style = document.createElement("style");
+      style.id = "standaloneUtilityStyleV6";
+      style.textContent = `
+        #coordsCardV6 h3,
+        #rasterActionCardV6 h3 {
+          margin-bottom: 10px;
+        }
+
+        .coords-readout-v6 {
+          margin-top: 10px;
+          padding: 10px 12px;
+          border-radius: 12px;
+          background: #f8fafc;
+          border: 1px solid rgba(15,23,42,0.06);
+          font-size: 12px;
+          color: #334155;
+          line-height: 1.45;
+          min-height: 42px;
+        }
+
+        .coords-note-v6 {
+          margin-top: 8px;
+          font-size: 12px;
+          color: #64748b;
+          line-height: 1.45;
+        }
+
+        .coords-toggle-row-v6 {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 13px;
+        }
+
+        .coords-toggle-row-v6 input[type="checkbox"] {
+          transform: translateY(1px);
+        }
+
+        .raster-clear-btn-v6 {
+          width: 100%;
+          background: #975b65 !important;
+          color: #ffffff !important;
+          border: 1px solid #975b65 !important;
+          font-weight: 700;
+        }
+
+        .raster-clear-btn-v6:hover {
+          background: #804b54 !important;
+          color: #ffffff !important;
+          border-color: #804b54 !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    function findLeftCardByTitleV6(keywords) {
+      return Array.from(document.querySelectorAll(".left .card")).find(card => {
+        const txt = (card.textContent || "").trim();
+        return keywords.some(k => txt.includes(k));
+      }) || null;
+    }
+
+    function hideEmptyLegacyActionCardsV6() {
+      document.querySelectorAll(".left .card").forEach(card => {
+        const h3 = card.querySelector("h3");
+        const title = h3 ? h3.textContent.trim() : "";
+        const txt = (card.textContent || "").trim();
+
+        const isLegacy = (title === "Actions" || title === "Toolbox" || txt === "Actions" || txt === "Toolbox");
+        if (!isLegacy) return;
+
+        const hasUsefulControl = card.querySelector("button, .btn, input, select");
+        if (!hasUsefulControl) {
+          card.style.display = "none";
+        }
+      });
+    }
+
+    function ensureCoordsCardV6() {
+      let card = document.getElementById("coordsCardV6");
+      const left = document.querySelector(".left");
+      if (!left) return null;
+
+      if (!card) {
+        card = document.createElement("div");
+        card.className = "card";
+        card.id = "coordsCardV6";
+        card.innerHTML = `
+          <h3>Coordinates</h3>
+          <label class="coords-toggle-row-v6">
+            <input type="checkbox" id="coordsToggleV6">
+            <span>Show Cursor Coordinates</span>
+          </label>
+          <div class="coords-note-v6">
+            Move your cursor over the map to display current WGS84 coordinates.
+          </div>
+          <div class="coords-readout-v6" id="coordsReadoutV6">Disabled</div>
+        `;
+
+        const opacityCard = findLeftCardByTitleV6(["Layer Opacity", "圖層透明度"]);
+        if (opacityCard && opacityCard.parentNode === left) {
+          left.insertBefore(card, opacityCard.nextSibling);
+        } else {
+          left.prepend(card);
+        }
+      }
+
+      return card;
+    }
+
+    function ensureRasterActionCardV6() {
+      let card = document.getElementById("rasterActionCardV6");
+      const left = document.querySelector(".left");
+      if (!left) return null;
+
+      if (!card) {
+        card = document.createElement("div");
+        card.className = "card";
+        card.id = "rasterActionCardV6";
+        card.innerHTML = `
+          <h3>Raster Actions</h3>
+          <button type="button" class="btn raster-clear-btn-v6" id="clearRasterBtnV6">
+            Clear Raster Layer
+          </button>
+        `;
+
+        const coordsCard = document.getElementById("coordsCardV6");
+        if (coordsCard && coordsCard.parentNode === left) {
+          left.insertBefore(card, coordsCard.nextSibling);
+        } else {
+          left.appendChild(card);
+        }
+      }
+
+      return card;
+    }
+
+    function bindCoordsLogicV6() {
+      if (window.__coordsV6Bound) return;
+      window.__coordsV6Bound = true;
+
+      const toggle = document.getElementById("coordsToggleV6");
+      const readout = document.getElementById("coordsReadoutV6");
+      if (!toggle || !readout || typeof map === "undefined") return;
+
+      function updateReadout(latlng) {
+        readout.textContent = `Lat: ${latlng.lat.toFixed(6)}, Lng: ${latlng.lng.toFixed(6)}`;
+      }
+
+      map.on("mousemove", (e) => {
+        if (!toggle.checked) return;
+        updateReadout(e.latlng);
+      });
+
+      map.on("mouseout", () => {
+        if (!toggle.checked) return;
+        readout.textContent = "Move cursor over the map...";
+      });
+
+      toggle.addEventListener("change", () => {
+        if (!toggle.checked) {
+          readout.textContent = "Disabled";
+        } else {
+          readout.textContent = "Move cursor over the map...";
+        }
+      });
+    }
+
+    function bindClearRasterLogicV6() {
+      const btn = document.getElementById("clearRasterBtnV6");
+      if (!btn || btn.dataset.bound === "1") return;
+      btn.dataset.bound = "1";
+
+      btn.addEventListener("click", () => {
+        if (typeof clearRaster === "function") {
+          clearRaster();
+        }
+      });
+    }
+
+    function runStandaloneUtilityPatchV6() {
+      injectStandaloneUtilityStylesV6();
+      hideEmptyLegacyActionCardsV6();
+      ensureCoordsCardV6();
+      ensureRasterActionCardV6();
+      bindCoordsLogicV6();
+      bindClearRasterLogicV6();
+    }
+
+    setTimeout(() => {
+      try {
+        runStandaloneUtilityPatchV6();
+      } catch (err) {
+        console.warn("Standalone utility patch failed:", err);
+      }
+    }, 260);
+
+    const _origShowDynamicLayerV6 = showDynamicLayer;
+    showDynamicLayer = async function(controlId) {
+      await _origShowDynamicLayerV6(controlId);
+      setTimeout(() => {
+        try {
+          runStandaloneUtilityPatchV6();
+        } catch (err) {
+          console.warn("V6 refresh after showDynamicLayer failed:", err);
+        }
+      }, 120);
+    };
+
+    const _origSwitchEventV6 = switchEvent;
+    switchEvent = async function(eventId, zoom = true) {
+      await _origSwitchEventV6(eventId, zoom);
+      setTimeout(() => {
+        try {
+          runStandaloneUtilityPatchV6();
+        } catch (err) {
+          console.warn("V6 refresh after switchEvent failed:", err);
+        }
+      }, 140);
+    };
+    /* === STANDALONE COORDS + RASTER FIX END === */
+
+
+    /* === V7 STANDALONE LEFT CONTROLS FIX START === */
+    function injectV7StandaloneControlStyles() {
+      if (document.getElementById("v7StandaloneControlStyle")) return;
+
+      const style = document.createElement("style");
+      style.id = "v7StandaloneControlStyle";
+      style.textContent = `
+        #coordsCardV7 h3,
+        #rasterActionsCardV7 h3 {
+          margin-bottom: 10px;
+        }
+
+        .coords-toggle-row-v7 {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 13px;
+        }
+
+        .coords-toggle-row-v7 input[type="checkbox"] {
+          transform: translateY(1px);
+        }
+
+        .coords-note-v7 {
+          margin-top: 8px;
+          font-size: 12px;
+          color: #64748b;
+          line-height: 1.45;
+        }
+
+        .coords-readout-v7 {
+          margin-top: 10px;
+          padding: 10px 12px;
+          border-radius: 12px;
+          background: #f8fafc;
+          border: 1px solid rgba(15,23,42,0.06);
+          font-size: 12px;
+          color: #334155;
+          line-height: 1.45;
+          min-height: 42px;
+        }
+
+        .clear-raster-btn-v7 {
+          width: 100%;
+          background: #975b65 !important;
+          color: #ffffff !important;
+          border: 1px solid #975b65 !important;
+          font-weight: 700;
+        }
+
+        .clear-raster-btn-v7:hover {
+          background: #804b54 !important;
+          color: #ffffff !important;
+          border-color: #804b54 !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    function getLeftPanelV7() {
+      return document.querySelector(".left");
+    }
+
+    function findLeftCardByKeywordsV7(keywords) {
+      return Array.from(document.querySelectorAll(".left .card")).find(card => {
+        const t = (card.textContent || "").trim();
+        return keywords.some(k => t.includes(k));
+      }) || null;
+    }
+
+    function ensureCoordsCardV7() {
+      const left = getLeftPanelV7();
+      if (!left) return null;
+
+      let card = document.getElementById("coordsCardV7");
+      if (!card) {
+        card = document.createElement("div");
+        card.className = "card";
+        card.id = "coordsCardV7";
+
+        const opacityCard = findLeftCardByKeywordsV7(["Layer Opacity", "圖層透明度"]);
+        if (opacityCard && opacityCard.parentNode === left) {
+          left.insertBefore(card, opacityCard.nextSibling);
+        } else {
+          left.prepend(card);
+        }
+      }
+
+      card.innerHTML = `
+        <h3>Coordinates</h3>
+        <label class="coords-toggle-row-v7">
+          <input type="checkbox" id="coordsToggleV7">
+          <span>Show Cursor Coordinates</span>
+        </label>
+        <div class="coords-note-v7">
+          Move your cursor over the map to display current WGS84 coordinates.
+        </div>
+        <div class="coords-readout-v7" id="coordsReadoutV7">Disabled</div>
+      `;
+
+      return card;
+    }
+
+    function ensureRasterActionsCardV7() {
+      const left = getLeftPanelV7();
+      if (!left) return null;
+
+      let card = document.getElementById("rasterActionsCardV7");
+
+      if (!card) {
+        const legacy = findLeftCardByKeywordsV7(["Raster Actions"]);
+        if (legacy) {
+          card = legacy;
+          card.id = "rasterActionsCardV7";
+        } else {
+          card = document.createElement("div");
+          card.className = "card";
+          card.id = "rasterActionsCardV7";
+        }
+
+        const coordsCard = document.getElementById("coordsCardV7");
+        if (coordsCard && coordsCard.parentNode === left) {
+          left.insertBefore(card, coordsCard.nextSibling);
+        } else {
+          left.appendChild(card);
+        }
+      }
+
+      card.innerHTML = `
+        <h3>Raster Actions</h3>
+        <button type="button" class="btn clear-raster-btn-v7" id="clearRasterBtnV7">
+          Clear Raster Layer
+        </button>
+      `;
+
+      return card;
+    }
+
+    function hideEmptyLegacyCardsV7() {
+      document.querySelectorAll(".left .card").forEach(card => {
+        if (card.id === "coordsCardV7" || card.id === "rasterActionsCardV7") return;
+
+        const h3 = card.querySelector("h3");
+        const title = h3 ? h3.textContent.trim() : "";
+        const txt = (card.textContent || "").trim();
+
+        const isLegacy = (
+          title === "Actions" ||
+          title === "Toolbox" ||
+          txt === "Actions" ||
+          txt === "Toolbox"
+        );
+
+        if (isLegacy && !card.querySelector("button, .btn, input, select")) {
+          card.style.display = "none";
+        }
+      });
+    }
+
+    function bindCoordsLogicV7() {
+      if (window.__coordsLogicV7Bound) return;
+      window.__coordsLogicV7Bound = true;
+
+      const mapObj = typeof map !== "undefined" ? map : null;
+      if (!mapObj) return;
+
+      mapObj.on("mousemove", (e) => {
+        const toggle = document.getElementById("coordsToggleV7");
+        const readout = document.getElementById("coordsReadoutV7");
+        if (!toggle || !readout || !toggle.checked) return;
+        readout.textContent = `Lat: ${e.latlng.lat.toFixed(6)}, Lng: ${e.latlng.lng.toFixed(6)}`;
+      });
+
+      mapObj.on("mouseout", () => {
+        const toggle = document.getElementById("coordsToggleV7");
+        const readout = document.getElementById("coordsReadoutV7");
+        if (!toggle || !readout || !toggle.checked) return;
+        readout.textContent = "Move cursor over the map...";
+      });
+    }
+
+    function bindCoordsToggleUIV7() {
+      const toggle = document.getElementById("coordsToggleV7");
+      const readout = document.getElementById("coordsReadoutV7");
+      if (!toggle || !readout || toggle.dataset.bound === "1") return;
+
+      toggle.dataset.bound = "1";
+      toggle.addEventListener("change", () => {
+        if (toggle.checked) {
+          readout.textContent = "Move cursor over the map...";
+        } else {
+          readout.textContent = "Disabled";
+        }
+      });
+    }
+
+    function bindClearRasterLogicV7() {
+      const btn = document.getElementById("clearRasterBtnV7");
+      if (!btn || btn.dataset.bound === "1") return;
+
+      btn.dataset.bound = "1";
+      btn.addEventListener("click", () => {
+        if (typeof clearRaster === "function") {
+          clearRaster();
+        }
+      });
+    }
+
+    function runV7StandaloneLeftControlsFix() {
+      injectV7StandaloneControlStyles();
+      ensureCoordsCardV7();
+      ensureRasterActionsCardV7();
+      hideEmptyLegacyCardsV7();
+      bindCoordsLogicV7();
+      bindCoordsToggleUIV7();
+      bindClearRasterLogicV7();
+    }
+
+    setTimeout(() => {
+      try {
+        runV7StandaloneLeftControlsFix();
+      } catch (err) {
+        console.warn("V7 standalone left controls fix failed:", err);
+      }
+    }, 260);
+
+    const _origShowDynamicLayerV7 = showDynamicLayer;
+    showDynamicLayer = async function(controlId) {
+      await _origShowDynamicLayerV7(controlId);
+      setTimeout(() => {
+        try {
+          runV7StandaloneLeftControlsFix();
+        } catch (err) {
+          console.warn("V7 refresh after showDynamicLayer failed:", err);
+        }
+      }, 120);
+    };
+
+    const _origSwitchEventV7 = switchEvent;
+    switchEvent = async function(eventId, zoom = true) {
+      await _origSwitchEventV7(eventId, zoom);
+      setTimeout(() => {
+        try {
+          runV7StandaloneLeftControlsFix();
+        } catch (err) {
+          console.warn("V7 refresh after switchEvent failed:", err);
+        }
+      }, 140);
+    };
+    /* === V7 STANDALONE LEFT CONTROLS FIX END === */
+
+
+    /* === V8 CLEAN LEFT UTILS START === */
+    function injectV8LeftUtilityStyles() {
+      if (document.getElementById("v8LeftUtilityStyle")) return;
+
+      const style = document.createElement("style");
+      style.id = "v8LeftUtilityStyle";
+      style.textContent = `
+        #coordsCardV8 h3,
+        #rasterActionsCardV8 h3 {
+          margin-bottom: 10px;
+        }
+
+        .coords-toggle-row-v8 {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 13px;
+        }
+
+        .coords-toggle-row-v8 input[type="checkbox"] {
+          transform: translateY(1px);
+        }
+
+        .coords-note-v8 {
+          margin-top: 8px;
+          font-size: 12px;
+          color: #64748b;
+          line-height: 1.45;
+        }
+
+        .coords-readout-v8 {
+          margin-top: 10px;
+          padding: 10px 12px;
+          border-radius: 12px;
+          background: #f8fafc;
+          border: 1px solid rgba(15,23,42,0.06);
+          font-size: 12px;
+          color: #334155;
+          line-height: 1.45;
+          min-height: 42px;
+        }
+
+        .clear-raster-btn-v8 {
+          width: 100%;
+          background: #975b65 !important;
+          color: #ffffff !important;
+          border: 1px solid #975b65 !important;
+          font-weight: 700;
+        }
+
+        .clear-raster-btn-v8:hover {
+          background: #804b54 !important;
+          color: #ffffff !important;
+          border-color: #804b54 !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    function leftPanelV8() {
+      return document.querySelector(".left");
+    }
+
+    function findLeftCardByKeywordsV8(keywords) {
+      return Array.from(document.querySelectorAll(".left .card")).find(card => {
+        const txt = (card.textContent || "").trim();
+        return keywords.some(k => txt.includes(k));
+      }) || null;
+    }
+
+    function cleanupLegacyLeftUtilityCardsV8() {
+      const left = leftPanelV8();
+      if (!left) return;
+
+      left.querySelectorAll(".card").forEach(card => {
+        if (card.id === "coordsCardV8" || card.id === "rasterActionsCardV8") return;
+
+        const h3 = card.querySelector("h3");
+        const title = (h3 ? h3.textContent : "").trim();
+        const txt = (card.textContent || "").trim();
+
+        const isLegacyUtilityCard =
+          title === "Actions" ||
+          title === "Toolbox" ||
+          title === "Raster Actions" ||
+          title === "Coordinates" ||
+          txt === "Actions" ||
+          txt === "Toolbox" ||
+          txt === "Raster Actions" ||
+          txt === "Coordinates" ||
+          txt.includes("Show Cursor Coordinates") ||
+          txt.includes("顯示游標座標");
+
+        if (isLegacyUtilityCard) {
+          card.style.display = "none";
+        }
+      });
+
+      Array.from(left.querySelectorAll("button, .btn")).forEach(btn => {
+        const t = (btn.textContent || "").trim();
+        if (t === "Clear Raster Layer" && btn.id !== "clearRasterBtnV8") {
+          btn.style.display = "none";
+        }
+      });
+    }
+
+    function ensureCoordsCardV8() {
+      const left = leftPanelV8();
+      if (!left) return null;
+
+      let card = document.getElementById("coordsCardV8");
+      if (!card) {
+        card = document.createElement("div");
+        card.className = "card";
+        card.id = "coordsCardV8";
+
+        const opacityCard = findLeftCardByKeywordsV8(["Layer Opacity", "圖層透明度"]);
+        if (opacityCard && opacityCard.parentNode === left) {
+          left.insertBefore(card, opacityCard.nextSibling);
+        } else {
+          left.prepend(card);
+        }
+      }
+
+      card.innerHTML = `
+        <h3>Coordinates</h3>
+        <label class="coords-toggle-row-v8">
+          <input type="checkbox" id="coordsToggleV8">
+          <span>Show Cursor Coordinates</span>
+        </label>
+        <div class="coords-note-v8">
+          Move your cursor over the map to display current WGS84 coordinates.
+        </div>
+        <div class="coords-readout-v8" id="coordsReadoutV8">Disabled</div>
+      `;
+
+      return card;
+    }
+
+    function ensureRasterActionsCardV8() {
+      const left = leftPanelV8();
+      if (!left) return null;
+
+      let card = document.getElementById("rasterActionsCardV8");
+      if (!card) {
+        card = document.createElement("div");
+        card.className = "card";
+        card.id = "rasterActionsCardV8";
+
+        const coordsCard = document.getElementById("coordsCardV8");
+        if (coordsCard && coordsCard.parentNode === left) {
+          left.insertBefore(card, coordsCard.nextSibling);
+        } else {
+          left.appendChild(card);
+        }
+      }
+
+      card.innerHTML = `
+        <h3>Raster Actions</h3>
+        <button type="button" class="btn clear-raster-btn-v8" id="clearRasterBtnV8">
+          Clear Raster Layer
+        </button>
+      `;
+
+      return card;
+    }
+
+    function bindCoordsLogicV8() {
+      if (window.__coordsMoveBoundV8) return;
+      window.__coordsMoveBoundV8 = true;
+
+      if (typeof map === "undefined") return;
+
+      map.on("mousemove", (e) => {
+        const toggle = document.getElementById("coordsToggleV8");
+        const out = document.getElementById("coordsReadoutV8");
+        if (!toggle || !out || !toggle.checked) return;
+        out.textContent = `Lat: ${e.latlng.lat.toFixed(6)}, Lng: ${e.latlng.lng.toFixed(6)}`;
+      });
+
+      map.on("mouseout", () => {
+        const toggle = document.getElementById("coordsToggleV8");
+        const out = document.getElementById("coordsReadoutV8");
+        if (!toggle || !out || !toggle.checked) return;
+        out.textContent = "Move cursor over the map...";
+      });
+    }
+
+    function bindCoordsToggleUIV8() {
+      const toggle = document.getElementById("coordsToggleV8");
+      const out = document.getElementById("coordsReadoutV8");
+      if (!toggle || !out || toggle.dataset.bound === "1") return;
+
+      toggle.dataset.bound = "1";
+      toggle.addEventListener("change", () => {
+        out.textContent = toggle.checked ? "Move cursor over the map..." : "Disabled";
+      });
+    }
+
+    function bindClearRasterLogicV8() {
+      const btn = document.getElementById("clearRasterBtnV8");
+      if (!btn || btn.dataset.bound === "1") return;
+
+      btn.dataset.bound = "1";
+      btn.addEventListener("click", () => {
+        if (typeof clearRaster === "function") {
+          clearRaster();
+        }
+      });
+    }
+
+    function runV8CleanLeftUtils() {
+      injectV8LeftUtilityStyles();
+      cleanupLegacyLeftUtilityCardsV8();
+      ensureCoordsCardV8();
+      ensureRasterActionsCardV8();
+      bindCoordsLogicV8();
+      bindCoordsToggleUIV8();
+      bindClearRasterLogicV8();
+    }
+
+    setTimeout(() => {
+      try {
+        runV8CleanLeftUtils();
+      } catch (err) {
+        console.warn("V8 clean left utils failed:", err);
+      }
+    }, 280);
+
+    const _origShowDynamicLayerV8 = showDynamicLayer;
+    showDynamicLayer = async function(controlId) {
+      await _origShowDynamicLayerV8(controlId);
+      setTimeout(() => {
+        try {
+          runV8CleanLeftUtils();
+        } catch (err) {
+          console.warn("V8 refresh after showDynamicLayer failed:", err);
+        }
+      }, 120);
+    };
+
+    const _origSwitchEventV8 = switchEvent;
+    switchEvent = async function(eventId, zoom = true) {
+      await _origSwitchEventV8(eventId, zoom);
+      setTimeout(() => {
+        try {
+          runV8CleanLeftUtils();
+        } catch (err) {
+          console.warn("V8 refresh after switchEvent failed:", err);
+        }
+      }, 140);
+    };
+    /* === V8 CLEAN LEFT UTILS END === */
+
+
+    /* === V9 CURSOR COORDINATES ONLY FIX START === */
+    function injectV9CursorCoordStyles() {
+      if (document.getElementById("v9CursorCoordStyle")) return;
+
+      const style = document.createElement("style");
+      style.id = "v9CursorCoordStyle";
+      style.textContent = `
+        #coordsCardV9 h3 {
+          margin-bottom: 10px;
+        }
+
+        .coords-toggle-row-v9 {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 13px;
+        }
+
+        .coords-toggle-row-v9 input[type="checkbox"] {
+          transform: translateY(1px);
+        }
+
+        .coords-note-v9 {
+          margin-top: 8px;
+          font-size: 12px;
+          color: #64748b;
+          line-height: 1.45;
+        }
+
+        .coords-readout-v9 {
+          margin-top: 10px;
+          padding: 10px 12px;
+          border-radius: 12px;
+          background: #f8fafc;
+          border: 1px solid rgba(15,23,42,0.06);
+          font-size: 12px;
+          color: #334155;
+          line-height: 1.45;
+          min-height: 42px;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    function findLeftCardByKeywordsV9(keywords) {
+      return Array.from(document.querySelectorAll(".left .card")).find(card => {
+        const txt = (card.textContent || "").trim();
+        return keywords.some(k => txt.includes(k));
+      }) || null;
+    }
+
+    function ensureCoordsCardV9() {
+      const left = document.querySelector(".left");
+      if (!left) return null;
+
+      let card = document.getElementById("coordsCardV9");
+      if (!card) {
+        card = document.createElement("div");
+        card.className = "card";
+        card.id = "coordsCardV9";
+
+        const opacityCard = findLeftCardByKeywordsV9(["Layer Opacity", "圖層透明度"]);
+        const rasterActionsCard =
+          document.getElementById("rasterActionsCardV8") ||
+          document.getElementById("rasterActionsCardV7") ||
+          findLeftCardByKeywordsV9(["Raster Actions"]);
+
+        if (opacityCard && opacityCard.parentNode === left) {
+          left.insertBefore(card, opacityCard.nextSibling);
+        } else if (rasterActionsCard && rasterActionsCard.parentNode === left) {
+          left.insertBefore(card, rasterActionsCard);
+        } else {
+          left.prepend(card);
+        }
+      }
+
+      const checked = localStorage.getItem("coordsToggleV9") === "1";
+
+      card.innerHTML = `
+        <h3>Coordinates</h3>
+        <label class="coords-toggle-row-v9">
+          <input type="checkbox" id="coordsToggleV9" ${checked ? "checked" : ""}>
+          <span>Show Cursor Coordinates</span>
+        </label>
+        <div class="coords-note-v9">
+          Move your cursor over the map to display current WGS84 coordinates.
+        </div>
+        <div class="coords-readout-v9" id="coordsReadoutV9">${checked ? "Move cursor over the map..." : "Disabled"}</div>
+      `;
+
+      return card;
+    }
+
+    function bindMapCoordsV9() {
+      if (window.__mapCoordsBoundV9) return;
+      window.__mapCoordsBoundV9 = true;
+
+      if (typeof map === "undefined") return;
+
+      map.on("mousemove", (e) => {
+        const toggle = document.getElementById("coordsToggleV9");
+        const readout = document.getElementById("coordsReadoutV9");
+        if (!toggle || !readout || !toggle.checked) return;
+
+        readout.textContent = `Lat: ${e.latlng.lat.toFixed(6)}, Lng: ${e.latlng.lng.toFixed(6)}`;
+      });
+
+      map.on("mouseout", () => {
+        const toggle = document.getElementById("coordsToggleV9");
+        const readout = document.getElementById("coordsReadoutV9");
+        if (!toggle || !readout || !toggle.checked) return;
+
+        readout.textContent = "Move cursor over the map...";
+      });
+    }
+
+    function bindCoordsToggleV9() {
+      const toggle = document.getElementById("coordsToggleV9");
+      const readout = document.getElementById("coordsReadoutV9");
+      if (!toggle || !readout || toggle.dataset.bound === "1") return;
+
+      toggle.dataset.bound = "1";
+      toggle.addEventListener("change", () => {
+        if (toggle.checked) {
+          localStorage.setItem("coordsToggleV9", "1");
+          readout.textContent = "Move cursor over the map...";
+        } else {
+          localStorage.setItem("coordsToggleV9", "0");
+          readout.textContent = "Disabled";
+        }
+      });
+    }
+
+    function runV9CursorCoordinatesFix() {
+      injectV9CursorCoordStyles();
+      ensureCoordsCardV9();
+      bindMapCoordsV9();
+      bindCoordsToggleV9();
+    }
+
+    setTimeout(() => {
+      try {
+        runV9CursorCoordinatesFix();
+      } catch (err) {
+        console.warn("V9 cursor coordinates fix failed:", err);
+      }
+    }, 260);
+
+    const _origShowDynamicLayerV9 = showDynamicLayer;
+    showDynamicLayer = async function(controlId) {
+      await _origShowDynamicLayerV9(controlId);
+      setTimeout(() => {
+        try {
+          runV9CursorCoordinatesFix();
+        } catch (err) {
+          console.warn("V9 refresh after showDynamicLayer failed:", err);
+        }
+      }, 120);
+    };
+
+    const _origSwitchEventV9 = switchEvent;
+    switchEvent = async function(eventId, zoom = true) {
+      await _origSwitchEventV9(eventId, zoom);
+      setTimeout(() => {
+        try {
+          runV9CursorCoordinatesFix();
+        } catch (err) {
+          console.warn("V9 refresh after switchEvent failed:", err);
+        }
+      }, 140);
+    };
+    /* === V9 CURSOR COORDINATES ONLY FIX END === */
+
+
+    /* === V10 FORCE COORDINATES CARD START === */
+    function injectV10CoordsStyles() {
+      if (document.getElementById("v10CoordsStyle")) return;
+
+      const style = document.createElement("style");
+      style.id = "v10CoordsStyle";
+      style.textContent = `
+        #coordsCardV10 h3 {
+          margin-bottom: 10px;
+        }
+
+        .coords-toggle-row-v10 {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 13px;
+        }
+
+        .coords-toggle-row-v10 input[type="checkbox"] {
+          transform: translateY(1px);
+        }
+
+        .coords-note-v10 {
+          margin-top: 8px;
+          font-size: 12px;
+          color: #64748b;
+          line-height: 1.45;
+        }
+
+        .coords-readout-v10 {
+          margin-top: 10px;
+          padding: 10px 12px;
+          border-radius: 12px;
+          background: #f8fafc;
+          border: 1px solid rgba(15,23,42,0.06);
+          font-size: 12px;
+          color: #334155;
+          line-height: 1.45;
+          min-height: 42px;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    function getLeftPanelV10() {
+      return document.querySelector(".left");
+    }
+
+    function removeOldCoordsCardsV10() {
+      document.querySelectorAll("#coordsCardV9, #coordsCardV8, #coordsCardV7, #coordsCardV6").forEach(el => el.remove());
+
+      document.querySelectorAll(".left .card").forEach(card => {
+        if (card.id === "coordsCardV10") return;
+        const text = (card.textContent || "").trim();
+        if (
+          text.includes("Show Cursor Coordinates") ||
+          text === "Coordinates" ||
+          text.startsWith("CoordinatesDisabled")
+        ) {
+          card.remove();
+        }
+      });
+    }
+
+    function ensureCoordsCardV10() {
+      const left = getLeftPanelV10();
+      if (!left) return null;
+
+      removeOldCoordsCardsV10();
+
+      let card = document.getElementById("coordsCardV10");
+      if (!card) {
+        card = document.createElement("div");
+        card.className = "card";
+        card.id = "coordsCardV10";
+
+        const opacityCard = Array.from(left.querySelectorAll(".card")).find(c =>
+          (c.textContent || "").includes("Layer Opacity") || (c.textContent || "").includes("圖層透明度")
+        );
+
+        const rasterCard =
+          document.getElementById("rasterActionsCardV8") ||
+          document.getElementById("rasterActionsCardV7") ||
+          Array.from(left.querySelectorAll(".card")).find(c => (c.textContent || "").includes("Raster Actions"));
+
+        if (opacityCard && opacityCard.parentNode === left) {
+          left.insertBefore(card, opacityCard.nextSibling);
+        } else if (rasterCard && rasterCard.parentNode === left) {
+          left.insertBefore(card, rasterCard);
+        } else {
+          left.prepend(card);
+        }
+      }
+
+      const enabled = localStorage.getItem("coordsEnabledV10") === "1";
+
+      card.innerHTML = `
+        <h3>Coordinates</h3>
+        <label class="coords-toggle-row-v10">
+          <input type="checkbox" id="coordsToggleV10" ${enabled ? "checked" : ""}>
+          <span>Show Cursor Coordinates</span>
+        </label>
+        <div class="coords-note-v10">
+          Move your cursor over the map to display current WGS84 coordinates.
+        </div>
+        <div class="coords-readout-v10" id="coordsReadoutV10">${enabled ? "Move cursor over the map..." : "Disabled"}</div>
+      `;
+
+      return card;
+    }
+
+    function bindCoordsEventsV10() {
+      if (window.__coordsEventsBoundV10) return;
+      if (typeof map === "undefined") return;
+
+      window.__coordsEventsBoundV10 = true;
+
+      map.on("mousemove", (e) => {
+        const toggle = document.getElementById("coordsToggleV10");
+        const readout = document.getElementById("coordsReadoutV10");
+        if (!toggle || !readout || !toggle.checked) return;
+        readout.textContent = `Lat: ${e.latlng.lat.toFixed(6)}, Lng: ${e.latlng.lng.toFixed(6)}`;
+      });
+
+      map.on("mouseout", () => {
+        const toggle = document.getElementById("coordsToggleV10");
+        const readout = document.getElementById("coordsReadoutV10");
+        if (!toggle || !readout || !toggle.checked) return;
+        readout.textContent = "Move cursor over the map...";
+      });
+    }
+
+    function bindCoordsToggleV10() {
+      const toggle = document.getElementById("coordsToggleV10");
+      const readout = document.getElementById("coordsReadoutV10");
+      if (!toggle || !readout || toggle.dataset.bound === "1") return;
+
+      toggle.dataset.bound = "1";
+      toggle.addEventListener("change", () => {
+        if (toggle.checked) {
+          localStorage.setItem("coordsEnabledV10", "1");
+          readout.textContent = "Move cursor over the map...";
+        } else {
+          localStorage.setItem("coordsEnabledV10", "0");
+          readout.textContent = "Disabled";
+        }
+      });
+    }
+
+    function runV10ForceCoordinatesCard() {
+      injectV10CoordsStyles();
+      ensureCoordsCardV10();
+      bindCoordsEventsV10();
+      bindCoordsToggleV10();
+    }
+
+    setTimeout(() => {
+      try {
+        runV10ForceCoordinatesCard();
+      } catch (err) {
+        console.warn("V10 force coordinates failed:", err);
+      }
+    }, 300);
+
+    const _origShowDynamicLayerV10 = showDynamicLayer;
+    showDynamicLayer = async function(controlId) {
+      await _origShowDynamicLayerV10(controlId);
+      setTimeout(() => {
+        try {
+          runV10ForceCoordinatesCard();
+        } catch (err) {
+          console.warn("V10 refresh after showDynamicLayer failed:", err);
+        }
+      }, 120);
+    };
+
+    const _origSwitchEventV10 = switchEvent;
+    switchEvent = async function(eventId, zoom = true) {
+      await _origSwitchEventV10(eventId, zoom);
+      setTimeout(() => {
+        try {
+          runV10ForceCoordinatesCard();
+        } catch (err) {
+          console.warn("V10 refresh after switchEvent failed:", err);
+        }
+      }, 140);
+    };
+    /* === V10 FORCE COORDINATES CARD END === */
+
+
+    /* === V11 FORCE CLEAR RASTER FIX START === */
+    function forceClearRasterV11() {
+      try {
+        // 1. 先呼叫原本系統的 clearRaster（如果存在）
+        if (typeof clearRaster === "function") {
+          clearRaster();
+        }
+
+        // 2. 保底移除 raster layer
+        if (typeof map !== "undefined" && typeof rasterLayer !== "undefined" && rasterLayer) {
+          try {
+            if (map.hasLayer(rasterLayer)) {
+              map.removeLayer(rasterLayer);
+            }
+          } catch (err) {
+            console.warn("remove rasterLayer failed:", err);
+          }
+          rasterLayer = null;
+        }
+
+        // 3. 清掉 AOI 遮罩 / 反遮罩
+        if (typeof inverseAoiMaskLayer !== "undefined" && inverseAoiMaskLayer) {
+          try {
+            if (typeof map !== "undefined" && map.hasLayer(inverseAoiMaskLayer)) {
+              map.removeLayer(inverseAoiMaskLayer);
+            }
+          } catch (err) {
+            console.warn("remove inverseAoiMaskLayer failed:", err);
+          }
+          inverseAoiMaskLayer = null;
+        }
+
+        // 4. 清掉 clip-path（如果有）
+        if (typeof clearRasterClipPath === "function") {
+          try {
+            clearRasterClipPath();
+          } catch (err) {
+            console.warn("clearRasterClipPath failed:", err);
+          }
+        }
+
+        // 5. AOI mask 顯示狀態重算
+        if (typeof currentRasterItemNameForMask !== "undefined") {
+          currentRasterItemNameForMask = null;
+        }
+
+        // 6. Analysis 狀態重設
+        if (typeof currentAnalysisLocalPath !== "undefined") currentAnalysisLocalPath = null;
+        if (typeof currentAnalysisItemName !== "undefined") currentAnalysisItemName = null;
+        if (typeof currentAnalysisLabel !== "undefined") currentAnalysisLabel = null;
+
+        if (typeof updateAnalysisTarget === "function") {
+          try { updateAnalysisTarget(); } catch (err) {}
+        }
+        if (typeof resetAnalysisBox === "function") {
+          try { resetAnalysisBox("Select a layer first"); } catch (err) {}
+        }
+
+        // 7. 目前事件 / 目前圖層的文字重設（如果頁面上有）
+        document.querySelectorAll("*").forEach(el => {
+          if (!el || !el.textContent) return;
+          if (el.textContent.includes("Current Layer:")) {
+            const html = el.innerHTML || "";
+            el.innerHTML = html.replace(/Current Layer:[^<]*/g, "Current Layer: None");
+          }
+          if (el.textContent.includes("目前圖層：")) {
+            const html = el.innerHTML || "";
+            el.innerHTML = html.replace(/目前圖層：[^<]*/g, "目前圖層：無");
+          }
+        });
+
+        // 8. 嘗試把圖層統計區塊清成預設
+        const statsBox = document.getElementById("statsBox");
+        if (statsBox) {
+          statsBox.innerHTML = "Select a layer first";
+        }
+
+        // 9. 地圖尺寸重算
+        if (typeof map !== "undefined" && map.invalidateSize) {
+          [30, 120, 300].forEach(ms => {
+            setTimeout(() => {
+              try { map.invalidateSize(true); } catch (err) {}
+            }, ms);
+          });
+        }
+
+      } catch (err) {
+        console.error("forceClearRasterV11 failed:", err);
+      }
+    }
+
+    function bindForceClearRasterV11() {
+      const btn =
+        document.getElementById("clearRasterBtnV8") ||
+        document.getElementById("clearRasterBtnV7") ||
+        document.getElementById("clearRasterBtnV6") ||
+        Array.from(document.querySelectorAll("button, .btn")).find(el => {
+          const t = (el.textContent || "").trim();
+          return t === "Clear Raster Layer";
+        });
+
+      if (!btn) return;
+      if (btn.dataset.forceClearBound === "1") return;
+
+      btn.dataset.forceClearBound = "1";
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        forceClearRasterV11();
+      });
+    }
+
+    setTimeout(() => {
+      try {
+        bindForceClearRasterV11();
+      } catch (err) {
+        console.warn("V11 bind clear raster failed:", err);
+      }
+    }, 300);
+
+    const _origShowDynamicLayerV11 = showDynamicLayer;
+    showDynamicLayer = async function(controlId) {
+      await _origShowDynamicLayerV11(controlId);
+      setTimeout(() => {
+        try {
+          bindForceClearRasterV11();
+        } catch (err) {
+          console.warn("V11 refresh after showDynamicLayer failed:", err);
+        }
+      }, 120);
+    };
+
+    const _origSwitchEventV11 = switchEvent;
+    switchEvent = async function(eventId, zoom = true) {
+      await _origSwitchEventV11(eventId, zoom);
+      setTimeout(() => {
+        try {
+          bindForceClearRasterV11();
+        } catch (err) {
+          console.warn("V11 refresh after switchEvent failed:", err);
+        }
+      }, 140);
+    };
+    /* === V11 FORCE CLEAR RASTER FIX END === */
+
+
+    /* === V12 CLEAR RASTER STATE RESET FIX START === */
+    function resetLayerSelectionStateV12() {
+      try {
+        // 清掉常見的目前選取 control 狀態
+        const candidateNames = [
+          "currentControlId",
+          "currentLayerControlId",
+          "activeControlId",
+          "selectedControlId",
+          "currentSelectedControlId",
+          "currentDisplayControlId"
+        ];
+
+        candidateNames.forEach(name => {
+          if (typeof window[name] !== "undefined") {
+            window[name] = null;
+          }
+        });
+
+        // 清掉目前圖層名稱 / label 狀態
+        const candidateLayerNames = [
+          "currentLayerName",
+          "currentLayerLabel",
+          "currentItemName",
+          "currentLayerItemName"
+        ];
+
+        candidateLayerNames.forEach(name => {
+          if (typeof window[name] !== "undefined") {
+            window[name] = null;
+          }
+        });
+
+        // 清掉左側所有按鈕的 active / selected 樣式
+        document.querySelectorAll(".left button, .left .btn").forEach(btn => {
+          btn.classList.remove("active");
+          btn.classList.remove("active-layer");
+          btn.classList.remove("selected");
+          btn.classList.remove("is-active");
+          btn.setAttribute("aria-pressed", "false");
+        });
+
+        // 目前事件摘要區塊也一起重設
+        document.querySelectorAll(".left .card, .right .card, .topbar, body *").forEach(el => {
+          if (!el || !el.innerHTML) return;
+
+          if (el.innerHTML.includes("Current Layer:")) {
+            el.innerHTML = el.innerHTML.replace(/Current Layer:[^<]*/g, "Current Layer: None");
+          }
+          if (el.innerHTML.includes("目前圖層：")) {
+            el.innerHTML = el.innerHTML.replace(/目前圖層：[^<]*/g, "目前圖層：無");
+          }
+        });
+
+      } catch (err) {
+        console.warn("resetLayerSelectionStateV12 failed:", err);
+      }
+    }
+
+    function forceClearRasterV12() {
+      try {
+        // 先跑舊版 clear
+        if (typeof forceClearRasterV11 === "function") {
+          forceClearRasterV11();
+        } else if (typeof clearRaster === "function") {
+          clearRaster();
+        }
+
+        // 再補做 state reset
+        resetLayerSelectionStateV12();
+
+        // 重新整理分析框
+        if (typeof updateAnalysisTarget === "function") {
+          try { updateAnalysisTarget(); } catch (err) {}
+        }
+        if (typeof resetAnalysisBox === "function") {
+          try { resetAnalysisBox("Select a layer first"); } catch (err) {}
+        }
+
+      } catch (err) {
+        console.error("forceClearRasterV12 failed:", err);
+      }
+    }
+
+    function bindForceClearRasterV12() {
+      const btn =
+        document.getElementById("clearRasterBtnV8") ||
+        document.getElementById("clearRasterBtnV7") ||
+        document.getElementById("clearRasterBtnV6") ||
+        Array.from(document.querySelectorAll("button, .btn")).find(el => {
+          const t = (el.textContent || "").trim();
+          return t === "Clear Raster Layer";
+        });
+
+      if (!btn) return;
+      if (btn.dataset.forceClearBoundV12 === "1") return;
+
+      btn.dataset.forceClearBoundV12 = "1";
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        forceClearRasterV12();
+      });
+    }
+
+    setTimeout(() => {
+      try {
+        bindForceClearRasterV12();
+      } catch (err) {
+        console.warn("V12 bind clear raster failed:", err);
+      }
+    }, 320);
+
+    const _origShowDynamicLayerV12 = showDynamicLayer;
+    showDynamicLayer = async function(controlId) {
+      await _origShowDynamicLayerV12(controlId);
+      setTimeout(() => {
+        try {
+          bindForceClearRasterV12();
+        } catch (err) {
+          console.warn("V12 refresh after showDynamicLayer failed:", err);
+        }
+      }, 120);
+    };
+
+    const _origSwitchEventV12 = switchEvent;
+    switchEvent = async function(eventId, zoom = true) {
+      await _origSwitchEventV12(eventId, zoom);
+      setTimeout(() => {
+        try {
+          bindForceClearRasterV12();
+        } catch (err) {
+          console.warn("V12 refresh after switchEvent failed:", err);
+        }
+      }, 140);
+    };
+    /* === V12 CLEAR RASTER STATE RESET FIX END === */
+
+
+    /* === V13 SIMPLE CLEAR + COORDS FIX START === */
+    function injectV13SimpleStyles() {
+      if (document.getElementById("v13SimpleStyle")) return;
+
+      const style = document.createElement("style");
+      style.id = "v13SimpleStyle";
+      style.textContent = `
+        #coordsCardV13 h3,
+        #rasterActionsCardV13 h3 {
+          margin-bottom: 10px;
+        }
+
+        .coords-toggle-row-v13 {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 13px;
+        }
+
+        .coords-toggle-row-v13 input[type="checkbox"] {
+          transform: translateY(1px);
+        }
+
+        .coords-note-v13 {
+          margin-top: 8px;
+          font-size: 12px;
+          color: #64748b;
+          line-height: 1.45;
+        }
+
+        .coords-readout-v13 {
+          margin-top: 10px;
+          padding: 10px 12px;
+          border-radius: 12px;
+          background: #f8fafc;
+          border: 1px solid rgba(15,23,42,0.06);
+          font-size: 12px;
+          color: #334155;
+          line-height: 1.45;
+          min-height: 42px;
+        }
+
+        .clear-raster-btn-v13 {
+          width: 100%;
+          background: #975b65 !important;
+          color: #ffffff !important;
+          border: 1px solid #975b65 !important;
+          font-weight: 700;
+        }
+
+        .clear-raster-btn-v13:hover {
+          background: #804b54 !important;
+          color: #ffffff !important;
+          border-color: #804b54 !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    function formatLatCompassV13(lat) {
+      const hemi = lat >= 0 ? "N" : "S";
+      return `${Math.abs(lat).toFixed(6)}° ${hemi}`;
+    }
+
+    function formatLngCompassV13(lng) {
+      const hemi = lng >= 0 ? "E" : "W";
+      return `${Math.abs(lng).toFixed(6)}° ${hemi}`;
+    }
+
+    function leftPanelV13() {
+      return document.querySelector(".left");
+    }
+
+    function findLeftCardByTextV13(keywords) {
+      return Array.from(document.querySelectorAll(".left .card")).find(card => {
+        const txt = (card.textContent || "").trim();
+        return keywords.some(k => txt.includes(k));
+      }) || null;
+    }
+
+    function cleanupOldUtilityCardsV13() {
+      document.querySelectorAll(
+        "#coordsCardV10,#coordsCardV9,#coordsCardV8,#coordsCardV7,#coordsCardV6," +
+        "#rasterActionsCardV8,#rasterActionsCardV7,#rasterActionCardV6,#toolboxCardV5,#toolboxCardStrong,#toolboxCardClean"
+      ).forEach(el => {
+        if (el) el.remove();
+      });
+
+      document.querySelectorAll(".left .card").forEach(card => {
+        const txt = (card.textContent || "").trim();
+        if (
+          txt === "Actions" ||
+          txt === "Toolbox" ||
+          txt.startsWith("CoordinatesShow Cursor Coordinates") ||
+          txt.startsWith("Raster ActionsClear Raster Layer")
+        ) {
+          card.style.display = "none";
+        }
+      });
+
+      document.querySelectorAll(".left button, .left .btn").forEach(btn => {
+        const t = (btn.textContent || "").trim();
+        if (t === "Clear Raster Layer" && btn.id !== "clearRasterBtnV13") {
+          btn.style.display = "none";
+        }
+      });
+    }
+
+    function ensureCoordsCardV13() {
+      const left = leftPanelV13();
+      if (!left) return null;
+
+      let card = document.getElementById("coordsCardV13");
+      if (!card) {
+        card = document.createElement("div");
+        card.className = "card";
+        card.id = "coordsCardV13";
+
+        const opacityCard = findLeftCardByTextV13(["Layer Opacity", "圖層透明度"]);
+        if (opacityCard && opacityCard.parentNode === left) {
+          left.insertBefore(card, opacityCard.nextSibling);
+        } else {
+          left.prepend(card);
+        }
+      }
+
+      const enabled = localStorage.getItem("coordsEnabledV13") === "1";
+
+      card.innerHTML = `
+        <h3>Coordinates</h3>
+        <label class="coords-toggle-row-v13">
+          <input type="checkbox" id="coordsToggleV13" ${enabled ? "checked" : ""}>
+          <span>Show Cursor Coordinates</span>
+        </label>
+        <div class="coords-note-v13">
+          Move your cursor over the map to display WGS84 coordinates.
+        </div>
+        <div class="coords-readout-v13" id="coordsReadoutV13">${enabled ? "Move cursor over the map..." : "Disabled"}</div>
+      `;
+
+      return card;
+    }
+
+    function ensureRasterActionsCardV13() {
+      const left = leftPanelV13();
+      if (!left) return null;
+
+      let card = document.getElementById("rasterActionsCardV13");
+      if (!card) {
+        card = document.createElement("div");
+        card.className = "card";
+        card.id = "rasterActionsCardV13";
+
+        const coordsCard = document.getElementById("coordsCardV13");
+        if (coordsCard && coordsCard.parentNode === left) {
+          left.insertBefore(card, coordsCard.nextSibling);
+        } else {
+          left.appendChild(card);
+        }
+      }
+
+      card.innerHTML = `
+        <h3>Raster Actions</h3>
+        <button type="button" class="btn clear-raster-btn-v13" id="clearRasterBtnV13">
+          Clear Raster Layer
+        </button>
+      `;
+
+      return card;
+    }
+
+    function bindCoordsEventsV13() {
+      if (window.__coordsEventsBoundV13) return;
+      if (typeof map === "undefined") return;
+
+      window.__coordsEventsBoundV13 = true;
+
+      map.on("mousemove", (e) => {
+        const toggle = document.getElementById("coordsToggleV13");
+        const out = document.getElementById("coordsReadoutV13");
+        if (!toggle || !out || !toggle.checked) return;
+
+        out.textContent = `${formatLatCompassV13(e.latlng.lat)}, ${formatLngCompassV13(e.latlng.lng)}`;
+      });
+
+      map.on("mouseout", () => {
+        const toggle = document.getElementById("coordsToggleV13");
+        const out = document.getElementById("coordsReadoutV13");
+        if (!toggle || !out || !toggle.checked) return;
+        out.textContent = "Move cursor over the map...";
+      });
+    }
+
+    function bindCoordsToggleV13() {
+      const toggle = document.getElementById("coordsToggleV13");
+      const out = document.getElementById("coordsReadoutV13");
+      if (!toggle || !out || toggle.dataset.bound === "1") return;
+
+      toggle.dataset.bound = "1";
+      toggle.addEventListener("change", () => {
+        if (toggle.checked) {
+          localStorage.setItem("coordsEnabledV13", "1");
+          out.textContent = "Move cursor over the map...";
+        } else {
+          localStorage.setItem("coordsEnabledV13", "0");
+          out.textContent = "Disabled";
+        }
+      });
+    }
+
+    function simpleClearRasterV13() {
+      try {
+        if (typeof map !== "undefined" && typeof rasterLayer !== "undefined" && rasterLayer) {
+          try {
+            if (map.hasLayer(rasterLayer)) map.removeLayer(rasterLayer);
+          } catch (err) {}
+          rasterLayer = null;
+        }
+
+        if (typeof inverseAoiMaskLayer !== "undefined" && inverseAoiMaskLayer) {
+          try {
+            if (typeof map !== "undefined" && map.hasLayer(inverseAoiMaskLayer)) {
+              map.removeLayer(inverseAoiMaskLayer);
+            }
+          } catch (err) {}
+          inverseAoiMaskLayer = null;
+        }
+
+        if (typeof clearRasterClipPath === "function") {
+          try { clearRasterClipPath(); } catch (err) {}
+        }
+
+        if (typeof currentRasterItemNameForMask !== "undefined") currentRasterItemNameForMask = null;
+        if (typeof currentAnalysisLocalPath !== "undefined") currentAnalysisLocalPath = null;
+        if (typeof currentAnalysisItemName !== "undefined") currentAnalysisItemName = null;
+        if (typeof currentAnalysisLabel !== "undefined") currentAnalysisLabel = null;
+
+        ["currentControlId","currentLayerControlId","activeControlId","selectedControlId","currentSelectedControlId","currentDisplayControlId"]
+          .forEach(name => { if (typeof window[name] !== "undefined") window[name] = null; });
+
+        document.querySelectorAll(".left button, .left .btn").forEach(btn => {
+          btn.classList.remove("active");
+          btn.classList.remove("active-layer");
+          btn.classList.remove("selected");
+          btn.classList.remove("is-active");
+          btn.setAttribute("aria-pressed", "false");
+        });
+
+        if (typeof updateAnalysisTarget === "function") {
+          try { updateAnalysisTarget(); } catch (err) {}
+        }
+        if (typeof resetAnalysisBox === "function") {
+          try { resetAnalysisBox("Select a layer first"); } catch (err) {}
+        }
+
+        const statsBox = document.getElementById("statsBox");
+        if (statsBox) statsBox.innerHTML = "Select a layer first";
+
+        [30, 120, 300].forEach(ms => {
+          setTimeout(() => {
+            try {
+              if (typeof map !== "undefined" && map.invalidateSize) map.invalidateSize(true);
+            } catch (err) {}
+          }, ms);
+        });
+
+      } catch (err) {
+        console.error("simpleClearRasterV13 failed:", err);
+      }
+    }
+
+    function bindClearRasterV13() {
+      const btn = document.getElementById("clearRasterBtnV13");
+      if (!btn || btn.dataset.bound === "1") return;
+
+      btn.dataset.bound = "1";
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        simpleClearRasterV13();
+      });
+    }
+
+    function runV13SimpleFix() {
+      injectV13SimpleStyles();
+      cleanupOldUtilityCardsV13();
+      ensureCoordsCardV13();
+      ensureRasterActionsCardV13();
+      bindCoordsEventsV13();
+      bindCoordsToggleV13();
+      bindClearRasterV13();
+    }
+
+    setTimeout(() => {
+      try {
+        runV13SimpleFix();
+      } catch (err) {
+        console.warn("V13 simple fix failed:", err);
+      }
+    }, 300);
+
+    const _origShowDynamicLayerV13 = showDynamicLayer;
+    showDynamicLayer = async function(controlId) {
+      await _origShowDynamicLayerV13(controlId);
+      setTimeout(() => {
+        try { runV13SimpleFix(); } catch (err) {}
+      }, 120);
+    };
+
+    const _origSwitchEventV13 = switchEvent;
+    switchEvent = async function(eventId, zoom = true) {
+      await _origSwitchEventV13(eventId, zoom);
+      setTimeout(() => {
+        try { runV13SimpleFix(); } catch (err) {}
+      }, 140);
+    };
+    /* === V13 SIMPLE CLEAR + COORDS FIX END === */
+
+
+    /* === V14 LAYER ACTIONS FIX START === */
+    function ensureLayerActionsCardV14() {
+      const left = document.querySelector(".left");
+      if (!left) return null;
+
+      // 先把舊的 Raster Actions 卡藏掉
+      document.querySelectorAll(".left .card").forEach(card => {
+        const txt = (card.textContent || "").trim();
+        const h3 = card.querySelector("h3");
+        const title = (h3 ? h3.textContent : "").trim();
+
+        if (
+          title === "Raster Actions" ||
+          txt === "Raster Actions" ||
+          txt.startsWith("Raster ActionsClear Raster Layer")
+        ) {
+          card.style.display = "none";
+        }
+      });
+
+      let card = document.getElementById("layerActionsCardV14");
+      if (!card) {
+        card = document.createElement("div");
+        card.className = "card";
+        card.id = "layerActionsCardV14";
+
+        const coordsCard =
+          document.getElementById("coordsCardV13") ||
+          document.getElementById("coordsCardV10") ||
+          document.getElementById("coordsCardV9");
+
+        if (coordsCard && coordsCard.parentNode === left) {
+          left.insertBefore(card, coordsCard.nextSibling);
+        } else {
+          const opacityCard = Array.from(left.querySelectorAll(".card")).find(c =>
+            (c.textContent || "").includes("Layer Opacity") || (c.textContent || "").includes("圖層透明度")
+          );
+          if (opacityCard && opacityCard.parentNode === left) {
+            left.insertBefore(card, opacityCard.nextSibling);
+          } else {
+            left.prepend(card);
+          }
+        }
+      }
+
+      card.innerHTML = `
+        <h3>Layer Actions</h3>
+        <button type="button" class="btn clear-raster-btn-v13" id="clearRasterBtnV13">
+          Clear Raster Layer
+        </button>
+      `;
+
+      return card;
+    }
+
+    function bindLayerActionsCardV14() {
+      const btn = document.getElementById("clearRasterBtnV13");
+      if (!btn || btn.dataset.boundV14 === "1") return;
+
+      btn.dataset.boundV14 = "1";
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (typeof simpleClearRasterV13 === "function") {
+          simpleClearRasterV13();
+        }
+      });
+    }
+
+    function runV14LayerActionsFix() {
+      ensureLayerActionsCardV14();
+      bindLayerActionsCardV14();
+    }
+
+    // 故意晚一點跑，等前面舊 patch 都跑完再重建
+    setTimeout(() => {
+      try {
+        runV14LayerActionsFix();
+      } catch (err) {
+        console.warn("V14 layer actions fix failed:", err);
+      }
+    }, 900);
+
+    const _origShowDynamicLayerV14 = showDynamicLayer;
+    showDynamicLayer = async function(controlId) {
+      await _origShowDynamicLayerV14(controlId);
+      setTimeout(() => {
+        try { runV14LayerActionsFix(); } catch (err) {}
+      }, 500);
+    };
+
+    const _origSwitchEventV14 = switchEvent;
+    switchEvent = async function(eventId, zoom = true) {
+      await _origSwitchEventV14(eventId, zoom);
+      setTimeout(() => {
+        try { runV14LayerActionsFix(); } catch (err) {}
+      }, 500);
+    };
+    /* === V14 LAYER ACTIONS FIX END === */
+
+
+    /* S2 AIO MODIFY WRAPPER PATCH */
+    (function() {
+      if (typeof hrefToLocalPath !== "function") return;
+      const _origHrefToLocalPath = hrefToLocalPath;
+      hrefToLocalPath = function(assetHref, itemUrl) {
+        let p = _origHrefToLocalPath(assetHref, itemUrl);
+        if (typeof p === "string") {
+          p = p.replace("/bigdata/final/S2_modify/", "/bigdata/final/S2_aoi_modify/");
+        }
+        return p;
+      };
+    })();
+
+</script>
+
+<!-- LEFT GROUP ACCORDION PATCH -->
+<style>
+  .layer-accordion-root {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .layer-group-section {
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.72);
+    overflow: hidden;
+  }
+
+  .layer-group-header {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    color: #163a6b;
+    text-align: left;
+  }
+
+  .layer-group-header:hover {
+    background: rgba(29, 78, 137, 0.05);
+  }
+
+  .layer-group-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .layer-group-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #1d4e89;
+    background: rgba(37, 99, 235, 0.10);
+    border: 1px solid rgba(37, 99, 235, 0.18);
+  }
+
+  .layer-group-chevron {
+    font-size: 14px;
+    color: #64748b;
+    transition: transform 0.18s ease;
+    flex: 0 0 auto;
+  }
+
+  .layer-group-section[data-open="1"] .layer-group-chevron {
+    transform: rotate(90deg);
+  }
+
+  .layer-group-body {
+    padding: 0 12px 12px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .layer-group-body[hidden] {
+    display: none !important;
+  }
+
+  .layer-group-body > button,
+  .layer-group-body > .btn {
+    margin: 0 !important;
+  }
+
+  .layer-group-body button,
+  .layer-group-body .btn {
+    min-height: 48px;
+    padding: 10px 14px !important;
+    font-size: 14px !important;
+    font-weight: 600;
+  }
+
+  .layer-group-scroll {
+    max-height: min(52vh, 760px);
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+
+  .layer-group-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .layer-group-scroll::-webkit-scrollbar-thumb {
+    background: rgba(100, 116, 139, 0.28);
+    border-radius: 999px;
+  }
+</style>
+
+<script>
+(() => {
+  if (window.__leftGroupAccordionPatchLoaded) return;
+  window.__leftGroupAccordionPatchLoaded = true;
+
+  const GROUP_LABELS = ["LULC", "Precipitation", "S2", "S1", "MLU", "SRTM"];
+
+  function normalizeText(txt) {
+    return (txt || "").replace(/\\s+/g, " ").trim();
+  }
+
+  function findLayerListCard() {
+    return [...document.querySelectorAll(".left .card")].find(card => {
+      const text = normalizeText(card.innerText || "");
+      return text.includes("LULC") &&
+             text.includes("Precipitation") &&
+             text.includes("S2");
+    }) || null;
+  }
+
+  function headingLabelFromElement(el) {
+    if (!el || el.querySelector("button, .btn")) return null;
+    const txt = normalizeText(el.textContent || "");
+    return GROUP_LABELS.includes(txt) ? txt : null;
+  }
+
+  function countButtons(nodes) {
+    return nodes.reduce((n, el) => {
+      if (!el || !(el instanceof HTMLElement)) return n;
+      if (el.matches("button, .btn")) return n + 1;
+      return n + el.querySelectorAll("button, .btn").length;
+    }, 0);
+  }
+
+  function hasActiveButton(nodes) {
+    return nodes.some(el => {
+      if (!(el instanceof HTMLElement)) return false;
+      if (el.matches("button, .btn")) {
+        return el.classList.contains("active") ||
+               el.classList.contains("selected") ||
+               el.classList.contains("is-active") ||
+               el.classList.contains("active-layer") ||
+               el.getAttribute("aria-pressed") === "true";
+      }
+      return !!el.querySelector("button.active, button.selected, button.is-active, .btn.active, .btn.selected, .btn.is-active, .active-layer, [aria-pressed='true']");
+    });
+  }
+
+  function buildAccordion(card) {
+    const children = [...card.children];
+    const groups = [];
+    let current = null;
+
+    for (const el of children) {
+      const label = headingLabelFromElement(el);
+      if (label) {
+        current = { label, headingEl: el, nodes: [] };
+        groups.push(current);
+      } else if (current) {
+        current.nodes.push(el);
+      }
+    }
+
+    if (!groups.length) return false;
+
+    const root = document.createElement("div");
+    root.className = "layer-accordion-root layer-group-scroll";
+
+    groups.forEach(group => {
+      const section = document.createElement("section");
+      section.className = "layer-group-section";
+
+      const openByDefault = hasActiveButton(group.nodes) || group.label === "LULC" || group.label === "Precipitation";
+      section.dataset.open = openByDefault ? "1" : "0";
+
+      const header = document.createElement("button");
+      header.type = "button";
+      header.className = "layer-group-header";
+      header.innerHTML = `
+        <span class="layer-group-header-left">
+          <span>${group.label}</span>
+          <span class="layer-group-badge">${countButtons(group.nodes)}</span>
+        </span>
+        <span class="layer-group-chevron">▸</span>
+      `;
+
+      const body = document.createElement("div");
+      body.className = "layer-group-body";
+      if (!openByDefault) body.hidden = true;
+
+      for (const node of group.nodes) {
+        body.appendChild(node);
+      }
+
+      header.addEventListener("click", () => {
+        const isOpen = section.dataset.open === "1";
+        section.dataset.open = isOpen ? "0" : "1";
+        body.hidden = isOpen;
+      });
+
+      section.appendChild(header);
+      section.appendChild(body);
+      root.appendChild(section);
+    });
+
+    groups.forEach(group => {
+      group.headingEl.remove();
+    });
+
+    card.appendChild(root);
+    return true;
+  }
+
+  function enhanceLayerGroups() {
+    const card = findLayerListCard();
+    if (!card) return;
+
+    if (card.querySelector(".layer-accordion-root")) return;
+
+    buildAccordion(card);
+  }
+
+  function scheduleEnhance() {
+    clearTimeout(window.__leftGroupAccordionTimer);
+    window.__leftGroupAccordionTimer = setTimeout(enhanceLayerGroups, 120);
+  }
+
+  const observer = new MutationObserver(() => scheduleEnhance());
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+  if (typeof switchEvent === "function") {
+    const _origSwitchEvent_leftAccordion = switchEvent;
+    switchEvent = async function(eventId, zoom = true) {
+      await _origSwitchEvent_leftAccordion(eventId, zoom);
+      setTimeout(scheduleEnhance, 220);
+    };
+  }
+
+  setTimeout(scheduleEnhance, 300);
+  setTimeout(scheduleEnhance, 900);
+})();
+</script>
+
+</body>
+</html>

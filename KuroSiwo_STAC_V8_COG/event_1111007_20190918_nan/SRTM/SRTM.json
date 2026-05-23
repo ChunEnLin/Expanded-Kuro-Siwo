@@ -1,0 +1,112 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json"
+  ],
+  "id": "SRTM",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          86.49352356,
+          24.92181980779728
+        ],
+        [
+          86.49352356,
+          26.156402552678447
+        ],
+        [
+          84.84017428303464,
+          26.156402552678447
+        ],
+        [
+          84.84017428303464,
+          24.92181980779728
+        ],
+        [
+          86.49352356,
+          24.92181980779728
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    84.84017428303464,
+    24.92181980779728,
+    86.49352356,
+    26.156402552678447
+  ],
+  "properties": {
+    "start_datetime": "2019-09-18T00:00:00Z",
+    "end_datetime": "2019-09-18T00:00:00Z",
+    "category": "SRTM",
+    "sci:doi": "10.5067/MEaSUREs/SRTM/SRTMGL1.003",
+    "sci:citation": "Farr, T. G., et al. (2007). The Shuttle Radar Topography Mission. ",
+    "sci:publications": [
+      {
+        "doi": "10.1029/2005RG000183",
+        "citation": "Farr, T. G., et al. (2007), The Shuttle Radar Topography Mission, Rev. Geophys., 45, RG2004, doi:10.1029/2005RG000183."
+      }
+    ],
+    "proj:code": "EPSG:3857",
+    "proj:shape": [
+      15232,
+      18368
+    ],
+    "proj:transform": [
+      10.0,
+      0.0,
+      9444735.0,
+      0.0,
+      -10.0,
+      3018465.0
+    ],
+    "eo:bands": [
+      {
+        "name": "elevation",
+        "common_name": "elevation",
+        "description": "Digital Elevation Model"
+      }
+    ],
+    "datetime": "2019-09-18T00:00:00Z"
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "event_1111007_20190918_nan"
+    },
+    {
+      "rel": "collection",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "event_1111007_20190918_nan"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5067/MEaSUREs/SRTM/SRTMGL1.003"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1029/2005RG000183"
+    }
+  ],
+  "assets": {
+    "srtm_1111007_01_MK0_DEM_20190918": {
+      "href": "KuroSiwo_COG_V8/unknown_event/dem/1111007_01_MK0_DEM_20190918_cog.tif",
+      "type": "image/tiff; application=geotiff"
+    }
+  },
+  "collection": "event_1111007_20190918_nan"
+}
